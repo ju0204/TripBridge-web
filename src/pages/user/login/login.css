@@ -1,0 +1,57 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .login-form {
+    width: 100%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .styled-input {
+    width: calc(100% - 16px);
+    margin-bottom: 20px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid black; /* 기본 테두리 색상은 검은색으로 설정 */
+  }
+  
+  .styled-input.error {
+    border-color: red; /* 오류가 발생하면 테두리 색상을 빨간색으로 변경 */
+    margin-bottom: 5px;
+}
+  
+  .styled-label {
+    margin-bottom: 5px;
+  }
+  
+  .styled-error {
+    color: red;
+  }
+  
+  .styled-button-container {
+    width: 100%;
+    text-align: center;
+    margin-top:15px;
+  }
+  
+  .styled-button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .title {
+    font-size: 30px;
+  }
+  
