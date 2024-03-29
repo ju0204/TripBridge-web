@@ -27,7 +27,7 @@ const Nav = ({ isLoggedIn, username, onLogout }) => {
         <ul className="nav-list-1">
           <li className="nav-item"><Link className="styled-link" to="/">홈</Link></li>
           <li className="nav-item"><Link className="styled-link" to="/about">여행지 추천</Link></li>
-          <li className="nav-item"><Link className="styled-link" to="/contact">동선짜기</Link></li>
+          <li className="nav-item"><Link className="styled-link" to="/contact">동선추천</Link></li>
           <li className="nav-item" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <div className="styled-link" onMouseEnter={handleDropdownMouseEnter} onMouseLeave={handleDropdownMouseLeave}>
               게시판
