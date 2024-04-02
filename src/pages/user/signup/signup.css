@@ -3,18 +3,24 @@
 /* .notosanskr * { 
  font-family: 'Noto Sans KR', sans-serif;
 } */
+.sign-up-page {
+  display: flex;
+  justify-content: center; /* 수평 가운데 정렬 */
+  align-items: center; /* 수직 가운데 정렬 */
+  height: 100vh; /* 화면 전체 높이에 대해 센터 정렬 */
+}
 
 .sign-up-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 80vh;
     max-width: 500px;
-    margin-top: 250px; /* 네비게이션 바의 높이만큼 여백을 줌 */
+    margin-top: 50px; /* 수직 가운데 정렬 */
     margin-right: auto;
-    margin-bottom: auto;
+    margin-bottom: auto; /* 수직 가운데 정렬 */
     margin-left: auto;
+    padding-bottom: 50px;
   }
   
   .sign-up-form {
@@ -22,6 +28,8 @@
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 8px;
+    margin-bottom: 30px;
+    
   }
   
   .styled-input {
@@ -53,6 +61,7 @@
   .styled-button-container {
     width: 100%;
     text-align: center;
+    
   }
   
   .styled-button {

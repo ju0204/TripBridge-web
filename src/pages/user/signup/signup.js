@@ -56,30 +56,31 @@ const SignUp = () => {
   
 
   return (
-    <div className="sign-up-container">
-      <h1 className="title">회원가입</h1>
-      <form className="sign-up-form" onSubmit={handleSubmit}>
-        <label className="styled-label">이름</label>
-        <input
+    <div className="sign-up-page">
+      <div className="sign-up-container">
+        <h1 className="title">회원가입</h1>
+        <form className="sign-up-form" onSubmit={handleSubmit}>
+          <label className="styled-label">이름</label>
+          <input
           className={`styled-input ${errors.name && 'error'}`}
           type="text"
           name="name"
           value={formData.name}
           onChange={handleChange}
           required
-        />
-        {errors.name && <span className="styled-error">{errors.name}</span>}
-        <label className="styled-label">닉네임</label>
-        <input
+          />
+          {errors.name && <span className="styled-error">{errors.name}</span>}
+          <label className="styled-label">닉네임</label>
+          <input
           className={`styled-input ${errors.nickname && 'error'}`}
           type="text"
           name="nickname"
           value={formData.nickname}
           onChange={handleChange}
           required
-        />
-        {errors.nickname && <span className="styled-error">{errors.nickname}</span>}
-        <label className="styled-label">이메일 주소</label>
+          />
+          {errors.nickname && <span className="styled-error">{errors.nickname}</span>}
+          <label className="styled-label">이메일 주소</label>
         
           <input
             className={`styled-input ${errors.email && 'error'}`}
@@ -90,41 +91,41 @@ const SignUp = () => {
             required
           />
           
-        {errors.email && <span className="styled-error-email">{errors.email}</span>}
+          {errors.email && <span className="styled-error-email">{errors.email}</span>}
 
-        <label className="styled-label">비밀번호</label>
-        <input
+          <label className="styled-label">비밀번호</label>
+          <input
           className={`styled-input ${errors.password && 'error'}`}
           type="password"
           name="password"
           value={formData.password}
           onChange={handleChange}
           required
-        />
-        {errors.password && <span className="styled-error">{errors.password}</span>}
+          />
+          {errors.password && <span className="styled-error">{errors.password}</span>}
         
-        <label className="styled-label">비밀번호 확인</label>
-        <input
+          <label className="styled-label">비밀번호 확인</label>
+          <input
           className={`styled-input ${errors.confirmPassword && 'error'}`}
           type="password"
           name="confirmPassword"
           value={formData.confirmPassword}
           onChange={handleChange}
           required
-        />
-        {errors.confirmPassword && <span className="styled-error">{errors.confirmPassword}</span>}
+          />
+          {errors.confirmPassword && <span className="styled-error">{errors.confirmPassword}</span>}
         
-        <br/>
-        <br/>
-        {/* 약관동의 추가 */}
-        <label className="agreement-label">약관 동의</label>
-        <div class="contents">
-          <ul class="terms__list">
-            <li class="terms__box">
-            <div class="input__check">
-              <input type="checkbox" class="required"/>
-              <label for="termsOfService">Trip Bridge 이용약관 동의</label>
-            </div>
+          <br/>
+          <br/>
+          {/* 약관동의 추가 */}
+          <label className="agreement-label">약관 동의</label>
+          <div class="contents">
+            <ul class="terms__list">
+              <li class="terms__box">
+              <div class="input__check">
+                <input type="checkbox" class="required"/>
+                <label for="termsOfService">Trip Bridge 이용약관 동의</label>
+              </div>
               <div class="terms__content">
                 여러분을 환영합니다. Trip Bridge 서비스 및 제품(이하 ‘서비스’)을 이용해
                 주셔서 감사합니다. 본 약관은 다양한 JUN 서비스의 이용과 관련하여
@@ -136,12 +137,12 @@ const SignUp = () => {
                 확인하거나 동의하게 되므로, 잠시 시간을 내시어 주의 깊게 살펴봐
                 주시기 바랍니다.
               </div>
-            </li>
-            <li class="terms__box">
-            <div class="input__check">
-              <input type="checkbox" class="required"/>
-              <label for="termsOfService">개인정보 수집 및 이용 동의</label>
-            </div>
+              </li>
+              <li class="terms__box">
+              <div class="input__check">
+                <input type="checkbox" class="required"/>
+               <label for="termsOfService">개인정보 수집 및 이용 동의</label>
+               </div>
               <div class="terms__content">
                 개인정보보호법에 따라 Trip Bridge에 회원가입 신청하시는 분께 수집하는
                 개인정보의 항목, 개인정보의 수집 및 이용목적, 개인정보의 보유 및
@@ -164,9 +165,11 @@ const SignUp = () => {
         </div>
       </form>
     
+      </div>
     </div>
   );
 };
 
 export default SignUp;
+
 
