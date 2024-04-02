@@ -1,3 +1,9 @@
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+/* .notosanskr * { 
+ font-family: 'Noto Sans KR', sans-serif;
+} */
+
 .sign-up-container {
     display: flex;
     flex-direction: column;
@@ -5,7 +11,10 @@
     justify-content: center;
     height: 80vh;
     max-width: 500px;
-    margin: 0 auto;
+    margin-top: 250px; /* 네비게이션 바의 높이만큼 여백을 줌 */
+    margin-right: auto;
+    margin-bottom: auto;
+    margin-left: auto;
   }
   
   .sign-up-form {
@@ -21,15 +30,24 @@
     padding: 8px;
     border: 1px solid black;
     border-radius: 4px;
+    margin-top: 5px;
   }
   
   .styled-label {
     margin-bottom: 5px;
+    font-family: 'Noto Sans KR', sans-serif;
   }
   
   .styled-error {
     color: red;
     margin-bottom: 5px;
+    display: block;
+  }
+  .styled-error-email {
+    color: red;
+    margin-bottom: 5px;
+    font-size: 14px;
+    display: block;
   }
   
   .styled-button-container {
@@ -38,16 +56,73 @@
   }
   
   .styled-button {
-    width: 40%;
-    padding: 8px 16px;
+    padding: 8px 10px;
+    width: 100px; /*버튼 가로 크기 조절*/
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
   }
   
   .title {
     font-size: 30px;
+    font-family: 'Noto Sans KR', sans-serif;;
+    font-weight: 800;
+    letter-spacing: 4px; 
+    margin-bottom: 40px;
+    margin-top:50px;
   }
   
+  /*약관동의*/
+  .ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .agreement-label {
+    font-family: 'Noto Sans KR', sans-serif;
+    margin-bottom: 5px;
+  }
+
+  .contents {
+    padding: 10px;
+    background-color: #ffffff;
+    border: 1px solid #dadada;
+    border-radius: 5px;
+    margin-top:5px;
+  }
+
+  .terms__list {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .terms__list .terms__box {
+    margin: 20px 0;
+  }
+  
+  .contents label {
+    font-weight: 700;
+  }
+  
+  .input__check label::after {
+    margin-left: 4px;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #0086ff;
+    content: "(필수)";
+  }
+  
+  .terms__list .terms__content {
+    height: 88px;
+    overflow: auto;
+    margin-top: 8px;
+    padding: 12px;
+    border: 1px solid #dadada;
+    background: #fff;
+    font-size: 12px;
+  }
