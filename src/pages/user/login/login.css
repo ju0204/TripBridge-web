@@ -1,3 +1,10 @@
+
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+/* .notosanskr * { 
+ font-family: 'Noto Sans KR', sans-serif;
+} */
+
 .login-container {
     display: flex;
     flex-direction: column;
@@ -21,6 +28,7 @@
     padding: 8px;
     border-radius: 4px;
     border: 1px solid black; /* 기본 테두리 색상은 검은색으로 설정 */
+    margin-top: 5px;
   }
   
   .styled-input.error {
@@ -29,11 +37,13 @@
 }
   
   .styled-label {
-    margin-bottom: 5px;
+    margin-bottom: 20px;
+    font-family: 'Noto Sans KR', sans-serif;
   }
   
   .styled-error {
     color: red;
+    font-size: 13px;
   }
   
   .styled-button-container {
@@ -43,15 +53,22 @@
   }
   
   .styled-button {
-    padding: 8px 16px;
+    padding: 8px 10px;
+    width: 150px; /*버튼 가로 크기 조절*/
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 10px;
     cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
   }
   
   .title {
     font-size: 30px;
+    font-family: 'Noto Sans KR', sans-serif;;
+    font-weight: 800;
+    letter-spacing: 4px; 
+    margin-bottom: 40px;
+    margin-top:50px;
   }
   
