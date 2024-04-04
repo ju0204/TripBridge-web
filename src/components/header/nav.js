@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './nav.css';
 
-const Nav = ({ isLoggedIn, username, onLogout }) => {
+const Nav = ({ isLoggedIn, nickname, onLogout }) => {
   const [showDropdown, setShowDropdown] = useState(false);
 
   const handleMouseEnter = () => {
@@ -39,9 +39,7 @@ const Nav = ({ isLoggedIn, username, onLogout }) => {
               </div>
             )}
           </li>
-          {isLoggedIn && (
-            <li className="nav-item">{username}님 환영합니다.</li>
-          )}
+          
         </ul>
         <ul className="nav-list-2">
           {!isLoggedIn && (
@@ -51,7 +49,12 @@ const Nav = ({ isLoggedIn, username, onLogout }) => {
             </>
           )}
           {isLoggedIn && (
-            <li className="auth-item"><Link className="styled-link" onClick={onLogout}>로그아웃</Link></li>
+            <>
+              <li className="nav-item">
+                <div className="styled-user">{nickname}님 환영합니다.</div></li>
+              <li className="nav-item"><Link className="styled-link" onClick={onLogout}>로그아웃</Link></li>
+              
+            </>
           )}
         </ul>
       </div>
@@ -60,3 +63,6 @@ const Nav = ({ isLoggedIn, username, onLogout }) => {
 };
 
 export default Nav;
+
+
+
