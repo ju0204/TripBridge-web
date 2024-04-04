@@ -51,6 +51,15 @@
     margin-bottom: 5px;
     display: block;
   }
+
+  .styled-error-agree {
+    color: red;
+    margin-bottom: 5px;
+    margin-top:5px;
+    font-size: 14px;
+    display: block;
+  }
+
   .styled-error-email {
     color: red;
     margin-bottom: 5px;
@@ -135,6 +144,9 @@
     background: #fff;
     font-size: 12px;
   }
+
+
+
 
 
 
