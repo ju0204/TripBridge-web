@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import './signup.css';
 import { signup } from '../../../api/user';
@@ -204,13 +205,6 @@ const SignUp = () => {
 };
 
 export default SignUp;
-
-
-
-
-
-
-
 
 
 
