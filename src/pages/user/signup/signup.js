@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './signup.css';
+import { signup } from '../../../api/user';
+import { useNavigate } from 'react-router-dom'; // React Router의 useHistory를 import
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -10,7 +12,7 @@ const SignUp = () => {
     confirmPassword: ''
   });
   const [errors, setErrors] = useState({});
-
+ const navigate = useNavigate(); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,11 +20,28 @@ const SignUp = () => {
     setErrors({ ...errors, [name]: '' });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm(formData);
     if (Object.keys(validationErrors).length === 0) {
-      console.log("회원가입 성공!");
+      try {
+        // 회원가입 요청 보내기
+        const response = await signup({
+          name: formData.name,
+          nickname: formData.nickname,
+          email: formData.email,
+          password: formData.password,
+          pw_check: formData.confirmPassword,
+          alarm: '1',
+          alarm2: '1'
+        });
+        console.log('회원가입 성공:', response);
+        // 회원가입 성공 시 로그인 페이지로 이동
+        navigate('/login'); // 로그인 페이지로 이동
+      } catch (error) {
+        console.error('회원가입 실패:', error);
+        // 회원가입 실패 시 추가 작업 수행
+      }
     } else {
       setErrors(validationErrors);
     }
@@ -42,8 +61,8 @@ const SignUp = () => {
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       errors.email = '유효한 이메일 주소를 입력하세요.';
     }
-    if (formData.password.length < 6) {
-      errors.password = '비밀번호는 최소 6자 이상이어야 합니다.';
+    if (formData.password.length < 3) {
+      errors.password = '비밀번호는 최소 4자 이상이어야 합니다.';
     }
     if (formData.password !== formData.confirmPassword) {
       errors.confirmPassword = '비밀번호가 일치하지 않습니다.';
@@ -171,5 +190,9 @@ const SignUp = () => {
 };
 
 export default SignUp;
+
+
+
+
 
 

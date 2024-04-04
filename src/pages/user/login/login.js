@@ -1,24 +1,37 @@
 import React, { useState } from 'react';
 import './login.css'; 
+import { login } from '../../../api/user';
+import { useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({ setIsLoggedIn, setNickname }) => {
   const [formData, setFormData] = useState({
     email: '',
     password: ''
   });
   const [errors, setErrors] = useState({});
+  const [errorMessage, setErrorMessage] = useState(''); // 추가: 오류 메시지 상태 변수
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
     setErrors({ ...errors, [name]: '' });
+    setErrorMessage(''); // 추가: 입력 값이 변경되면 오류 메시지 초기화
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validateForm(formData);
     if (Object.keys(validationErrors).length === 0) {
-      console.log("로그인 성공!");
+      try {
+        const userData = await login(formData);
+        setIsLoggedIn(true);
+        setNickname(userData.data.nickname);
+        navigate('/');
+      } catch (error) {
+        console.error('로그인 실패:', error);
+        setErrorMessage('로그인에 실패했습니다. 이메일 주소 또는 비밀번호를 확인하세요.'); // 추가: 오류 메시지 설정
+      }
     } else {
       setErrors(validationErrors);
     }
@@ -32,8 +45,8 @@ const Login = () => {
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       errors.email = '유효한 이메일 주소를 입력하세요.';
     }
-    if (formData.password.length < 6) {
-      errors.password = '비밀번호는 최소 6자 이상이어야 합니다.';
+    if (formData.password.length < 3) {
+      errors.password = '비밀번호는 최소 4자 이상이어야 합니다.';
     }
 
     return errors;
@@ -53,7 +66,7 @@ const Login = () => {
           required
         />
         {errors.email && <span className="styled-error">{errors.email}</span>}
-        <br /> {/* 첫 번째 줄 바꿈 */}
+        <br />
         <label className="styled-label">비밀번호</label>
         <input
           className={`styled-input ${errors.password && 'error'}`}
@@ -64,6 +77,7 @@ const Login = () => {
           required
         />
         {errors.password && <span className="styled-error">{errors.password}</span>}
+        {errorMessage && <span className="styled-error">{errorMessage}</span>} {/* 추가: 오류 메시지 표시 */}
         <div className="styled-button-container">
           <button className="styled-button" type="submit">로그인</button>
         </div>
@@ -73,3 +87,4 @@ const Login = () => {
 };
 
 export default Login;
+
