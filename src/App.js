@@ -4,8 +4,11 @@ import { Route, Routes } from 'react-router-dom';
 import SignUp from './pages/user/signup/signup';
 import Nav from './components/header/nav'
 import LogIn from './pages/user/login/login';
-import PasswordCheck from './pages/user/password/pwsearch';
+import MateBoard from './pages/board/mateboard/mateboardlist';
+import AddMatePost from './pages/board/mateboard/addmatepost';
+import MateDetail from './pages/board/mateboard/matedetail';
 import Main from './pages/main/main'; // 메인 페이지 컴포넌트 import
+
 
 const App = () => {
   // 로그인 상태를 관리하는 상태
@@ -29,6 +32,9 @@ const App = () => {
         {/* setNickname props 추가 */}
         <Route path="/login" element={<LogIn setIsLoggedIn={setIsLoggedIn}  setNickname={setNickname} />} /> 
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/mateboard" element={<MateBoard />} />
+        <Route path="/mateboard/:postId" element={<MateDetail />} />
+        <Route path="/mate" element={<AddMatePost />} />
         {/* 다른 페이지들의 라우팅 설정도 필요 */}
       </Routes>
     </div>
