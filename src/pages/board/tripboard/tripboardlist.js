@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import './mateboardlist.css';
+import './tripboardlist.css';
 import { Link } from 'react-router-dom';
-import { showMatePost } from '../../../api/mateboard';
+import { showTripPost } from '../../../api/tripboard';
 
-const MatePostList = () => {
+const TripPostList = () => {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 15;
@@ -11,7 +11,7 @@ const MatePostList = () => {
   useEffect(() => {
     const showpost = async () => {
       try {
-        const data = await showMatePost();
+        const data = await showTripPost();
         setPosts(data);
       } catch (error) {
         console.error('게시물 불러오기 오류:', error);
@@ -36,9 +36,9 @@ const MatePostList = () => {
 
   return (
     <div>
-      <div className='mate-board-banner'>이미지<br /><br /></div>
-      <div className="mate-board-main">👥여행 메이트 구하기👥</div>
-      <div className="mate-board-container">
+      <div className='trip-board-banner'>이미지배너들어갈부분<br /><br /></div>
+      <div className="trip-board-main">여행 게시판</div>
+      <div className="trip-board-container">
         <div className="post-header">
           <div className="post-header-item">번호</div>
           <div className="post-header-item">제목</div>
@@ -51,7 +51,7 @@ const MatePostList = () => {
               <div className="post-content">
                 <div className="post-data">{indexOfFirstPost + index + 1}</div>
                 <div className="post-data">
-                  <Link to={`/mateboard/${post.id}`} className="post-title">{post.title}</Link>
+                  <Link to={`/tripboard/${post.id}`} className="post-title">{post.title}</Link>
                 </div>
                 <div className="post-data">{post.user}</div>
                 <div className="post-data">{formatDate(post.date)}</div>
@@ -67,10 +67,10 @@ const MatePostList = () => {
             </button>
           ))}
         </div>
-        <Link to="/mate" className="write-post-button">✏️글쓰기</Link>
+        <Link to="/tripboard" className="write-post-button">✏️글쓰기</Link>
       </div>
     </div>
   );
 };
 
-export default MatePostList;
+export default TripPostList;

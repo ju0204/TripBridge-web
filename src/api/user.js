@@ -18,17 +18,18 @@ export const signup = async (userData) => {
 //로그인 요청을 보내는 함수
 // login 함수에서 토큰을 저장하는 방법
 export const login = async (userData) => {
-    try {
-      const response = await axios.post(`${BASE_URL}/user/login`, userData);
-      const token = response.data.token;
-      localStorage.setItem('token', token); // 토큰을 로컬 스토리지에 저장
-      return response.data; // 요청에 대한 응답 데이터 반환
-    } catch (error) {
-      console.error('Error while logging in:', error);
-      throw error; // 오류를 상위 컴포넌트로 전파
-    }
-  }; /* 토큰 부분이 아예 이상함 */
-  
+  try {
+    const response = await axios.post(`${BASE_URL}/user/login`, userData);
+    const token = response.data.token;
+    localStorage.setItem('token', token); // 토큰을 로컬 스토리지에 저장
+    console.log('Token saved:', token); // 토큰을 콘솔에 출력
+    return response.data; // 요청에 대한 응답 데이터 반환
+  } catch (error) {
+    console.error('Error while logging in:', error);
+    throw error; // 오류를 상위 컴포넌트로 전파
+  }
+};
+
   //로그아웃 요청을 보내는 함수
   export const logout = async () => {
     try {
