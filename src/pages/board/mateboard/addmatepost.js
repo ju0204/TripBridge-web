@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './addmatepost.css';
-import { savePost } from '../../../api/board';
+import { savePost } from '../../../api/mateboard';
 
 const AddMatePost = () => {
   const [postData, setPostData] = useState({

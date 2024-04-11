@@ -34,7 +34,7 @@ const Nav = ({ isLoggedIn, nickname, onLogout }) => {
             </div>
             {showDropdown && (
               <div className="dropdown-item" onMouseEnter={handleDropdownMouseEnter} onMouseLeave={handleDropdownMouseLeave}>
-                <Link to="/board">여행 게시판</Link>
+                <Link to="/tripboard">여행 게시판</Link>
                 <Link to="/mateboard">여행 메이트 구하기</Link>
               </div>
             )}

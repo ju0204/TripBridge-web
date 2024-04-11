@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getMatePostDetail } from '../../../api/board';
+import { getMatePostDetail, saveComment, getComments } from '../../../api/mateboard';
 import { useParams } from 'react-router-dom';
 import './matedetail.css';
 
@@ -8,8 +8,8 @@ const MateDetail = () => {
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [comment, setComment] = useState('');
   const [comments, setComments] = useState([]);
+  const [comment, setComment] = useState('');
 
   useEffect(() => {
     const fetchPostDetail = async () => {
@@ -24,8 +24,19 @@ const MateDetail = () => {
     };
 
     fetchPostDetail();
+  }, [postId]);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    const fetchComments = async () => {
+      try {
+        const commentsData = await getComments(postId);
+        setComments(commentsData);
+      } catch (error) {
+        console.error('댓글을 불러오는 중 에러 발생:', error);
+      }
+    };
+
+    fetchComments();
   }, [postId]);
 
   const formatDate = (dateString) => {
@@ -37,11 +48,15 @@ const MateDetail = () => {
     setComment(e.target.value);
   };
 
-  const handleSubmitComment = (e) => {
+  const handleSubmitComment = async (e) => {
     e.preventDefault();
-    // 여기에 댓글을 서버에 제출하는 로직 추가
-    // 서버에 제출 후 comments 상태 업데이트
-    setComments([...comments, comment]);
+    try {
+      await saveComment({ postId, content: comment });
+      const updatedComments = await getComments(postId);
+      setComments(updatedComments);
+    } catch (error) {
+      console.error('댓글 저장 실패:', error);
+    }
     setComment('');
   };
 
@@ -67,15 +82,22 @@ const MateDetail = () => {
         </div>
       </div>
       <div className="comment-header">댓글</div>
-        <div className="comment-section">
+      <div className="comment-section">
         <form onSubmit={handleSubmitComment}>
           <textarea value={comment} onChange={handleCommentChange}></textarea>
           <button type="submit">댓글 남기기</button>
         </form>
-        <div className="comments">
-          {comments.map((comment, index) => (
-            <div key={index}>{comment}</div>
-          ))}
+        <div>
+          <div className='comment-semiheader'>댓글 목록</div>
+          <ul>
+            {comments.map((comment, index) => (
+              <li key={index}>
+                <div>작성자: {comment.user}</div>
+                <div>작성일: {comment.date}</div>
+                <div>내용: {comment.content}</div>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>

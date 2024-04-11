@@ -1,7 +1,7 @@
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 
 
-.mate-board-banner {
+.trip-board-banner {
   margin-top : 60px;
   display: block;
   font-size : 36px;
@@ -12,7 +12,7 @@
 }
 
 /* 여행 게시판 */
-.mate-board-main {
+.trip-board-main {
   font-size: 30px;
   font-weight: bold;
   margin-top: 50px;
@@ -65,7 +65,7 @@
 }
 
 /* 게시판 컨테이너 */
-.mate-board-container {
+.trip-board-container {
   margin: 0 auto;
   width: 75%;
   font-family: 'Noto Sans KR', sans-serif;
@@ -111,7 +111,7 @@
 
 /* 게시글 작성자 */
 .post-data:nth-child(3) {
-  flex: 1.5; /* 작성자 칸의 크기를 조정합니다. */
+  flex: 1; /* 작성자 칸의 크기를 조정합니다. */
   text-align: center;
 }
 
