@@ -55,12 +55,17 @@
   .styled-button {
     padding: 8px 10px;
     width: 150px; /*버튼 가로 크기 조절*/
-    background-color: #007bff;
-    color: white;
+    background-color: rgb(215, 211, 211);
+    color: black;
     border: none;
     border-radius: 10px;
     cursor: pointer;
     font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  .styled-button:hover {
+    background-color:rgb(170, 167, 167);
+    
   }
   
   .title {
