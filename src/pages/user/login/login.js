@@ -27,7 +27,7 @@ const Login = ({ setIsLoggedIn, setNickname }) => {
         const userData = await login(formData);
         setIsLoggedIn(true);
         setNickname(userData.data.nickname);
-        
+        console.log('로그인 성공:', userData);
         navigate('/');
       } catch (error) {
         console.error('로그인 실패:', error);
