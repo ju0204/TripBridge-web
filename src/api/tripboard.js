@@ -86,29 +86,32 @@ export const getComments = async (id) => {
   }
 };
 
-
-// 토큰 가져오기 함수
+//토큰가져오기
 const getToken = () => {
   return localStorage.getItem('accessToken');
 };
 
-// 게시물 작성하기 함수 (이미지 포함)
-export const savePost = async (formData) => {
+//글작성하기
+export const savePostWithImage = async (formData) => {
   try {
     const token = getToken();
     if (!token) {
       console.error('로그인이 필요합니다.');
       return;
     }
+
     const response = await axios.post(`${BASE_URL}/trip`, formData, {
       headers: {
-        Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data'
       }
     });
-    return response.data; // 서버로부터의 응답 데이터를 반환
+    
+    console.log('게시글 저장 성공:', response.data);
+    return response.data;
   } catch (error) {
     console.error('게시글 저장 실패:', error);
-    throw error; // 에러를 호출자에게 다시 던짐
+    throw error;
   }
 };
 

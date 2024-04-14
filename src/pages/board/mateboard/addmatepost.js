@@ -14,7 +14,6 @@ const AddMatePost = () => {
   });
   const [showModal, setShowModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  
   const navigate = useNavigate();
 
   const handleChange = (e) => {
