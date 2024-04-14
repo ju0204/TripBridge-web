@@ -8,7 +8,10 @@ import MateBoard from './pages/board/mateboard/mateboardlist';
 import AddMatePost from './pages/board/mateboard/addmatepost';
 import MateDetail from './pages/board/mateboard/matedetail';
 import TripBoard from './pages/board/tripboard/tripboardlist';
+import TripDetail from './pages/board/tripboard/tripdetail';
+import AddTripPost from './pages/board/tripboard/addtrippost';
 import Main from './pages/main/main'; // 메인 페이지 컴포넌트 import
+
 
 
 const App = () => {
@@ -37,6 +40,8 @@ const App = () => {
         <Route path="/mateboard/:postId" element={<MateDetail />} />
         <Route path="/mate" element={<AddMatePost />} />
         <Route path="/tripboard" element={<TripBoard />} />
+        <Route path="/tripboard/:postId" element={<TripDetail />} />
+        <Route path="/trip" element={<AddTripPost />} />
         {/* 다른 페이지들의 라우팅 설정도 필요 */}
       </Routes>
     </div>

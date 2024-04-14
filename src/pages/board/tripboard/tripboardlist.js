@@ -67,7 +67,7 @@ const TripPostList = () => {
             </button>
           ))}
         </div>
-        <Link to="/tripboard" className="write-post-button">✏️글쓰기</Link>
+        <Link to="/trip" className="write-post-button">✏️글쓰기</Link>
       </div>
     </div>
   );

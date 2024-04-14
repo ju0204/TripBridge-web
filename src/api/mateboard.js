@@ -28,7 +28,7 @@ export const getMatePostDetail = async (id) => {
       id: response.data.id,
       title: response.data.title,
       content: response.data.content,
-      user: response.data.userEntity.id,
+      user : response.data.userEntity ? response.data.userEntity.nickname : 'Unknown',
       date: response.data.created_at
     };
   } catch (error) {
@@ -37,50 +37,74 @@ export const getMatePostDetail = async (id) => {
   }
 };
 
-//댓글 저장하기 
-export const saveComment = async (commentData) => {
-  try {
-    const response = await axios.post(`${BASE_URL}/mate/comment`, commentData);
-    return response.data; // 서버로부터의 응답 데이터를 반환
-  } catch (error) {
-    console.error('댓글 저장 실패:', error);
-    throw error; // 에러를 호출자에게 다시 던짐
-  }
-};
-
-//저장된 댓글 불러오기
+//댓글,대댓글 보여주는 함수
 export const getComments = async (id) => {
   try {
-    const response = await axios.get(`${BASE_URL}/mate/comment/${id}`);
-    // API 응답이 배열이 아니라 객체 형식일 경우를 처리
-    // 예시로 응답의 comments 프로퍼티가 댓글 배열을 가리키는 것으로 가정
-    const commentsArray = response.data.comments || []; // comments 프로퍼티가 없는 경우 빈 배열을 반환
-    return commentsArray.map(comment => ({
+    const response = await axios.get(`${BASE_URL}/mate/${id}/comment`);
+    const comments = response.data.map(comment => ({
+      id: comment.id,
       content: comment.content,
       date: comment.created_at,
-      user: comment.userEntity ? comment.userEntity.nickname : 'Unknown'
+      user: comment.userEntity ? comment.userEntity.nickname : 'Unknown',
+      parentId: comment.parentComment ? comment.parentComment.id : null, // 부모 댓글의 ID
+      group: comment.comment_group // 댓글의 그룹 정보
     }));
+
+    // 부모 댓글과 자식 댓글을 매핑하여 구조 변경
+    const commentMap = new Map();
+    comments.forEach(comment => {
+      if (!commentMap.has(comment.id)) {
+        commentMap.set(comment.id, comment);
+      }
+      if (comment.parentId !== null) {
+        const parentComment = commentMap.get(comment.parentId);
+        if (!parentComment.children) {
+          parentComment.children = [];
+        }
+        parentComment.children.push(comment);
+      }
+    });
+
+    // 그룹별로 댓글을 모아 반환
+    const rootComments = [];
+    const groupMap = new Map();
+    comments.forEach(comment => {
+      if (comment.parentId === null) {
+        if (!groupMap.has(comment.group)) {
+          groupMap.set(comment.group, []);
+        }
+        groupMap.get(comment.group).push(comment);
+      }
+    });
+    groupMap.forEach(groupComments => {
+      rootComments.push(...groupComments);
+    });
+
+    return rootComments;
   } catch (error) {
-    console.error('댓글 불러오기 실패:', error);
+    console.error('댓글 불러오기 실패', error);
     throw error;
   }
 };
 
 
+// 토큰 가져오기 함수
+const getToken = () => {
+  return localStorage.getItem('accessToken');
+};
 
-
-//글쓰기 함수
+// 글쓰기 함수
 export const savePost = async (postData) => {
   try {
-    // 쿠키에서 토큰 가져오기
-    const token = getCookie('token');
+    const token = getToken();
     if (!token) {
-      throw new Error('토큰이 없습니다. 로그인이 필요합니다.');
+      console.error('로그인이 필요합니다.');
+      return;
     }
 
     const response = await axios.post(`${BASE_URL}/mate`, postData, {
       headers: {
-        Authorization: `Bearer ${token}` // 토큰을 헤더에 포함시킴
+        Authorization: `Bearer ${token}` // 헤더에 토큰 추가
       }
     });
     return response.data; // 서버로부터의 응답 데이터를 반환
@@ -90,9 +114,24 @@ export const savePost = async (postData) => {
   }
 };
 
-// 쿠키에서 토큰을 가져오는 함수
-function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
-}
+
+// 댓글 작성하기 함수
+export const saveComment = async (commentData) => {
+  try {
+    const token = getToken();
+    if (!token) {
+      console.error('로그인이 필요합니다.');
+      return;
+    }
+
+    const response = await axios.post(`${BASE_URL}/mate/comment`, commentData, {
+      headers: {
+        Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+      }
+    });
+    return response.data; // 서버로부터의 응답 데이터를 반환
+  } catch (error) {
+    console.error('댓글 저장 실패:', error);
+    throw error; // 에러를 호출자에게 다시 던짐
+  }
+};

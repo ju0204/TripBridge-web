@@ -1,0 +1,149 @@
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+/* .notosanskr * { 
+ font-family: 'Noto Sans KR', sans-serif;
+} */
+
+.container {
+    max-width: 75%;
+    margin: 0 auto;
+    padding: 20px;
+    margin-top: 20px;
+    font-family: 'Noto Sans KR', sans-serif;
+    height: auto; /* container의 높이를 자동으로 조절 */
+  }
+  
+  .trippost-details {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    padding: 30px;
+    height: auto; /* trippost-details의 높이를 700px로 고정 */
+    overflow: auto; /* 내용이 trippost-details를 벗어날 경우 스크롤바 표시 */
+  }
+  
+  .images-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .post-image {
+    margin: 10px;
+    max-width: 50%;
+    height: auto;
+  }
+  
+
+
+.trippost-title {
+  font-size: 30px;
+  letter-spacing: 2px;
+  font-weight: bold;
+}
+
+.trippost-info {
+  margin-bottom: 5px;
+}
+
+.content-box {
+  border: 1px solid #aaaaaa;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  margin-top: 15px;
+  padding: 15px; /* 내용 상자의 패딩을 증가시킵니다 */
+  overflow-y: auto; /* 내용이 상자를 벗어날 경우 스크롤바를 표시합니다 */
+
+}
+
+.trippost-content {
+  margin-top: 10px;
+  font-size: 15px;
+  height: 700px;
+}
+
+.error {
+  color: red;
+}
+
+.not-found {
+  color: gray;
+}
+
+.comment-header {
+  font-size: 23px;
+  color: #2c2c2c;
+  font-weight: 600;
+  margin: 30px 0px 10px 5px;
+  letter-spacing: 2px;
+}
+
+.comment-section {
+  margin-top: 5px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  display: block;
+}
+
+.comment-section form {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.comment-section textarea {
+  flex: 1;
+  padding: 10px;
+  margin: 5px;
+  letter-spacing: 1px;
+  border-radius: 15px;
+  height: 70px;
+  resize: none;
+}
+
+.comment-section button {
+  padding: 10px 20px;
+  background-color: #3a3a3a;
+  color: #ffffff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin : 5px;
+}
+
+.comment-semiheader {
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 18px;
+  color :#2c2c2c;
+  margin-left : 5px;
+}
+
+.comment-container {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+  width: 98%;
+  margin-left: 5px;
+}
+
+.comment-box {
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.comment-container:last-child {
+  border-bottom: none;
+}
+
+
+.info {
+  font-size: 15px;
+  color: #2c2c2c;
+}
+
+.content-box {
+  margin-top: 10px; /* 작성자 정보와 내용 사이의 간격 조정 */
+}

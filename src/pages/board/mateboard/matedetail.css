@@ -1,7 +1,4 @@
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
-/* .notosanskr * { 
- font-family: 'Noto Sans KR', sans-serif;
-} */
 
 .container {
   max-width: 75%;
@@ -45,6 +42,7 @@
 .matepost-content {
   margin-top: 10px;
   font-size: 15px;
+  height: 700px;
 }
 
 .error {
@@ -55,63 +53,123 @@
   color: gray;
 }
 
-.comment-header{
+.comment-header {
   font-size: 23px;
-  color : #2c2c2c;
+  color: #2c2c2c;
   font-weight: 600;
   margin: 30px 0px 10px 5px;
   font-family: 'Noto Sans KR', sans-serif;
   letter-spacing: 2px;
 }
 
-
 .comment-section {
-  margin-top : 5px;
+  margin-top: 5px;
   padding: 10px;
-  background-color : #f9f9f9;
+  background-color: #f9f9f9;
   border: 1px solid #ddd;
   border-radius: 10px;
-  height : 30%;
   display: block;
 }
 
-
-
 .comment-section form {
-  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
   font-family: 'Noto Sans KR', sans-serif;
 }
 
 .comment-section textarea {
-  width: 90%;
+  flex: 1; /* 수정된 부분: textarea가 남은 공간을 모두 채우도록 함 */
   padding: 10px;
-  margin-bottom: 10px;
+  margin: 5px;
   letter-spacing: 1px;
-  border-radius: 10px;
-  height: 50px;
-  resize:none;
+  border-radius: 15px;
+  height: 70px;
+  resize: none;
   font-family: 'Noto Sans KR', sans-serif;
 }
 
 .comment-section button {
-  padding: 10px 10px;
+  padding: 10px 20px;
   background-color: #3a3a3a;
   color: #ffffff;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
   cursor: pointer;
+  font-family: 'Noto Sans KR', sans-serif;
+  margin : 5px;
+}
+
+.comment-semiheader {
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 18px;
+  color :#2c2c2c;
+  margin-left : 5px;
+}
+
+.comment-semiheader {
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 18px;
+  color :#2c2c2c;
+  margin-left : 5px;
   font-family: 'Noto Sans KR', sans-serif;
 }
 
-.comments {
-  background-color: #fff;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  padding: 10px;
-  width: 80%;
+.comment-container {
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+  width: 98%;
+  margin-left: 5px;
 }
 
-.comments div {
+.comment-box {
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.comment-container .info {
+  display: flex; /* 요소들을 가로로 배열합니다. */
+  justify-content: space-between; /* 요소들 사이의 여백을 최대한으로 설정하여 우측으로 정렬합니다. */
+  align-items: center; /* 요소들을 수직 가운데 정렬합니다. */
+}
+.comment-container .info button {
+  padding: 5px 10px; /* 버튼 내부 여백 설정 */
+  background-color: #383838;/* 버튼 배경색 설정 */
+  color: white; /* 버튼 텍스트 색상 설정 */
+  border: none; /* 버튼 테두리 없애기 */
+  border-radius: 10px; /* 버튼 모서리 둥글게 설정 */
+  cursor: pointer; /* 마우스 커서 모양 변경 */
+}
+
+.comment-container .info button:hover {
+  background-color: grey; /* 마우스를 올렸을 때 버튼 배경색 변경 */
+}
+
+.comment-container .info button:active {
+  background-color:grey; /* 버튼을 클릭했을 때 버튼 배경색 변경 */
+}
+
+
+.comment-container:last-child {
+  border-bottom: none;
+}
+
+.child-comment {
+  margin-left: 30px; /* 자식 댓글을 들여쓰기하여 부모 댓글과 구분 */
+  background-color: #e0e0e0;
+  border-radius: 10px;
   margin-bottom: 10px;
+  position: relative; /* 상대 위치 지정 */
+}
+
+.child-comment::before {
+  content: '';
+  position: absolute;
+  top: 5px; /* 화살표의 위치 조정 */
+  left: -15px; /* 화살표의 위치 조정 */
+  border-width: 10px; /* 화살표의 크기 조정 */
+  border-style: solid;
+  border-color: transparent transparent transparent #b8b8b8; /* 화살표의 색상 조정 */
 }
