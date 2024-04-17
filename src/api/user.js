@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8080'; // 서버의 주소로 대체해야 합니다.
+const BASE_URL = 'http://52.79.232.68:8080'; // 서버의 주소로 대체해야 합니다.
 
 // 회원가입 요청을 보내는 함수
 export const signup = async (userData) => {

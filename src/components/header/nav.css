@@ -92,6 +92,7 @@ font-style: normal; */
   color: grey;
 }
 
+/*dropdown*/
 .dropdown-item {
   display: block;
   position: absolute;
@@ -100,6 +101,7 @@ font-style: normal; */
   min-width : 180px;
   padding : 13px;
   border-radius: 15px;
+  z-index: 1000; /* 다른 요소보다 위에 표시되도록 높은 값 설정 */
 }
 
 .dropdown-item a{
@@ -108,9 +110,11 @@ font-style: normal; */
   text-decoration: none;
   display: block;
   font-weight: 500;
+  
 }
 
 .dropdown-item a:hover{
   background-color: #aad6ff;
   border-radius: 15px;
+  
 }

@@ -25,6 +25,7 @@ const Nav = ({ isLoggedIn, nickname, onLogout }) => {
     <nav className="navbar">
       <div className="nav-container">
         <ul className="nav-list-1">
+        <li className="nav-item"><div className="styled-trip">Trip-Bridge</div></li>
           <li className="nav-item"><Link className="styled-link" to="/">홈</Link></li>
           <li className="nav-item"><Link className="styled-link" to="/about">여행지 추천</Link></li>
           <li className="nav-item"><Link className="styled-link" to="/contact">동선추천</Link></li>
