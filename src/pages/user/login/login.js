@@ -27,11 +27,13 @@ const Login = ({ setIsLoggedIn, setNickname }) => {
         const userData = await login(formData);
         setIsLoggedIn(true);
         setNickname(userData.data.nickname);
-        console.log('로그인 성공:', userData);
+        localStorage.setItem('accessToken', userData.data.accessToken); // Store the access token in local storage
+        localStorage.setItem('nickname', userData.data.nickname); // Store the nickname in local storage
+        console.log('로그인 성공!', userData);
         navigate('/');
       } catch (error) {
         console.error('로그인 실패:', error);
-        setErrorMessage('로그인에 실패했습니다. 이메일 주소 또는 비밀번호를 확인하세요.'); // 추가: 오류 메시지 설정
+        setErrorMessage('로그인에 실패했습니다. 이메일 주소 또는 비밀번호를 확인하세요.');
       }
     } else {
       setErrors(validationErrors);
