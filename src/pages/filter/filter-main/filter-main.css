@@ -7,8 +7,7 @@
 
 .filtermain-container{
     overflow: hidden;
-    height: 91vh;
-
+    height: 105vh;
 }
 
 .container-box {
@@ -39,6 +38,7 @@
 .filter-text{
     width: 50%;
     text-align: center;
+    margin-right:40px;
 }
 
 .text-user {
@@ -69,7 +69,8 @@
 .glassButton {
     position: relative;
     padding: 12px 30px; /* 위아래, 좌우 */
-    margin: 20px 40%; /* 위아래는 20px로 고정, 좌우는 가운데 정렬 */
+    margin: 20px 38%; /* 위아래는 20px로 고정, 좌우는 가운데 정렬 */
+    margin-left: 42%;
     font-size: 3em;
     letter-spacing: 6px;
     border-radius: 15px;
@@ -89,6 +90,7 @@
   .button-start {
     text-decoration: none;
     color: black;
+    cursor: pointer;
   }
   
   .glassButton:before {
@@ -126,7 +128,7 @@
   /*이미지*/
   .map {
     width: 35%;
-    margin-left: 33%;
+    margin-left: 34%;
     margin-top: 0;
   }
 
