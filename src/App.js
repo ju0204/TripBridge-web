@@ -1,17 +1,16 @@
-// App.js
 import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import SignUp from './pages/user/signup/signup';
 import Nav from './components/header/nav'
 import LogIn from './pages/user/login/login';
+import MapPage from './pages/map/map';
 import MateBoard from './pages/board/mateboard/mateboardlist';
 import AddMatePost from './pages/board/mateboard/addmatepost';
 import MateDetail from './pages/board/mateboard/matedetail';
 import TripBoard from './pages/board/tripboard/tripboardlist';
 import TripDetail from './pages/board/tripboard/tripdetail';
 import AddTripPost from './pages/board/tripboard/addtrippost';
-import Main from './pages/main/main'; // 메인 페이지 컴포넌트 import
-
+import Main from './pages/main/main';
 
 
 const App = () => {
@@ -36,6 +35,7 @@ const App = () => {
         {/* setNickname props 추가 */}
         <Route path="/login" element={<LogIn setIsLoggedIn={setIsLoggedIn}  setNickname={setNickname} />} /> 
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/contact" element={<MapPage />}/>
         <Route path="/mateboard" element={<MateBoard />} />
         <Route path="/mateboard/:postId" element={<MateDetail />} />
         <Route path="/mate" element={<AddMatePost />} />

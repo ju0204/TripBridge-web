@@ -30,14 +30,15 @@ const MatePostList = () => {
     const date = new Date(dateString);
     return date.toISOString().split('T')[0];
   };
+  
 
   // 페이지네이션 클릭
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
     <div>
-      <div className='mate-board-banner'>이미지배너<br /><br /></div>
-      <div className="mate-board-main">👥여행 메이트 구하기👥</div>
+      <div className='mate-board-banner'>/배너/</div>
+      <div className="mate-board-main">여행 메이트 구하기</div>
       <div className="mate-board-container">
         <div className="post-header">
           <div className="post-header-item">번호</div>

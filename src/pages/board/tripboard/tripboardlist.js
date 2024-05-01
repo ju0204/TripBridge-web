@@ -36,7 +36,7 @@ const TripPostList = () => {
 
   return (
     <div>
-      <div className='trip-board-banner'>이미지배너들어갈부분<br /><br /></div>
+      <div className='trip-board-banner'>/배너/</div>
       <div className="trip-board-main">여행 게시판</div>
       <div className="trip-board-container">
         <div className="post-header">

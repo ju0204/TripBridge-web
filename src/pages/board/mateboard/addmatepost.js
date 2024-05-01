@@ -42,6 +42,7 @@ const AddMatePost = () => {
         }
         await savePost(
           {
+            postId : postData.user_id,
             title: postData.title,
             content: postData.content
           },

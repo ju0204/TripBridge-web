@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { getTripPostDetail, saveComment, getComments } from '../../../api/tripboard';
-import { useParams } from 'react-router-dom';
+import { getTripPostDetail, saveComment, getComments, deletePost } from '../../../api/tripboard';
+import { useParams, useNavigate } from 'react-router-dom';
 import './tripdetail.css';
-import ImageModal from './imageModal'; // 이미지 모달 컴포넌트 추가
+import ImageModal from './imageModal';
 
 const getToken = () => {
     return localStorage.getItem('accessToken');
@@ -13,44 +13,56 @@ const TripDetail = () => {
     const [post, setPost] = useState(null);
     const [commentList, setCommentList] = useState([]);
     const [comment, setComment] = useState('');
-    const [replyingCommentId, setReplyingCommentId] = useState(null);
-    const [replyingContent, setReplyingContent] = useState('');
-    
-    const [modalImageUrl, setModalImageUrl] = useState(''); // 모달 이미지 URL 추가
-    const [isModalOpen, setIsModalOpen] = useState(false); // 모달 열림 여부 상태 추가
-    const [isLoading, setIsLoading] = useState(true); // 데이터 로딩 상태 추가
+    const [replyingToId, setReplyingToId] = useState(null);
+    const [replyingToContent, setReplyingToContent] = useState('');
+    const [replyingToUser, setReplyingToUser] = useState('');
+    const [modalImageUrl, setModalImageUrl] = useState('');
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const navigate = useNavigate();
 
+    //게시글
     useEffect(() => {
-        const fetchPostDetail = async () => {
+        const fetchData = async () => {
             try {
                 const postData = await getTripPostDetail(postId);
                 setPost(postData);
             } catch (error) {
-                console.error('게시글을 불러오는 중 에러 발생 : ', error);
+                console.error('게시물을 불러오는 중 오류 발생:', error);
             }
         };
-        fetchPostDetail();
-    }, [postId]);
 
-    useEffect(() => {
+        //댓글
         const fetchComments = async () => {
             try {
                 const commentsData = await getComments(postId);
                 setCommentList(commentsData);
-                setIsLoading(false); // 데이터 로딩 완료 시 상태 변경
             } catch (error) {
-                console.error('댓글을 불러오는 중 에러 발생:', error);
+                console.error('댓글을 불러오는 중 오류 발생:', error);
             }
         };
 
+        fetchData();
         fetchComments();
     }, [postId]);
+
+
+      //게시글 삭제
+      const handleDeletePost = async () => {
+        try {
+          await deletePost(postId);
+          console.log('게시글이 성공적으로 삭제되었습니다.');
+          navigate('/mateboard');
+        } catch (error) {
+          console.error('게시글 삭제 중 오류 발생:', error);
+        }
+      };
 
     const handleChangeComment = (e) => {
         const { value } = e.target;
         setComment(value);
     };
 
+    //댓글 작성
     const handleSubmitComment = async (e) => {
         e.preventDefault();
         if (!comment.trim()) {
@@ -68,19 +80,30 @@ const TripDetail = () => {
                 content: comment,
             };
             await saveComment(commentData, { headers: { Authorization: `Bearer ${token}` } });
-            console.log('댓글 작성 성공');
+            console.log('댓글이 성공적으로 작성되었습니다.');
             const updatedComments = await getComments(postId);
             setCommentList(updatedComments);
             setComment('');
         } catch (error) {
-            console.error('댓글 작성 오류:', error);
+            console.error('댓글 작성 중 오류 발생:', error);
         }
+    };
+
+    const handleReply = (commentId, user) => {
+        setReplyingToId(commentId);
+        setReplyingToUser(user);
+        setReplyingToContent(`@${user} `);
+    };
+
+    const handleChangeReplyContent = (e) => {
+        const { value } = e.target;
+        setReplyingToContent(value);
     };
 
     const handleSubmitReply = async (e, parentId) => {
         e.preventDefault();
-        if (!replyingContent.trim()) {
-            console.error('댓글을 입력해주세요.');
+        if (!replyingToContent.trim()) {
+            console.error('답글을 입력해주세요.');
             return;
         }
         try {
@@ -91,33 +114,36 @@ const TripDetail = () => {
             }
             const commentData = {
                 tripPost_id: postId,
-                content: replyingContent,
+                content: replyingToContent,
                 parent_comment_id: parentId,
             };
             await saveComment(commentData, { headers: { Authorization: `Bearer ${token}` } });
-            console.log('대댓글 작성 성공');
+            console.log('답글이 성공적으로 작성되었습니다.');
             const updatedComments = await getComments(postId);
             setCommentList(updatedComments);
-            setReplyingContent('');
-            setReplyingCommentId(null); // 대댓글 작성 후 상태 초기화
+            setReplyingToContent('');
+            setReplyingToId(null);
+            setReplyingToUser('');
         } catch (error) {
-            console.error('대댓글 작성 오류:', error);
+            console.error('답글 작성 중 오류 발생:', error);
         }
-    };
-
-    const handleReply = (commentId) => {
-        setReplyingCommentId(commentId);
-    };
-
-    const handleChangeReply = (e) => {
-        const { value } = e.target;
-        setReplyingContent(value);
     };
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return date.toISOString().split('T')[0];
     };
+
+    const formatCommentDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
 
     const openModal = (imageUrl) => {
         setModalImageUrl(imageUrl);
@@ -128,71 +154,81 @@ const TripDetail = () => {
         setIsModalOpen(false);
     };
 
+    const renderComments = (comments, isNewComment = false) => {
+        let commentGroups = {};
+
+        comments.forEach((comment, index) => {
+            const depth = comment.depth || 1;
+            if (!commentGroups[depth]) {
+                commentGroups[depth] = [];
+            }
+            commentGroups[depth].push(comment);
+        });
+
+        return Object.entries(commentGroups).map(([depth, comments]) => (
+            <div key={depth}>
+                {comments.map((comment, index) => (
+                    <div key={index} className={`comment-container depth-${depth} ${isNewComment ? 'new-comment' : ''}`}>
+                        <div className="comment-box">
+                            <div className="info">
+                                {comment.user} &nbsp;&nbsp;|&nbsp;&nbsp; {formatCommentDate(comment.date)}
+                                <button type="button" onClick={() => handleReply(comment.id, comment.user)}>답글</button>
+                            </div>
+                            <div className="content-box">{comment.content}</div>
+                        </div>
+                        {replyingToId === comment.id && (
+                            <form onSubmit={(e) => handleSubmitReply(e, comment.id)}>
+                                <textarea
+                                    value={replyingToContent}
+                                    onChange={handleChangeReplyContent}
+                                    placeholder={`@${replyingToUser}`}
+                                ></textarea>
+                                <button type="submit">답글 작성</button>
+                            </form>
+                        )}
+                        {comment.children && renderComments(comment.children)}
+                    </div>
+                ))}
+            </div>
+        ));
+    };
+
     return (
         <div className="container">
             <div className="trippost-details">
                 <div className="trippost-title">{post && post.title}</div>
-                <div className="trippost-info">{post && post.user}&nbsp;&nbsp;|&nbsp;&nbsp;{post && formatDate(post.date)}</div>
-                <div className="content-box">
-                    <div className="trippost-content">{post && post.content}</div>
-                </div>
-                {/* 이미지 표시 코드 */}
+                <div className="trippost-info">{post && post.user}&nbsp;|&nbsp;{post && formatDate(post.date)}</div>
                 <div className="images-container">
                     {post && post.images.map((image, index) => (
                         <img
                             key={index}
                             src={image}
-                            alt={`Post ${index}`}
+                            alt={``}
                             className="post-image"
-                            onClick={() => openModal(image)} // 이미지 클릭 시 모달 열기
+                            onClick={() => openModal(image)}
                         />
                     ))}
                 </div>
+                <div className="content-box">
+                    <div className="trippost-content">{post && post.content}</div>
+                </div>
+                {post && (
+        <div className="delete-button">
+          <button onClick={handleDeletePost}>삭제</button>
+        </div>
+      )}
             </div>
             <div className="comment-header">댓글</div>
             <div className="comment-section">
                 <form onSubmit={handleSubmitComment}>
                     <textarea value={comment} onChange={handleChangeComment}></textarea>
-                    <button type="submit">댓글 남기기</button>
+                    <button type="submit">댓글 작성</button>
                 </form>
-                {isLoading ? (
-                    <div>Loading...</div>
-                ) : (
-                    <div className='comment-list'>
-                        <div className='comment-semiheader'>댓글 목록</div>
-                        {commentList.map((comment, index) => (
-                            <div key={index} className="comment-container">
-                                <div className="comment-box">
-                                    <div className="info">
-                                        {comment.user} &nbsp;&nbsp;|&nbsp;&nbsp; {formatDate(comment.date)}
-                                        <button type="button" onClick={() => handleReply(comment.id)}>답글</button>
-                                    </div>
-                                    <div className="content-box">{comment.content}</div>
-                                </div>
-                                {replyingCommentId === comment.id && (
-                                    <form onSubmit={(e) => handleSubmitReply(e, comment.id)}>
-                                        <textarea value={replyingContent} onChange={handleChangeReply}></textarea>
-                                        <button type="submit">대댓글 남기기</button>
-                                    </form>
-                                )}
-                                {comment.children && comment.children.length > 0 && (
-                                    <div className="child-comments">
-                                        {comment.children.map((childComment, childIndex) => (
-                                            <div key={childIndex} className="comment-container child-comment">
-                                                <div className="comment-box">
-                                                    <div className="info">{childComment.user} &nbsp;&nbsp;|&nbsp;&nbsp; {formatDate(childComment.date)}</div>
-                                                    <div className="content-box">{childComment.content}</div>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                )}
+                <div className='comment-list'>
+                    <div className='comment-semiheader'>댓글 목록</div>
+                    {renderComments(commentList, true)}
+                </div>
             </div>
-            {/* 이미지 모달 */}
             {isModalOpen && <ImageModal imageUrl={modalImageUrl} onClose={closeModal} />}
         </div>
     );

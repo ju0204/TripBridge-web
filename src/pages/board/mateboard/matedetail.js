@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { getMatePostDetail, saveComment, getComments } from '../../../api/mateboard';
-import { useParams } from 'react-router-dom';
+import { getMatePostDetail, saveComment, getComments, deleteComment, deletePost, updatePost, updateComment } from '../../../api/mateboard';
+import { useParams, useNavigate } from 'react-router-dom';
 import './matedetail.css';
 
 const getToken = () => {
@@ -12,40 +12,82 @@ const MateDetail = () => {
   const [post, setPost] = useState(null);
   const [commentList, setCommentList] = useState([]);
   const [comment, setComment] = useState('');
-  const [replyingCommentId, setReplyingCommentId] = useState(null);
-  const [replyingContent, setReplyingContent] = useState('');
+  const [replyingToId, setReplyingToId] = useState(null);
+  const [replyingToContent, setReplyingToContent] = useState('');
+  const [replyingToUser, setReplyingToUser] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTitle, setEditedTitle] = useState('');
+  const [editedContent, setEditedContent] = useState('');
+  const [isEditingComment, setIsEditingComment] = useState(false);
+  const [editedComment, setEditedComment] = useState('');
+  const [editedCommentId, setEditedCommentId] = useState('');
+  const navigate = useNavigate(); 
 
-  useEffect(() => { 
-    const fetchPostDetail = async () => {
+  useEffect(() => {
+    const fetchData = async () => {
       try {
         const postData = await getMatePostDetail(postId);
         setPost(postData);
-      } catch (error) {
-        console.error('게시글을 불러오는 중 에러 발생:', error);
-      }
-    };
-
-    fetchPostDetail();
-  }, [postId]);
-
-  useEffect(() => {
-    const fetchComments = async () => {
-      try {
         const commentsData = await getComments(postId);
         setCommentList(commentsData);
       } catch (error) {
-        console.error('댓글을 불러오는 중 에러 발생:', error);
+        console.error('데이터 불러오기 중 에러 발생:', error);
       }
     };
-
-    fetchComments();
+    fetchData();
   }, [postId]);
 
-  const formatDate = (dateString) => {
-    if (!dateString) return ''; // 날짜 문자열이 없는 경우 처리
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return ''; // 유효하지 않은 날짜 문자열인 경우 처리
-    return date.toISOString().split('T')[0];
+  const handleDeletePost = async () => {
+    try {
+      const commentsData = await getComments(postId);
+      for (const comment of commentsData) {
+        await deleteComment(comment.id);
+      }
+      await deletePost(postId);
+      console.log('게시글과 댓글이 성공적으로 삭제되었습니다.');
+      navigate('/mateboard');
+    } catch (error) {
+      console.error('게시글 또는 댓글 삭제 중 오류 발생:', error);
+    }
+  };
+
+  const handleEditPost = () => {
+    setIsEditing(true);
+    setEditedTitle(post.title);
+    setEditedContent(post.content);
+  };
+
+  const handleChangeEditedTitle = (e) => {
+    setEditedTitle(e.target.value);
+  };
+
+  const handleChangeEditedContent = (e) => {
+    setEditedContent(e.target.value);
+  };
+
+  const handleSubmitEdit = async (e) => {
+    e.preventDefault();
+    try {
+      const token = getToken();
+      if (!token) {
+        console.error('로그인이 필요합니다.');
+        return;
+      }
+      const editedPostData = {
+        title: editedTitle,
+        content: editedContent,
+      };
+      await updatePost(postId, editedPostData, { headers: { Authorization: `Bearer ${token}` } });
+      console.log('게시글 수정 성공');
+      setPost((prevPost) => ({
+        ...prevPost,
+        title: editedTitle,
+        content: editedContent,
+      }));
+      setIsEditing(false);
+    } catch (error) {
+      console.error('게시글 수정 오류:', error);
+    }
   };
 
   const handleChangeComment = (e) => {
@@ -79,9 +121,20 @@ const MateDetail = () => {
     }
   };
 
+  const handleReply = (commentId, user) => {
+    setReplyingToId(commentId);
+    setReplyingToUser(user);
+    setReplyingToContent(`@${user} `);
+  };
+
+  const handleChangeReplyContent = (e) => {
+    const { value } = e.target;
+    setReplyingToContent(value);
+  };
+
   const handleSubmitReply = async (e, parentId) => {
     e.preventDefault();
-    if (!replyingContent.trim()) {
+    if (!replyingToContent.trim()) {
       console.error('댓글을 입력해주세요.');
       return;
     }
@@ -93,75 +146,192 @@ const MateDetail = () => {
       }
       const commentData = {
         matePost_id: postId,
-        content: replyingContent,
+        content: replyingToContent,
         parent_comment_id: parentId,
       };
       await saveComment(commentData, { headers: { Authorization: `Bearer ${token}` } });
       console.log('대댓글 작성 성공');
       const updatedComments = await getComments(postId);
       setCommentList(updatedComments);
-      setReplyingContent('');
-      setReplyingCommentId(null); // 대댓글 작성 후 상태 초기화
+      setReplyingToContent('');
+      setReplyingToId(null);
+      setReplyingToUser('');
     } catch (error) {
       console.error('대댓글 작성 오류:', error);
     }
   };
 
-  const handleReply = (commentId) => {
-    setReplyingCommentId(commentId);
+  const handleDeleteComment = async (commentId) => {
+    try {
+      await deleteComment(commentId);
+      console.log('댓글이 성공적으로 삭제되었습니다.');
+      const updatedComments = await getComments(postId);
+      setCommentList(updatedComments);
+    } catch (error) {
+      console.error('댓글 삭제 중 오류 발생:', error);
+    }
+  };
+  
+
+// 댓글 수정
+const handleEditComment = (commentId, content) => {
+  setIsEditingComment(true);
+  setEditedCommentId(commentId);
+  setEditedComment(content);
+};
+
+const handleChangeEditedComment = (e) => {
+  setEditedComment(e.target.value);
+};
+
+const handleSubmitEditComment = async (e) => {
+  e.preventDefault();
+  try {
+    const token = getToken();
+    if (!token) {
+      console.error('로그인이 필요합니다.');
+      return;
+    }
+    const editedCommentData = {
+      content: editedComment,
+    };
+    await updateComment(editedCommentId, editedCommentData, { headers: { Authorization: `Bearer ${token}` } });
+    console.log('댓글 수정 성공');
+    // 댓글 수정 후에도 댓글 목록을 다시 불러와야 합니다.
+    const updatedComments = await getComments(postId);
+    setCommentList(updatedComments);
+    setIsEditingComment(false);
+    setEditedComment('');
+    setEditedCommentId('');
+  } catch (error) {
+    console.error('댓글 수정 오류:', error);
+  }
+};
+
+const handleCancelEditComment = () => {
+  setIsEditingComment(false);
+  setEditedComment('');
+  setEditedCommentId('');
+};
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return '';
+    return date.toISOString().split('T')[0];
   };
 
-  const handleChangeReply = (e) => {
-    const { value } = e.target;
-    setReplyingContent(value);
+  const formatCommentDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    const seconds = String(date.getSeconds()).padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+  };
+
+  const renderComments = (comments, isNewComment = false) => {
+    let commentGroups = {};
+  
+    comments.forEach((comment, index) => {
+      const depth = comment.depth || 1;
+      if (!commentGroups[depth]) {
+        commentGroups[depth] = [];
+      }
+      commentGroups[depth].push(comment);
+    });
+  
+    return Object.entries(commentGroups).map(([depth, comments]) => (
+      <div key={depth}>
+        {comments.map((comment, index) => (
+          <div key={index} className={`comment-container depth-${depth} ${isNewComment ? 'new-comment' : ''}`}>
+            <div className="comment-box">
+              {isEditingComment && editedCommentId === comment.id ? (
+                <form onSubmit={handleSubmitEditComment}>
+                  <textarea value={editedComment} onChange={handleChangeEditedComment}></textarea>
+                  <div className="action-buttons">
+                    <button type="submit">수정 완료</button>
+                    <button type="button" onClick={handleCancelEditComment}>취소</button>
+                  </div>
+                </form>
+              ) : (
+                <>
+                  <div className="info">
+                    <span>{comment.user} | {formatCommentDate(comment.date)}</span>
+                    <div>
+                      <button type="button" onClick={() => handleDeleteComment(comment.id)}>삭제</button>
+                      <button type="button" onClick={() => handleEditComment(comment.id, comment.content)}>수정</button>
+                      <button type="button" onClick={() => handleReply(comment.id, comment.user)}>답글</button>
+                    </div>
+                  </div>
+                  <div className="content-box">{comment.content}</div>
+                </>
+              )}
+            </div>
+            {replyingToId === comment.id && (
+              <form onSubmit={(e) => handleSubmitReply(e, comment.id)}>
+                <textarea
+                  value={replyingToContent}
+                  onChange={handleChangeReplyContent}
+                  placeholder={`@${replyingToUser}`}
+                ></textarea>
+                <button type="submit">답글 작성</button>
+              </form>
+            )}
+            {comment.children && renderComments(comment.children)}
+          </div>
+        ))}
+      </div>
+    ));
   };
 
   return (
     <div className="container">
       <div className="matepost-details">
-        <div className="matepost-title">{post && post.title}</div>
-        <div className="matepost-info">{post && post.user}&nbsp;&nbsp;|&nbsp;&nbsp;{post && formatDate(post.date)}</div>
-        <div className="content-box">
-          <div className="matepost-content">{post && post.content}</div>
-        </div>
+        {isEditing ? (
+          <div className="edit-form">
+            <form onSubmit={handleSubmitEdit}>
+              <input 
+                type="text" 
+                value={editedTitle} 
+                onChange={handleChangeEditedTitle} 
+                placeholder="제목을 입력하세요" 
+              />
+              <textarea 
+                value={editedContent} 
+                onChange={handleChangeEditedContent}
+                placeholder="내용을 입력하세요" 
+              ></textarea>
+              <div className="action-buttons">
+                <button type="submit">수정 완료</button>
+                <button type="button" onClick={() => setIsEditing(false)}>취소</button>
+              </div>
+            </form>
+          </div>
+        ) : (
+          <>
+            <div className="matepost-title">{post && post.title}</div>
+            <div className="matepost-info">{post && post.user}&nbsp;|&nbsp;{post && formatDate(post.date)}</div>
+            <div className="content-box">
+              <div className="matepost-content">{post && post.content}</div>
+            </div>
+            <div className="action-buttons">
+              <button onClick={handleDeletePost}>삭제</button>
+              <button onClick={handleEditPost}>수정</button>
+            </div>
+          </>
+        )}
       </div>
       <div className="comment-header">댓글</div>
       <div className="comment-section">
         <form onSubmit={handleSubmitComment}>
-          <textarea value={comment} onChange={handleChangeComment}></textarea>
-          <button type="submit">댓글 남기기</button>
+          <textarea value={comment} placeholder='댓글을 입력해주세요.' onChange={handleChangeComment}></textarea>
+          <button type="submit">댓글 작성</button>
         </form>
         <div className='comment-list'>
           <div className='comment-semiheader'>댓글 목록</div>
-          {commentList.map((comment, index) => (
-            <div key={index} className="comment-container">
-              <div className="comment-box">
-                <div className="info">
-                  {comment.user} &nbsp;&nbsp;|&nbsp;&nbsp; {formatDate(comment.date)}
-                  <button type="button" onClick={() => handleReply(comment.id)}>답글</button>
-                </div>
-                <div className="content-box">{comment.content}</div>
-              </div>
-              {replyingCommentId === comment.id && (
-                <form onSubmit={(e) => handleSubmitReply(e, comment.id)}>
-                  <textarea value={replyingContent} onChange={handleChangeReply}></textarea>
-                  <button type="submit">대댓글 남기기</button>
-                </form>
-              )}
-              {comment.children && comment.children.length > 0 && (
-                <div className="child-comments">
-                  {comment.children.map((childComment, childIndex) => (
-                    <div key={childIndex} className="comment-container child-comment">
-                      <div className="comment-box">
-                        <div className="info">{childComment.user} &nbsp;&nbsp;|&nbsp;&nbsp; {formatDate(childComment.date)}</div>
-                        <div className="content-box">{childComment.content}</div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-          ))}
+          {renderComments(commentList, true)}
         </div>
       </div>
     </div>

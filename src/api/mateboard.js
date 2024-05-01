@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://52.79.232.68:8080';
+const BASE_URL = 'http://3.35.115.71:8080';
 
 
 //메이트 게시물 불러오는 함수
@@ -93,6 +93,73 @@ const getToken = () => {
   return localStorage.getItem('accessToken');
 };
 
+
+
+
+// 댓글 작성하기 함수
+export const saveComment = async (commentData) => {
+  try {
+    const token = getToken();
+    if (!token) {
+      console.error('로그인이 필요합니다.');
+      return;
+    }
+
+    const response = await axios.post(`${BASE_URL}/mate/comment`, commentData, {
+      headers: {
+        Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+      }
+    });
+    return response.data; // 서버로부터의 응답 데이터를 반환
+  } catch (error) {
+    console.error('댓글 저장 실패:', error);
+    throw error; // 에러를 호출자에게 다시 던짐
+  }
+};
+
+// 댓글 삭제 함수
+export const deleteComment = async (commentId) => {
+  try {
+    const token = getToken();
+    if (!token) {
+      console.error('로그인이 필요합니다.');
+      return;
+    }
+
+    const response = await axios.delete(`${BASE_URL}/mate/comment/${commentId}`, {
+      headers: {
+        Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+      }
+    });
+    return response.data; // 서버로부터의 응답 데이터를 반환
+  } catch (error) {
+    console.error('댓글 삭제 실패:', error);
+    throw error; // 에러를 호출자에게 다시 던짐
+  }
+};
+
+// 댓글 수정 함수
+export const updateComment = async (commentId, updatedCommentData) => {
+  try {
+    const token = getToken();
+    if (!token) {
+      console.error('로그인이 필요합니다.');
+      return;
+    }
+
+    const response = await axios.patch(`${BASE_URL}/mate/comment/${commentId}`, updatedCommentData, {
+      headers: {
+        Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+      }
+    });
+    return response.data; // 서버로부터의 응답 데이터를 반환
+  } catch (error) {
+    console.error('댓글 수정 실패:', error);
+    throw error; // 에러를 호출자에게 다시 던짐
+  }
+};
+
+
 // 글쓰기 함수
 export const savePost = async (postData) => {
   try {
@@ -115,8 +182,8 @@ export const savePost = async (postData) => {
 };
 
 
-// 댓글 작성하기 함수
-export const saveComment = async (commentData) => {
+// 게시글 삭제 함수
+export const deletePost = async (postId) => {
   try {
     const token = getToken();
     if (!token) {
@@ -124,14 +191,35 @@ export const saveComment = async (commentData) => {
       return;
     }
 
-    const response = await axios.post(`${BASE_URL}/mate/comment`, commentData, {
+    const response = await axios.delete(`${BASE_URL}/mate/${postId}`, {
       headers: {
         Authorization: `Bearer ${token}` // 헤더에 토큰 추가
       }
     });
     return response.data; // 서버로부터의 응답 데이터를 반환
   } catch (error) {
-    console.error('댓글 저장 실패:', error);
+    console.error('게시글 삭제 실패:', error);
+    throw error; // 에러를 호출자에게 다시 던짐
+  }
+};
+
+// 게시글 수정 함수
+export const updatePost = async (postId, updatedPostData) => {
+  try {
+    const token = getToken();
+    if (!token) {
+      console.error('로그인이 필요합니다.');
+      return;
+    }
+
+    const response = await axios.patch(`${BASE_URL}/mate/${postId}`, updatedPostData, {
+      headers: {
+        Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+      }
+    });
+    return response.data; // 서버로부터의 응답 데이터를 반환
+  } catch (error) {
+    console.error('게시글 수정 실패:', error);
     throw error; // 에러를 호출자에게 다시 던짐
   }
 };

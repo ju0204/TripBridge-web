@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://52.79.232.68:8080';
+const BASE_URL = 'http://3.35.115.71:8080';
 
 //여행 게시판 글 불러오기
 export const showTripPost = async () => {
@@ -135,3 +135,23 @@ export const saveComment = async (commentData) => {
     throw error; // 에러를 호출자에게 다시 던짐
   }
 };
+
+export const deletePost = async(postId) => {
+  try {
+    const token = getToken();
+    if (!token) {
+      console.error('로그인이 필요합니다.');
+      return;
+    }
+    const response = await axios.delete(`${BASE_URL}/trip/${postId}`,{
+      headers: {
+        Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+      }
+    });
+    return response.data;
+  } catch(error){
+    console.error('게시글 삭제 실패:', error);
+    throw error;
+  }
+};
+

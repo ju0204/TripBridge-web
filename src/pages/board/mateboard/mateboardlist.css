@@ -2,20 +2,22 @@
 
 
 .mate-board-banner {
-  margin-top : 60px;
-  display: block;
-  font-size : 36px;
-  text-align: center;
-  color : #292929;
-  letter-spacing: 3px;
-  font-family: 'Noto Sans KR', sans-serif;
+  text-align: center; /* 텍스트를 가운데 정렬합니다. */
+}
+
+.mate-board-banner img {
+  margin-top: 15px;
+  max-width: 78%;
+  border-radius: 25px;
+  height: auto;
+  display: inline-block; /* 이미지를 인라인 블록 요소로 설정하여 가운데 정렬합니다. */
 }
 
 /* 여행 게시판 */
 .mate-board-main {
   font-size: 30px;
   font-weight: bold;
-  margin-top: 50px;
+  margin-top: 30px;
   margin-bottom: 50px;
   text-align: center;
   color: #292929;
