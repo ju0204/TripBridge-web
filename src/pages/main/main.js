@@ -113,7 +113,7 @@ const Main = () => {
           </div>
         </div>
       </Slider>
-      //gird-삭제예정
+      {/* //gird-삭제예정 */}
 
 
       <div className="grid-container">

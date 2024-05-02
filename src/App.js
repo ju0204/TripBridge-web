@@ -1,7 +1,11 @@
+
 import React, { useState } from 'react';
+
+// App.js
+import React, { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import SignUp from './pages/user/signup/signup';
-import Nav from './components/header/nav'
+import Nav from './components/header/nav';
 import LogIn from './pages/user/login/login';
 import MapPage from './pages/map/map';
 import MateBoard from './pages/board/mateboard/mateboardlist';
@@ -11,29 +15,51 @@ import TripBoard from './pages/board/tripboard/tripboardlist';
 import TripDetail from './pages/board/tripboard/tripdetail';
 import AddTripPost from './pages/board/tripboard/addtrippost';
 import Main from './pages/main/main';
-
+import Filter from './pages/filter/filter-main/filter-main';
+import Section from './pages/filter/section/section';
+import Section2 from './pages/filter/section/section2';
+import Result from './pages/filter/section/result';
+import { useNavigate } from 'react-router-dom';
 
 const App = () => {
-  // 로그인 상태를 관리하는 상태
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [nickname, setNickname] = useState('');
+  const navigate = useNavigate();
 
-  // 로그아웃 함수
+  // Function to handle logout
   const handleLogout = () => {
-    // 로컬 스토리지에서 토큰 제거 등 로그아웃 관련 작업 수행
-    localStorage.removeItem('token');
-    // 로그인 상태 변경
+    localStorage.removeItem('accessToken'); // Remove access token from local storage
     setIsLoggedIn(false);
     setNickname('');
+    navigate('/');
   };
+
+  // Function to check if user is logged in based on access token
+  const checkLoggedIn = () => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken) {
+      // User is logged in
+      setIsLoggedIn(true);
+      const storedNickname = localStorage.getItem('nickname');
+      if (storedNickname) {
+        setNickname(storedNickname);
+      } else {
+        setNickname(''); // Ensure nickname is empty if not found in local storage
+      }
+    }
+  };
+
+  // useEffect to check login status when component mounts
+  useEffect(() => {
+    checkLoggedIn();
+  }, []); // Run once when the component mounts
 
   return (
     <div className="App">
       <Nav isLoggedIn={isLoggedIn} nickname={nickname} onLogout={handleLogout} />
-      <Routes> {/* Switch 대신에 Routes를 사용 */}
-        <Route path="/" element={<Main />} /> {/* "/" 경로에 Main 컴포넌트를 연결 */}
-        {/* setNickname props 추가 */}
-        <Route path="/login" element={<LogIn setIsLoggedIn={setIsLoggedIn}  setNickname={setNickname} />} /> 
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/login" element={<LogIn setIsLoggedIn={setIsLoggedIn} setNickname={setNickname} />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/contact" element={<MapPage />}/>
         <Route path="/mateboard" element={<MateBoard />} />
@@ -42,18 +68,14 @@ const App = () => {
         <Route path="/tripboard" element={<TripBoard />} />
         <Route path="/tripboard/:postId" element={<TripDetail />} />
         <Route path="/trip" element={<AddTripPost />} />
-        {/* 다른 페이지들의 라우팅 설정도 필요 */}
+        <Route path="/filter" element={<Filter isLoggedIn={isLoggedIn} nickname={nickname} />} />
+        <Route path="/section" element={<Section />} />
+        <Route path="/section2" element={<Section2 />} />
+        <Route path="/result" element={<Result/>} />
+
       </Routes>
     </div>
   );
 };
 
 export default App;
-
-
-
-
-
-
-
-

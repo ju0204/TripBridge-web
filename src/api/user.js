@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const BASE_URL = 'http://3.35.115.71:8080'; // 서버의 주소로 대체해야 합니다.
 
+
 // 회원가입 요청을 보내는 함수
 export const signup = async (userData) => {
   try {
@@ -21,6 +22,7 @@ export const login = async (userData) => {
   try {
     const response = await axios.post(`${BASE_URL}/user/login`, userData);
     const accessToken = response.data.data.accessToken;
+    console.log('api_user', response.data.data)
     saveToken(accessToken); 
     return response.data; // 요청에 대한 응답 데이터 반환
   } catch (error) {
