@@ -7,7 +7,7 @@
 
 .filtersection-container{
     overflow: hidden;
-    height: 91vh;
+    height: 91.5vh;
 }
 
 .section-container-box {
@@ -22,42 +22,43 @@
     overflow-y: hidden; /* 위와 아래 스크롤 숨기기 */
 }
 
-.section-box {
+.section2-box {
+  margin-top: 3%;
+  margin-bottom: 0.5%;
+  padding: 10px;
+  border: 1px solid black;
+  width: 65%;
+  height:85vh;
+  background-color: white;
+  align-items: center;
   position: relative;
-    margin-top: 3%; /* 예시로 위쪽에 여백 추가 */
-    margin-bottom: 2.5%;
-    padding: 10px;
-    border: 1px solid black;
-    height: 85vh;
-    width: 55%;
-    background-color: white;
-    align-items: center;
-    position: relative; /* section-box를 relative로 설정 */
+  overflow-y: auto;
 }
 
-.section-button-container {
+.section2-button-container {
   position: relative;
   /* bottom: 40px; 아래에 위치하되, 조금 위로 올려줌 */
   left: 0; /* 좌측에 위치하도록 설정 */
   width: 100%; /* 가로 폭을 100%로 설정 */
   text-align: center; /* 가운데 정렬 */
   /* z-index: 1; 다른 요소 위에 오도록 설정 */
-  /* bottom: calc(18% + 20px); 중분류 목록의 아래에 위치하도록 설정 (여기서 20px는 버튼과 중분류 목록 사이의 간격입니다) */
+  margin-bottom: 2%;
 }
 
-button.section-button {
+button.section2-button {
   pointer-events: auto;
   padding: 18px 40px; /*button 크기 조절*/
   margin-top: 30px;
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 35px;
-  border: 1px solid rgba(65, 65, 65, 0.7);
+  border: 1px solid rgba(65, 65, 65, 0.8);
   border-radius: 15px;
   cursor: pointer;
-  background-color: rgb(236, 236, 236);;
+  background-color: rgb(236, 236, 236, 0.8);
+  color:#000;
 }
 
-.section-button:hover {
+.section2-button:hover {
   background-color: #d3ceceee;
 }
 
@@ -116,13 +117,13 @@ button.section-button {
 
 /*체크박스 형태*/
 
-.select-area ul {
+.select-type ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
 
-.select-area li {
+.select-type li {
     font-family: 'Noto Sans KR', sans-serif; /* 폰트 설정을 적용합니다 */
     font-size: 30px; /* 폰트 크기 설정을 적용합니다 */
     display: inline;
@@ -134,8 +135,8 @@ button.section-button {
 */
 
 .cate-type{
-    padding: 20px 25px;
-    background-color: rgba(236, 236, 236, 0.614);
+    padding: 10px 25px;
+    background-color: rgba(236, 236, 236, 0.721);
     margin: 15px;
     /* border: 2px solid #000; */
     cursor: pointer;
@@ -143,10 +144,27 @@ button.section-button {
     font-size: 30px;
 }
 
+.cate-ex-a{
+  display: inline-block;
+  padding: 10px 20px;
+  margin:5px;
+  border: 2px solid #000;
+  border-radius: 15px;
+  cursor: pointer;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 20px;
+  text-decoration: none; /* 링크의 밑줄을 제거합니다 */
+  color: black; /* 링크의 색상을 설정합니다 */
+  cursor: pointer;
+  margin-left:3%;
+}
+
+
 .cate-ex {
     display: inline-block;
     padding: 10px 20px;
     margin:5px;
+    margin-left:8px;
     border: 2px solid #000;
     border-radius: 15px;
     cursor: pointer;
@@ -158,7 +176,7 @@ button.section-button {
 }
 
 .selected {
-  background-color: rgb(205, 208, 209); /* 선택된 관광지에 대한 배경색 지정 */
+  background-color: rgb(225, 228, 228); /* 선택된 관광지에 대한 배경색 지정 */
 }
 
 .cate-title {
