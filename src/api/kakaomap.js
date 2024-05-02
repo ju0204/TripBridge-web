@@ -41,7 +41,7 @@ export const sendSelectedLocations = async (location, routeorder) => {
 
     // 클라이언트에서 서버로 보낼 데이터
     const postData = {
-      id: location.id,
+      id: location.id,  
       place: location.place,
       address: location.address,
       latitude: location.latitude,
