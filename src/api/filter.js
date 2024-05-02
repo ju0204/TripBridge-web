@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+
 // const BASE_URL = 'http://52.79.232.68:8080';
 const BASE_URL = 'http://localhost:8080';
 
@@ -39,8 +40,10 @@ export const sendRequest = async (selectedAreas, selectedTourType, selectedCateg
       const places = responseData.response.body.items.item;
       const processedData = places.map(place => ({
         address: place.addr1,
-        title: place.title,
-        image: place.firstimage
+        place: place.title,
+        image: place.firstimage,
+        longitude: place.mapx,
+        latitude: place.mapy,
         //필요한 데이터 추가
       }));
 
@@ -58,16 +61,50 @@ export const sendRequest = async (selectedAreas, selectedTourType, selectedCateg
   }
 };
 
+// 토큰 가져오기 함수
+const getToken = () => {
+  return localStorage.getItem('accessToken');
+};
 
-
-
-// 백엔드로 스크랩 요청을 보내는 함수
-export const sendScrap = async (postId) => {
+//스크랩 요청 보내기
+export const sendScrap = async (scrapData) => {
   try {
-    const response = await axios.post(`${BASE_URL}/scrap`, { postId });
-    return response.data; // 스크랩 결과를 반환할 수도 있음
+    const token = getToken();
+    if (!token) {
+      console.error('로그인이 필요합니다.');
+      return;
+    }
+
+    const response = await axios.post(`${BASE_URL}/storage`, scrapData, {
+      headers: {
+        Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+      }
+    });
+    return response.data; // 서버로부터의 응답 데이터를 반환
   } catch (error) {
-    console.error('스크랩 요청 오류:', error);
-    throw error;
+    console.error('스크랩 요청 실패:', error);
+    throw error; // 에러를 호출자에게 다시 던짐
   }
 };
+
+//스크랩 삭제
+export const deleteScrap = async (scrapId) => {
+  try {
+    const token = getToken();
+    if (!token) {
+      console.error('로그인이 필요합니다.');
+      return;
+    }
+
+    const response = await axios.delete(`${BASE_URL}/storage/${scrapId}`, {
+      headers: {
+        Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+      }
+    });
+    return response.data; // 서버로부터의 응답 데이터를 반환
+  } catch (error) {
+    console.error('스크랩 삭제 실패:', error);
+    throw error; // 에러를 호출자에게 다시 던짐
+  }
+};
+

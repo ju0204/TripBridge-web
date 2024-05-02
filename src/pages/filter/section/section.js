@@ -331,8 +331,8 @@ const handleSubmit = async () => {
             </ul>
           </div>
 
-          <div className="section-button-container">
-            <button className="section-button" type="button" onClick={handleSubmit}>다음</button>
+          <div className="section1-button-container">
+            <button className="section1-button" type="button" onClick={handleSubmit}>다음</button>
           </div>
         </div>
       </motion.div>

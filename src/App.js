@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import SignUp from './pages/user/signup/signup';
 import Nav from './components/header/nav';
 import LogIn from './pages/user/login/login';
@@ -15,7 +15,6 @@ import Filter from './pages/filter/filter-main/filter-main';
 import Section from './pages/filter/section/section';
 import Section2 from './pages/filter/section/section2';
 import Result from './pages/filter/section/result';
-import { useNavigate } from 'react-router-dom';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -42,23 +41,27 @@ const App = () => {
       } else {
         setNickname(''); // Ensure nickname is empty if not found in local storage
       }
+    } else {
+      // No access token found, user is logged out
+      setIsLoggedIn(false);
+      setNickname('');
     }
   };
 
-  // Function to clear login information when the component mounts
-  const clearLoginInfo = () => {
-    localStorage.removeItem('accessToken'); // Remove access token from local storage
-    localStorage.removeItem('nickname'); // Remove nickname from local storage
-    setIsLoggedIn(false); // Set isLoggedIn to false
-    setNickname(''); // Clear nickname state
-  };
-
-  // useEffect to check login status when component mounts
+  // useEffect to check login status when component mounts and on every render
   useEffect(() => {
     checkLoggedIn();
-    // Clear login information when component mounts
-    clearLoginInfo();
   }, []); // Run once when the component mounts
+
+  // useEffect to clear localStorage when the app first starts
+  useEffect(() => {
+    localStorage.clear();
+  }, []);
+
+  // useEffect to persist login state in local storage
+  useEffect(() => {
+    localStorage.setItem('isLoggedIn', isLoggedIn);
+  }, [isLoggedIn]); // Run whenever isLoggedIn state changes
 
   return (
     <div className="App">
@@ -78,7 +81,6 @@ const App = () => {
         <Route path="/section" element={<Section />} />
         <Route path="/section2" element={<Section2 />} />
         <Route path="/result" element={<Result/>} />
-
       </Routes>
     </div>
   );
