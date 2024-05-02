@@ -1,0 +1,197 @@
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+/* .notosanskr * { 
+ font-family: 'Noto Sans KR', sans-serif;
+} */
+.sign-up-page {
+  display: flex;
+  justify-content: center; /* 수평 가운데 정렬 */
+  align-items: center; /* 수직 가운데 정렬 */
+  height: 100vh; /* 화면 전체 높이에 대해 센터 정렬 */
+}
+
+.sign-up-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 500px;
+    margin-top: 50px; /* 수직 가운데 정렬 */
+    margin-right: auto;
+    margin-bottom: auto; /* 수직 가운데 정렬 */
+    margin-left: auto;
+    padding-bottom: 50px;
+  }
+  
+  .sign-up-form {
+    width: 100%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    
+  }
+  
+  .styled-input {
+    width: calc(100% - 16px);
+    margin-bottom: 20px;
+    padding: 8px;
+    border: 1px solid black;
+    border-radius: 4px;
+    margin-top: 5px;
+  }
+  
+  .styled-label {
+    margin-bottom: 5px;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  
+  .styled-error {
+    color: red;
+    margin-bottom: 5px;
+    display: block;
+  }
+
+  .styled-error-agree {
+    color: red;
+    margin-bottom: 5px;
+    margin-top:5px;
+    font-size: 14px;
+    display: block;
+  }
+
+  .styled-error-email {
+    color: red;
+    margin-bottom: 5px;
+    font-size: 14px;
+    display: block;
+  }
+  
+  .styled-button-container {
+    width: 100%;
+    text-align: center;
+    
+  }
+  
+  .styled-button {
+    padding: 8px 10px;
+    width: 100px; /*버튼 가로 크기 조절*/
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  
+  .title {
+    font-size: 30px;
+    font-family: 'Noto Sans KR', sans-serif;;
+    font-weight: 800;
+    letter-spacing: 4px; 
+    margin-bottom: 40px;
+    margin-top:50px;
+  }
+  
+  /*약관동의*/
+  .ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .agreement-label {
+    font-family: 'Noto Sans KR', sans-serif;
+    margin-bottom: 5px;
+  }
+
+  .contents {
+    padding: 10px;
+    background-color: #ffffff;
+    border: 1px solid #dadada;
+    border-radius: 5px;
+    margin-top:5px;
+  }
+
+  .terms__list {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  .terms__list .terms__box {
+    margin: 20px 0;
+  }
+  
+  .contents label {
+    font-weight: 700;
+  }
+  
+  .input__check label::after {
+    margin-left: 4px;
+    font-size: 13px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #0086ff;
+    content: "(필수)";
+  }
+  
+  .terms__list .terms__content {
+    height: 88px;
+    overflow: auto;
+    margin-top: 8px;
+    padding: 12px;
+    border: 1px solid #dadada;
+    background: #fff;
+    font-size: 12px;
+  }
+
+
+/* signup.css */
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검은 배경 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  background-color: white;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.popup-content {
+  text-align: center;
+  
+}
+
+.popup-content p {
+  margin-bottom: 25px;
+
+}
+
+.popup-content button {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.popup-content button:hover {
+  background-color: #0056b3;
+}
+
+/* Other styles remain unchanged */
+
+
+
+
