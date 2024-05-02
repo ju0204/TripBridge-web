@@ -11,6 +11,14 @@ const Result = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 15;
 
+  // Load scrapped items from local storage on component mount and when currentPage changes
+  useEffect(() => {
+    const savedPosts = JSON.parse(localStorage.getItem('scrappedPosts'));
+    if (savedPosts) {
+      setPosts(savedPosts);
+    }
+  }, [currentPage]);
+
   const location = useLocation();
   const { selectedAreas, selectedTourType, selectedCategory, selectedCategoryMiddle, selectedCategoryThird} = location.state;
 
@@ -18,16 +26,17 @@ const Result = () => {
     const fetchData = async () => {
       try {
         const resultData = await sendRequest(selectedAreas, selectedTourType, selectedCategory, selectedCategoryMiddle, selectedCategoryThird);
-        setPosts(resultData);
+        // Add 'liked' property to each item
+        const postsWithLiked = resultData.map(post => ({ ...post, liked: false }));
+        setPosts(postsWithLiked);
       } catch (error) {
-        console.error('데이터 가져오기 오류_result.js:', error);
+        console.error('Error fetching data:', error);
       }
     };
 
     fetchData();
-  }, [selectedAreas, selectedTourType, selectedCategory, selectedCategoryMiddle, selectedCategoryThird, currentPage]); // currentPage를 의존성 배열에 추가하여 페이지가 변경될 때마다 데이터를 다시 불러옴
+  }, [selectedAreas, selectedTourType, selectedCategory, selectedCategoryMiddle, selectedCategoryThird, currentPage]);
 
-  // 스크랩(좋아요) 버튼 클릭 시 실행되는 함수
   const handleScrap = async (place, address, longitude, latitude) => {
     try {
       const scrapData = {
@@ -36,22 +45,45 @@ const Result = () => {
         longitude: longitude,
         latitude: latitude
       };
-
+  
       console.log('스크랩 요청 데이터:', scrapData);
-
+  
       await sendScrap(scrapData);
-      
-      // 게시물을 고유하게 식별할 수 있는 속성을 사용하여 게시물의 liked 상태를 업데이트
-      setPosts(posts.map(post => {
-        if (post.place === place && post.address === address) {
-          return { ...post, liked: !post.liked };
-        }
-        return post;
-      }));
+  
+      // 스크랩 상태를 해당 포스트에 업데이트
+      setPosts(posts =>
+        posts.map(post => {
+          if (post.place === place && post.address === address) {
+            return { ...post, liked: !post.liked };
+          }
+          return post;
+        })
+      );
+  
+      // 로컬 스토리지에서 기존에 스크랩된 항목 가져오기
+      const existingScrappedPosts = JSON.parse(localStorage.getItem('scrappedPosts')) || [];
+  
+      // 새로운 스크랩 항목 추가
+      const newScrappedPost = {
+        place: place,
+        address: address,
+        longitude: longitude,
+        latitude: latitude,
+        liked: true
+      };
+  
+      // 기존에 스크랩된 항목과 새로운 항목 합치기
+      const updatedScrappedPosts = [...existingScrappedPosts, newScrappedPost];
+  
+      // 로컬 스토리지에 업데이트된 스크랩된 항목 저장
+      localStorage.setItem('scrappedPosts', JSON.stringify(updatedScrappedPosts));
+  
     } catch (error) {
-      console.error('스크랩 요청 오류:', error);
+      console.error('스크랩 요청 에러:', error);
     }
   };
+  
+  
 
   // 현재 페이지의 게시물 가져오기
   const indexOfLastPost = currentPage * postsPerPage;
