@@ -1,0 +1,194 @@
+
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+/* .notosanskr * { 
+ font-family: 'Noto Sans KR', sans-serif;
+} */
+
+.filtersection-container{
+    overflow: hidden;
+    height: 91vh;
+}
+
+.section-container-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    max-width: 100%;
+    margin-top:100px;
+    background-color:rgba(221, 248, 248, 0.6); /* 배경색을 빨간색으로 설정 */
+    overflow-y: hidden; /* 위와 아래 스크롤 숨기기 */
+}
+
+.section-box {
+  position: relative;
+    margin-top: 3%; /* 예시로 위쪽에 여백 추가 */
+    margin-bottom: 2.5%;
+    padding: 10px;
+    border: 1px solid black;
+    height: 85vh;
+    width: 55%;
+    background-color: white;
+    align-items: center;
+    position: relative; /* section-box를 relative로 설정 */
+}
+
+.section-button-container {
+  position: relative;
+  /* bottom: 40px; 아래에 위치하되, 조금 위로 올려줌 */
+  left: 0; /* 좌측에 위치하도록 설정 */
+  width: 100%; /* 가로 폭을 100%로 설정 */
+  text-align: center; /* 가운데 정렬 */
+  /* z-index: 1; 다른 요소 위에 오도록 설정 */
+  /* bottom: calc(18% + 20px); 중분류 목록의 아래에 위치하도록 설정 (여기서 20px는 버튼과 중분류 목록 사이의 간격입니다) */
+}
+
+button.section-button {
+  pointer-events: auto;
+  padding: 18px 40px; /*button 크기 조절*/
+  margin-top: 30px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 35px;
+  border: 1px solid rgba(65, 65, 65, 0.7);
+  border-radius: 15px;
+  cursor: pointer;
+  background-color: rgb(236, 236, 236);;
+}
+
+.section-button:hover {
+  background-color: #d3ceceee;
+}
+
+.link {
+  text-decoration: none;
+  color: #000;
+}
+
+.section-text {
+  font-family: 'Noto Sans KR', sans-serif;
+    font-size: 40px;
+    font-weight: 500;
+    margin-bottom: 5%;
+    text-align: center;
+
+}
+
+
+/*체크박스 형태*/
+
+.select-area ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.select-area li {
+    font-family: 'Noto Sans KR', sans-serif; /* 폰트 설정을 적용합니다 */
+    font-size: 30px; /* 폰트 크기 설정을 적용합니다 */
+    display: inline;
+}
+
+
+/* .select-area a:hover {
+    color: #007bff;  링크에 마우스를 올렸을 때 색상을 변경합니다 
+*/
+
+.cate-type{
+    padding: 20px 25px;
+    background-color: #dedbdb;
+    margin: 15px;
+    /* border: 2px solid #000; */
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 30px;
+}
+
+.cate-ex {
+    display: inline-block;
+    padding: 10px 20px;
+    margin:5px;
+    border: 2px solid #000;
+    border-radius: 15px;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 20px;
+    text-decoration: none; /* 링크의 밑줄을 제거합니다 */
+    color: black; /* 링크의 색상을 설정합니다 */
+    cursor: pointer;
+}
+
+.selected {
+  background-color: rgb(205, 208, 209); /* 선택된 관광지에 대한 배경색 지정 */
+}
+
+.cate-title {
+    color: red;
+}
+
+.cate-middle {
+    color: red;
+}
+  
+  /* 마우스가 올라갔을 때 포인터 모양으로 변경 */
+  .checkbox-label:hover {
+    background-color: #eeee;
+  }
+
+  .checkbox-input {
+    opacity: 0;
+    position: absolute;
+    padding: 40px 50px;
+  }
+  
+  /* 선택된 상태일 때 배경색 변경 */
+  .checkbox-label.selected {
+    background-color: #d8d7d7;
+  }
+
+
+
+  /*팝업*/
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검은 배경 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .popup {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .popup-content {
+    text-align: center;
+    
+  }
+  
+  .popup-content p {
+    margin-bottom: 25px;
+  
+  }
+  
+  .popup-content button {
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .popup-content button:hover {
+    background-color: #0056b3;
+  }
+  

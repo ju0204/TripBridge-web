@@ -30,6 +30,8 @@ const Login = ({ setIsLoggedIn, setNickname }) => {
         localStorage.setItem('accessToken', userData.data.accessToken); // Store the access token in local storage
         localStorage.setItem('nickname', userData.data.nickname); // Store the nickname in local storage
         console.log('로그인 성공!', userData);
+        console.log('로그인 성공! w', userData.result);
+        console.log('로그인 성공! w', userData.data.nickname);
         navigate('/');
       } catch (error) {
         console.error('로그인 실패:', error);
