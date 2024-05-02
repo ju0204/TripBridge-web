@@ -141,7 +141,7 @@ const drawRoute = (data) => {
     const markerPosition = new window.kakao.maps.LatLng(location.y, location.x);
     mapInstance.current.panTo(markerPosition);
   };
-  
+    
 
   return (
     <div className="show-map-container">
