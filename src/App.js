@@ -1,5 +1,3 @@
-
-// App.js
 import React, { useState, useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import SignUp from './pages/user/signup/signup';
@@ -47,9 +45,19 @@ const App = () => {
     }
   };
 
+  // Function to clear login information when the component mounts
+  const clearLoginInfo = () => {
+    localStorage.removeItem('accessToken'); // Remove access token from local storage
+    localStorage.removeItem('nickname'); // Remove nickname from local storage
+    setIsLoggedIn(false); // Set isLoggedIn to false
+    setNickname(''); // Clear nickname state
+  };
+
   // useEffect to check login status when component mounts
   useEffect(() => {
     checkLoggedIn();
+    // Clear login information when component mounts
+    clearLoginInfo();
   }, []); // Run once when the component mounts
 
   return (
