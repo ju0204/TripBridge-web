@@ -104,19 +104,19 @@ const handleSubmit = async () => {
   return (
     <div className="filtersection-container">
       <motion.div className="section-container-box" animate={{ y: -100 }}>
-        <div className="section-box">
+        <div className="section2-box">
           <div className="section-text-box">
             <div className="section-icon-div"><img className="section-icon" src={Bag} /><hr className="hr"/></div>
             <p className="section-text1">원하는 타입을 직접 선택해 장소를 추천 받아볼까요?</p>
             <p className="section-text2">원하는 관광타입을 선택해주세요!</p>
           </div>
 
-          <div className="select-area">
+          <div className="select-type">
             <ul>
                 {/* 관광 타입 선택 영역 */}
                 <li>
                   <p className="cate-type">관광타입(1개만 선택해주세요)</p>
-                  <a className={`cate-ex ${selectedTourType === "12" ? "selected" : ""}`} onClick={() => handleTourTypeClick("12")}>관광지</a>
+                  <a className={`cate-ex-a ${selectedTourType === "12" ? "selected" : ""}`} onClick={() => handleTourTypeClick("12")}>관광지</a>
                   <a className={`cate-ex ${selectedTourType === "14" ? "selected" : ""}`} onClick={() => handleTourTypeClick("14")}>문화시설</a>
                   <a className={`cate-ex ${selectedTourType === "28" ? "selected" : ""}`} onClick={() => handleTourTypeClick("28")}>레포츠</a>
                   <a className={`cate-ex ${selectedTourType === "38" ? "selected" : ""}`} onClick={() => handleTourTypeClick("38")}>쇼핑</a>
@@ -210,8 +210,8 @@ const handleSubmit = async () => {
           </div>
         </div>
         {/* 결과 보기 버튼 */}
-          <div className="section-button-container">
-            <button className="section-button" type="button" onClick={handleSubmit}>결과보기</button>
+          <div className="section2-button-container">
+            <button className="section2-button" type="button" onClick={handleSubmit}>결과보기</button>
           </div>
       </motion.div>
       

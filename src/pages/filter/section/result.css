@@ -4,12 +4,12 @@
  font-family: 'Noto Sans KR', sans-serif;
 } */
 
-.filtersection-container{
+.result-container{
     overflow: hidden;
-    height: 91vh;
+    height: 91.5vh;
 }
 
-.section-container-box {
+.result-container-box {
     display: flex;
     flex-direction: column;
     align-items: center;
