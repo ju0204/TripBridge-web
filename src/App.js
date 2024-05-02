@@ -12,7 +12,9 @@ import TripDetail from './pages/board/tripboard/tripdetail';
 import AddTripPost from './pages/board/tripboard/addtrippost';
 import Main from './pages/main/main';
 import Filter from './pages/filter/filter-main/filter-main';
-
+import Section from './pages/filter/section/section';
+import Section2 from './pages/filter/section/section2';
+import Result from './pages/filter/section/result';
 import { useNavigate } from 'react-router-dom';
 
 const App = () => {
@@ -62,7 +64,10 @@ const App = () => {
         <Route path="/tripboard/:postId" element={<TripDetail />} />
         <Route path="/trip" element={<AddTripPost />} />
         <Route path="/filter" element={<Filter isLoggedIn={isLoggedIn} nickname={nickname} />} />
-        
+        <Route path="/section" element={<Section />} />
+        <Route path="/section2" element={<Section2 />} />
+        <Route path="/result" element={<Result/>} />
+
       </Routes>
     </div>
   );

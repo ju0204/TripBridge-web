@@ -66,12 +66,50 @@ button.section-button {
   color: #000;
 }
 
-.section-text {
+/*텍스트랑 이미지 */
+
+.section-icon-div {
+  display: flex;
+}
+
+.section-icon {
+  width: 80px;
+  margin-bottom: 0;
+  margin-right: 30px;
+  margin-left: 25px;
+  margin-top:10px
+}
+
+.hr {
+  transform: rotate(0deg);
+  width: 1200px; /* 가로 길이를 조절합니다. */
+  height: 4px; /* 세로 길이를 조절합니다. */
+  border: none; /* 기본 테두리를 제거합니다. */
+   /* 가로 선의 두께와 색상을 설정합니다. */
+  margin-left: 30px; /* 좌측 여백을 설정합니다. */
+ margin-top: 45px;
+ background-color: rgba(66, 196, 196, 0.6);
+}
+
+.section-text1 {
+  font-family: 'Noto Sans KR', sans-serif;
+    font-size: 20px;
+    font-weight: 100;
+    margin-top: 50px;
+    margin-bottom: 2px;
+    margin-left:20px;
+    text-align: left;
+  
+}
+
+.section-text2 {
   font-family: 'Noto Sans KR', sans-serif;
     font-size: 40px;
     font-weight: 500;
+    margin-top: 5px;
     margin-bottom: 5%;
-    text-align: center;
+    margin-left:15px;
+    text-align: left;
 
 }
 
@@ -97,7 +135,7 @@ button.section-button {
 
 .cate-type{
     padding: 20px 25px;
-    background-color: #dedbdb;
+    background-color: rgba(236, 236, 236, 0.614);
     margin: 15px;
     /* border: 2px solid #000; */
     cursor: pointer;

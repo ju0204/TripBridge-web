@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { sendRequest } from '../../../api/filter';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import Bag  from './img/bag.png';
 
 import './section2.css';
 
@@ -32,23 +33,38 @@ const Section2 = ( ) => {
       setSelectedCategoryThird([]);
     } else {
       setSelectedTourType(tourType);
-      setSelectedCategory(null); // 새로운 관광타입을 선택하면 대분류 초기화
+      setSelectedCategory([]); // 새로운 관광타입을 선택하면 대분류 초기화
       setSelectedCategoryMiddle([]); // 새로운 관광타입을 선택하면 중분류도 초기화
       setSelectedCategoryThird([]);
     }
   };
 
   // 대분류 클릭 이벤트 핸들러
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(category === selectedCategory ? null : category); // Toggle the selection status of the category
-  };
+    const handleCategoryClick = (category) => {
+      // If the same category is clicked again, clear the selection
+      if (category === selectedCategory) {
+        setSelectedCategory(null); // Clear the category selection
+        setSelectedCategoryMiddle([]); // Clear the subcategory selection
+        setSelectedCategoryThird([]); // Clear the third category selection
+      } else {
+        setSelectedCategory(category);
+      }
+    };
 
   // 중분류 클릭 이벤트 핸들러
-  // 중분류 클릭 이벤트 핸들러
-const handleCategoryMiddleClick = (categoryMiddle) => {
-  // 중복 선택을 허용하지 않도록 변경
-  setSelectedCategoryMiddle([categoryMiddle]);
-};
+  const handleCategoryMiddleClick = (categoryMiddle) => {
+    setSelectedCategoryMiddle(prevState => {
+      // Check if the clicked categoryMiddle is already selected
+      if (prevState.includes(categoryMiddle)) {
+        // If already selected, clear the selection
+        return [];
+      } else {
+        // If not selected, set the selection to the clicked categoryMiddle
+        return [categoryMiddle];
+      }
+    });
+  };
+  
 
 // 소분류 클릭 이벤트 핸들러
 const handleCategoryThirdClick = (categoryThird) => {
@@ -64,23 +80,23 @@ const handleCategoryThirdClick = (categoryThird) => {
 };
 
 
-  // 결과 보기 버튼 클릭 이벤트 핸들러
-  const handleSubmit = async () => {
-    if (selectedTourType) {
-      try {
-        // sendRequest 함수를 사용하여 데이터를 보냅니다.
-        const responseData = await sendRequest(selectedAreas, selectedTourType, selectedCategory, selectedCategoryMiddle,selectedCategoryThird);
-        console.log('Success:', responseData);
-        navigate('/result', { state: { selectedAreas, selectedTourType, selectedCategory, selectedCategoryMiddle,selectedCategoryThird }});
-        // 나머지 코드 생략
-      } catch (error) {
-        console.error('Error while sending data:', error);
-      }
-    } else {
-      console.log("Please select tour type.");
-      setShowPopup(true);
+// 결과 보기 버튼 클릭 이벤트 핸들러
+const handleSubmit = async () => {
+  if (selectedTourType || selectedCategory || selectedCategoryMiddle.length > 0 || selectedCategoryThird.length > 0) {
+    try {
+      // sendRequest 함수를 사용하여 데이터를 보냅니다.
+      const responseData = await sendRequest(selectedAreas, selectedTourType, selectedCategory, selectedCategoryMiddle, selectedCategoryThird);
+      console.log('Success:', responseData);
+      navigate('/result', { state: { selectedAreas, selectedTourType, selectedCategory, selectedCategoryMiddle, selectedCategoryThird }});
+      // 나머지 코드 생략
+    } catch (error) {
+      console.error('Error while sending data:', error);
     }
-  };
+  } else {
+    console.log("Please select at least one option.");
+    setShowPopup(true);
+  }
+};
 
 
 
@@ -90,7 +106,9 @@ const handleCategoryThirdClick = (categoryThird) => {
       <motion.div className="section-container-box" animate={{ y: -100 }}>
         <div className="section-box">
           <div className="section-text-box">
-            <p className="section-text">원하는 여행지 타입을 선택해보세요!</p>
+            <div className="section-icon-div"><img className="section-icon" src={Bag} /><hr className="hr"/></div>
+            <p className="section-text1">원하는 타입을 직접 선택해 장소를 추천 받아볼까요?</p>
+            <p className="section-text2">원하는 관광타입을 선택해주세요!</p>
           </div>
 
           <div className="select-area">
@@ -105,27 +123,34 @@ const handleCategoryThirdClick = (categoryThird) => {
                   <a className={`cate-ex ${selectedTourType === "39" ? "selected" : ""}`} onClick={() => handleTourTypeClick("39")}>음식</a>
                 </li>
 
-
-
-
                 {/* 대분류 선택 영역 */}
                 <li>
                   <p className="cate-type">대분류</p>
-                  {/* 밑줄 이거 였음{(selectedTourType === "관광지") && ( */}
+                  {/* 관광지*/}
                   {(selectedTourType === "12") && (
                     <>
                       <a className={`cate-ex ${selectedCategory === "A01" ? "selected" : ""}`} onClick={() => handleCategoryClick("A01")}>자연</a>
-                      <a className={`cate-ex ${selectedCategory === "인문" ? "selected" : ""}`} onClick={() => handleCategoryClick("인문")}>인문</a>
+                      <a className={`cate-ex ${selectedCategory === "A02" ? "selected" : ""}`} onClick={() => handleCategoryClick("A02")}>인문(문화/예술/역사)</a>
                     </>
                   )}
-                  {(selectedTourType === "문화시설") && (
+                  {(selectedTourType === "14") && (
                     <>
-                      <a className={`cate-ex ${selectedCategory === "인문" ? "selected" : ""}`} onClick={() => handleCategoryClick("인문")}>인문</a>
+                      <a className={`cate-ex ${selectedCategory === "A02" ? "selected" : ""}`} onClick={() => handleCategoryClick("A02")}>인문(문화/예술/역사)</a>
+                    </>
+                  )}
+                  {(selectedTourType === "28") && (
+                    <>
+                      <a className={`cate-ex ${selectedCategory === "A03" ? "selected" : ""}`} onClick={() => handleCategoryClick("A03")}>레포츠</a>
                     </>
                   )}
                   {(selectedTourType === "38") && (
                     <>
                       <a className={`cate-ex ${selectedCategory === "A04" ? "selected" : ""}`} onClick={() => handleCategoryClick("A04")}>쇼핑</a>
+                    </>
+                  )}
+                  {(selectedTourType === "39") && (
+                    <>
+                      <a className={`cate-ex ${selectedCategory === "A05" ? "selected" : ""}`} onClick={() => handleCategoryClick("A05")}>음식</a>
                     </>
                   )}
                 </li>
@@ -143,10 +168,20 @@ const handleCategoryThirdClick = (categoryThird) => {
                         <a className={`cate-ex ${selectedCategoryMiddle.includes("A0102") ? "selected" : ""}`} onClick={() => handleCategoryMiddleClick("A0102")}>관광자원</a>
                       </>
                     )}
-                    {selectedCategory === "인문" && (
+                    {selectedCategory === "A02" &&  selectedTourType === "12" && (
                       <>
-                        <a className={`cate-ex ${selectedCategoryMiddle.includes("역사관광지") ? "selected" : ""}`} onClick={() => handleCategoryMiddleClick("역사관광지")}>역사관광지</a><br/>
-                        <a className={`cate-ex ${selectedCategoryMiddle.includes("휴양관광지") ? "selected" : ""}`} onClick={() => handleCategoryMiddleClick("휴양관광지")}>휴양관광지</a>
+                        <a className={`cate-ex ${selectedCategoryMiddle.includes("A0201") ? "selected" : ""}`} onClick={() => handleCategoryMiddleClick("A0201")}>역사관광지</a>
+                        <a className={`cate-ex ${selectedCategoryMiddle.includes("A0202") ? "selected" : ""}`} onClick={() => handleCategoryMiddleClick("A0202")}>휴양관광지</a>
+                        <a className={`cate-ex ${selectedCategoryMiddle.includes("A0203") ? "selected" : ""}`} onClick={() => handleCategoryMiddleClick("A0203")}>체험관광지</a>
+                        <a className={`cate-ex ${selectedCategoryMiddle.includes("A0204") ? "selected" : ""}`} onClick={() => handleCategoryMiddleClick("A0204")}>산업관광지</a>
+                        <a className={`cate-ex ${selectedCategoryMiddle.includes("A0205") ? "selected" : ""}`} onClick={() => handleCategoryMiddleClick("A0205")}>건축/조형물</a>
+                      </>
+                    )}
+                    {selectedCategory === "A02" && selectedTourType === "14" && (
+                      <>
+                        <a className={`cate-ex ${selectedCategoryMiddle.includes("A0201") ? "selected" : ""}`} onClick={() => handleCategoryMiddleClick("A0201")}>역사관광지</a>
+                        <a className={`cate-ex ${selectedCategoryMiddle.includes("A0202") ? "selected" : ""}`} onClick={() => handleCategoryMiddleClick("A0202")}>휴양관광지</a>
+                        
                       </>
                     )}
                     {selectedCategory === "A04" && (
@@ -156,6 +191,7 @@ const handleCategoryThirdClick = (categoryThird) => {
                     )}
                   </li>
                 )}
+                
 
                 {/* 소분류 선택 영역 */}
                 {selectedCategoryMiddle.length > 0 && selectedCategoryMiddle.includes("A0401") && (
