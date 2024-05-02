@@ -19,7 +19,7 @@ export const fetchLocations = async () => {
     });
 
     return response.data.map(location => ({
-      id: location.id,
+      id: location.id,  
       place: location.place,
       address: location.address,
       latitude:(location.latitude),
