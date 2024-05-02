@@ -129,32 +129,28 @@
   border-radius: 50% ;
  }
 
- /*페이지네이션*/
- .pagination1 {
-    display: flex;
-    justify-content: center;
-    margin-top: 30px;
-    font-family: 'Noto Sans KR', sans-serif;
-    margin-bottom: 30px;
-  }
-  
-  .pagination1 button {
-    border:none;
-    /* border: 1px solid #a8a8a8; */
-    border-radius: 10px;
-    cursor: pointer;
-    margin: 0 3px;
-    padding: 5px 10px;
-    background-color: rgba(225, 225, 225, 0);
-    transition: 0.3s ease;
-    font-family: 'Noto Sans KR', sans-serif;
-  }
-  
-  .pagination1 button:hover {
-    /* background-color: #893838; */
-    font-weight: bold; /* 호버시 글씨만 진하게 변경 */
-  }
-  
-  .pagination1 button.active {
-    font-weight: bold;
-  }
+/* 페이지 네이션 스타일 */
+.pagination1 {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination1 button {
+  background-color: #fff;
+  border: 1px solid rgba(0, 0, 0, 0);
+  color: #333;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 5px 10px;
+  margin: 0 2px;
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+.pagination1 button.active {
+  font-weight: bold;
+}
+
+.pagination1 button:hover {
+  font-weight: bold;
+}

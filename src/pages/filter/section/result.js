@@ -80,22 +80,41 @@ const Result = () => {
             ))}
           </div>
 
-          
-          
 
           
               {/* 페이지 네이션 */}
-            <div className="pagination1">
-              {Array.from({ length: Math.ceil(posts.length / postsPerPage) }, (_, i) => (
-                <button 
-                  key={i + 1} 
-                  className={currentPage === i + 1 ? "active" : ""} // 현재 페이지와 일치할 때 active 클래스 추가
-                  onClick={() => paginate(i + 1)}
+              <div className="pagination1">
+                <button
+                  disabled={currentPage === 1} // 현재 페이지가 1페이지면 비활성화
+                  onClick={() => paginate(1)} // 맨 처음 페이지로 이동하는 함수 호출
                 >
-                  {i + 1}
+                  {"<<"}
                 </button>
-              ))}
-            </div>
+                {Array.from({ length: Math.ceil(posts.length / postsPerPage) }, (_, i) => {
+                  const startPage = currentPage <= 5 ? 1 : currentPage - 4; // Calculate the start page of the range
+                  const endPage = Math.min(startPage + 9, Math.ceil(posts.length / postsPerPage)); // Calculate the end page of the range
+                  if (i + 1 >= startPage && i + 1 <= endPage) { // Only render buttons within the range
+                    return (
+                      <button 
+                        key={i + 1} 
+                        className={currentPage === i + 1 ? "active" : ""} // 현재 페이지와 일치할 때 active 클래스 추가
+                        onClick={() => paginate(i + 1)}
+                      >
+                        {i + 1}
+                      </button>
+                    );
+                  }
+                  return null; // Render nothing for pages outside the range
+                })}
+                <button
+                  disabled={currentPage === Math.ceil(posts.length / postsPerPage)} // 현재 페이지가 마지막 페이지면 비활성화
+                  onClick={() => paginate(Math.ceil(posts.length / postsPerPage))} // 맨 마지막 페이지로 이동하는 함수 호출
+                >
+                  {">>"}
+                </button>
+              </div>
+
+
         
         </div>
       </motion.div>

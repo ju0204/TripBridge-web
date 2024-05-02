@@ -210,7 +210,7 @@ const handleSubmit = async () => {
                   onChange={() => handleAreaClick("32")}
                 />
                 <label className={`checkbox-label ${selectedAreas.includes("32") ? 'selected' : ''}`} htmlFor="area32">
-                  강원도
+                  강원
                   <div className="icon-wrapper">
                     {selectedAreas.includes("32") && (
                       <FaCheck  className="icon" />
@@ -225,7 +225,7 @@ const handleSubmit = async () => {
                   onChange={() => handleAreaClick("33")}
                 />
                 <label className={`checkbox-label ${selectedAreas.includes("33") ? 'selected' : ''}`} htmlFor="area33">
-                  충청북도
+                  충북
                   <div className="icon-wrapper">
                     {selectedAreas.includes("33") && (
                       <FaCheck  className="icon" />
@@ -240,7 +240,7 @@ const handleSubmit = async () => {
                   onChange={() => handleAreaClick("34")}
                 />
                 <label className={`checkbox-label ${selectedAreas.includes("34") ? 'selected' : ''}`} htmlFor="area34">
-                  충청남도
+                  충남
                   <div className="icon-wrapper">
                     {selectedAreas.includes("34") && (
                       <FaCheck  className="icon" />
@@ -255,7 +255,7 @@ const handleSubmit = async () => {
                   onChange={() => handleAreaClick("35")}
                 />
                 <label className={`checkbox-label ${selectedAreas.includes("35") ? 'selected' : ''}`} htmlFor="area35">
-                  경상북도
+                  경북
                   <div className="icon-wrapper">
                     {selectedAreas.includes("35") && (
                       <FaCheck  className="icon" />
@@ -270,7 +270,7 @@ const handleSubmit = async () => {
                   onChange={() => handleAreaClick("36")}
                 />
                 <label className={`checkbox-label ${selectedAreas.includes("36") ? 'selected' : ''}`} htmlFor="area36">
-                  경상남도
+                  경남
                   <div className="icon-wrapper">
                     {selectedAreas.includes("36") && (
                       <FaCheck  className="icon" />
@@ -325,24 +325,7 @@ const handleSubmit = async () => {
 
                 
               </li>
-              {/* <li>
-                <input
-                  className="checkbox-input"
-                  type="checkbox"
-                  id="area7"
-                  checked={selectedAreas.includes("울산")}
-                  onChange={() => handleAreaClick("울산")}
-                />
-                <label className={`checkbox-label ${selectedAreas.includes("울산") ? 'selected' : ''}`} htmlFor="area7">
-                  울산
-                  <div className="icon-wrapper">
-                    {selectedAreas.includes("울산") && (
-                      <FaCheck  className="icon" />
-                    )}
-                  </div>
-                </label>
-              </li> */}
-
+              
 
               {/* 다른 지역에 대한 라벨 및 입력란을 여기에 추가할 수 있습니다. */}
             </ul>
