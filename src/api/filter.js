@@ -70,10 +70,10 @@ const getToken = () => {
 export const sendScrap = async (scrapData) => {
   try {
     const token = getToken();
-    if (!token) {
-      console.error('로그인이 필요합니다.');
-      return;
-    }
+    // if (!token) {
+    //   console.error('로그인이 필요합니다.');
+    //   return;
+    // }
 
     const response = await axios.post(`${BASE_URL}/storage`, scrapData, {
       headers: {
