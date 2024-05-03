@@ -7,7 +7,7 @@ import  EmptyHeartImg  from "./img/empty_scrap.png";
 import White from "./img/white-background.png";
 import { useLocation } from 'react-router-dom';
 import './result.css';
-
+//세션 스토리지 부분 2개 
 const Result = () => {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -17,9 +17,11 @@ const Result = () => {
   const location = useLocation();
   const { selectedAreas, selectedTourType, selectedCategory, selectedCategoryMiddle, selectedCategoryThird} = location.state;
 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
+        
         const resultData = await sendRequest(selectedAreas, selectedTourType, selectedCategory, selectedCategoryMiddle, selectedCategoryThird);
         setPosts(resultData);
       } catch (error) {
@@ -29,6 +31,15 @@ const Result = () => {
 
     fetchData();
   }, [selectedAreas, selectedTourType, selectedCategory, selectedCategoryMiddle, selectedCategoryThird, currentPage]); // currentPage를 의존성 배열에 추가하여 페이지가 변경될 때마다 데이터를 다시 불러옴
+
+  useEffect(() => {
+    // 세션 스토리지에서 스크랩된 게시물 상태 불러오기
+    const savedScrapedPosts = sessionStorage.getItem('scrapedPosts');
+    if (savedScrapedPosts) {
+      setScrapedPosts(JSON.parse(savedScrapedPosts));
+    }
+  }, []); // 컴포넌트가 처음 마운트될 때만 실행되도록 빈 의존성 배열 추가
+
 
   // 스크랩(좋아요) 버튼 클릭 시 실행되는 함수
 const handleScrap = async (place, address, longitude, latitude) => {
@@ -65,6 +76,10 @@ const handleScrap = async (place, address, longitude, latitude) => {
       // 스크랩 후 상태 업데이트
       setScrapedPosts([...scrapedPosts, { place, address }]);
     }
+
+    // 세션 스토리지에 스크랩된 게시물 상태 저장
+      sessionStorage.setItem('scrapedPosts', JSON.stringify([...scrapedPosts, { place, address }])); // 현재 상태에 새로운 스크랩 게시물 추가
+
 
     // 게시물을 고유하게 식별할 수 있는 속성을 사용하여 게시물의 liked 상태를 업데이트
     setPosts(posts.map(post => {
