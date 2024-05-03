@@ -63,7 +63,7 @@ export const sendRequest = async (selectedAreas, selectedTourType, selectedCateg
 
 // 토큰 가져오기 함수
 const getToken = () => {
-  return localStorage.getItem('accessToken');
+  return sessionStorage.getItem('accessToken');
 };
 
 //스크랩 요청 보내기
@@ -84,6 +84,36 @@ export const sendScrap = async (scrapData) => {
   } catch (error) {
     console.error('스크랩 요청 실패:', error);
     throw error; // 에러를 호출자에게 다시 던짐
+  }
+};
+
+//스크랩 가져오기
+export const fetchScrap = async () => {
+  try {
+    const userToken = getToken();
+    if (!userToken) {
+      throw new Error('스크랩 데이터를 찾을 수 없습니다');
+    }
+    const response = await axios.get(`${BASE_URL}/scrap`, {
+      headers: {
+        Authorization: `Bearer ${userToken}`
+      }
+    });
+
+    const scrapData = response.data.map(location => ({
+      id: location.id,  
+      place: location.place,
+      address: location.address,
+      latitude: location.latitude,
+      longitude: location.longitude
+    }));
+
+    console.log('가져온 스크랩 데이터:', scrapData); // 스크랩 데이터 콘솔 출력
+
+    return scrapData;
+  } catch (error) {
+    console.error('스크랩 데이터를 불러오는데 오류가 발생했습니다 :', error);
+    return []; // 오류 발생 시 빈 배열 반환
   }
 };
 
