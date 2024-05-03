@@ -48,15 +48,18 @@
 }
 
 /* 결과화면 박스들 */
- .result-wapper{
+ .result-wrapper{
     display:flex;
-    flex-direction: row;
+    justify-content: center;
     flex-wrap : wrap;
-    width: 100%;
-    margin:10% 3%;
-    justify-content: right; /* 결과 박스들을 가운데 정렬합니다. */
-    max-height: 100%; /* .section-box 내부의 최대 높이로 설정 */
-    overflow-y: auto; /*세로 스크롤이 필요할 때만 스크롤이 표시됨*/
+    /* flex-direction: row;
+    flex-wrap : wrap;
+    width: 80%;
+
+    margin:10% 3%; */
+    /* justify-content: center; 결과 박스들을 가운데 정렬합니다. */
+    /* max-height: 100%; .section-box 내부의 최대 높이로 설정 */
+    /* overflow-y: auto; 세로 스크롤이 필요할 때만 스크롤이 표시됨 */
   } 
 
 .result{
@@ -70,6 +73,7 @@
   overflow: hidden; /* 내부 컨텐츠를 넘어가는 부분을 숨김 */
   position: relative;
   padding-bottom: 0;
+  flex: 0 0 16%; /* 한 줄에 5개의 결과를 표시하기 위해 20%의 너비 할당 */
  }
 .result_img_div{
     text-align: center;
