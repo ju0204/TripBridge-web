@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
 import { sendRequest, sendScrap, deleteScrap, fetchScrap } from '../../../api/filter';
 import image from './img/no_img.jpg';
-import HeartButton from './heart';
+import  HeartImg  from "./img/scrap.png";
+import  EmptyHeartImg  from "./img/empty_scrap.png";
+import White from "./img/white-background.png";
 import { useLocation } from 'react-router-dom';
 import './result.css';
 
@@ -46,14 +48,14 @@ const handleScrap = async (place, address, longitude, latitude) => {
     console.log('result 스크랩데이터:', data); // 데이터를 콘솔에 출력
     let scrapId = null; // scrapId 변수를 선언하고 초기값을 null로 설정합니다.
 
-data.forEach(item => {
-    console.log('id 값:', item.id);
-    // isScraped가 true이고 item.place와 place, item.address와 address가 모두 일치할 때 scrapId 값을 설정합니다.
-    if (isScraped && item.place === place && item.address === address) {
-        scrapId = item.id;
-    }
-});
-    if (isScraped) {
+    data.forEach(item => {
+        console.log('id 값:', item.id);
+        // isScraped가 true이고 item.place와 place, item.address와 address가 모두 일치할 때 scrapId 값을 설정합니다.
+        if (isScraped && item.place === place && item.address === address) {
+            scrapId = item.id;
+        }
+    });
+        if (isScraped) {
 
       await deleteScrap(scrapId);
       // 스크랩 해제 후 상태 업데이트
@@ -99,9 +101,12 @@ data.forEach(item => {
                 <div className="result_img_div">
                   <img src={post.image || image} className="result_img" alt={post.place || "이미지 없음"} />
                 </div>
-                <HeartButton 
-                  onClick={() => handleScrap(post.place, post.address, post.longitude, post.latitude)}
-                />
+                <button onClick={() => handleScrap(post.place, post.address, post.longitude, post.latitude)} className="scrapbutton">
+                  {scrapedPosts.some(scrapedPost => scrapedPost.place === post.place && scrapedPost.address === post.address)
+                    ? <div><img className="scrap_img"src={HeartImg} alt="Heart Filled" /><img className="white-background" src={White}/></div>
+                    : <div><img className="empetyscrap_img"src={EmptyHeartImg} alt="Heart Outline" /><img className="white-background" src={White}/></div>
+                  }
+                </button>
                 <h5 className="result_title">{post.place || "제목 없음"}</h5>
               </div>
             ))}

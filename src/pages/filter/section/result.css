@@ -124,8 +124,8 @@
   margin-top:3px;
   border: 1px solid black;
   position: absolute; /* 상위 요소에 대해 절대 위치로 설정 */
-  top: 10px; /* 상위 요소의 위쪽에서 10px 떨어진 위치에 배치 */
-  right: 10px; /* 상위 요소의 오른쪽에서 10px 떨어진 위치에 배치 */
+  top: 0px; /* 상위 요소의 위쪽에서 10px 떨어진 위치에 배치 */
+  right: 0px; /* 상위 요소의 오른쪽에서 10px 떨어진 위치에 배치 */
   border-radius: 50% ;
  }
 
@@ -153,4 +153,46 @@
 
 .pagination1 button:hover {
   font-weight: bold;
+}
+
+/*스크랩 버튼*/
+.scrapbutton {
+  width: 5%; /* 수정된 너비 */
+  height:40px;
+  cursor: pointer;
+  margin-right:3.5px;
+  margin-top:7.5px;
+  position: absolute; /* 상위 요소에 대해 절대 위치로 설정 */
+  top: 10px; /* 상위 요소의 위쪽에서 10px 떨어진 위치에 배치 */
+  right: 10px; /* 상위 요소의 오른쪽에서 10px 떨어진 위치에 배치 */
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 50%; /* 원 모양으로 만듭니다. */
+  border: none; /* 테두리를 제거합니다. */
+  outline: none; /* 포커스 효과를 제거합니다. */
+}
+
+.scrapbutton:hover {
+  background-color: rgba(0, 0, 0, 0); /* 호버 시 배경색을 초기화합니다. */
+}
+
+img.scrap_img {
+  width:25px;
+  cursor: pointer;
+  margin-right:3.5px;
+  margin-top:7.5px;
+  position: absolute; /* 상위 요소에 대해 절대 위치로 설정 */
+  top: 0px; /* 상위 요소의 위쪽에서 10px 떨어진 위치에 배치 */
+  right: 0px; /* 상위 요소의 오른쪽에서 10px 떨어진 위치에 배치 */
+  z-index: 1;
+}
+
+img.empetyscrap_img{
+  width:25px;
+  cursor: pointer;
+  margin-right:3.5px;
+  margin-top:7.5px;
+  position: absolute; /* 상위 요소에 대해 절대 위치로 설정 */
+  top: 0px; /* 상위 요소의 위쪽에서 10px 떨어진 위치에 배치 */
+  right: 0px; /* 상위 요소의 오른쪽에서 10px 떨어진 위치에 배치 */
+  z-index: 1;
 }
