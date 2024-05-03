@@ -25,10 +25,13 @@ const TripPostList = () => {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
 
-  // yyyy-mm-dd 형식으로 날짜 포맷팅하는 함수
+  // 날짜 형식화 함수
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toISOString().split('T')[0];
+    const year = date.getFullYear();
+    let month = (date.getMonth() + 1).toString().padStart(2, '0'); // 월은 0부터 시작하므로 +1, 두 자리로 포맷
+    let day = date.getDate().toString().padStart(2, '0'); // 두 자리로 포맷
+    return `${year}-${month}-${day}`;
   };
 
   // 페이지네이션 클릭

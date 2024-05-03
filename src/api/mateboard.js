@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://3.35.115.71:8080';
+const BASE_URL = 'http://localhost:8080'
 
 
 //메이트 게시물 불러오는 함수
@@ -11,7 +11,7 @@ export const showMatePost = async () => {
       id: post.id,
       title: post.title,
       user : post.userEntity ? post.userEntity.nickname : 'Unknown',
-      date: post.created_at
+      date: post.createdAt
     }));
   } catch (error) {
     console.error('게시물 불러오기 오류:', error);
@@ -29,7 +29,7 @@ export const getMatePostDetail = async (id) => {
       title: response.data.title,
       content: response.data.content,
       user : response.data.userEntity ? response.data.userEntity.nickname : 'Unknown',
-      date: response.data.created_at
+      date: response.data.createdAt
     };
   } catch (error) {
     console.error('게시글 상세 정보 불러오기 오류:', error);
