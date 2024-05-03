@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
-import { sendRequest, sendScrap, deleteScrap } from '../../../api/filter';
+import { sendRequest, sendScrap, deleteScrap, fetchScrap } from '../../../api/filter';
 import image from './img/no_img.jpg';
 import HeartButton from './heart';
 import { useLocation } from 'react-router-dom';
@@ -10,14 +10,7 @@ const Result = () => {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 15;
-
-  // Load scrapped items from local storage on component mount and when currentPage changes
-  useEffect(() => {
-    const savedPosts = JSON.parse(localStorage.getItem('scrappedPosts'));
-    if (savedPosts) {
-      setPosts(savedPosts);
-    }
-  }, [currentPage]);
+  const [scrapedPosts, setScrapedPosts] = useState([]);
 
   const location = useLocation();
   const { selectedAreas, selectedTourType, selectedCategory, selectedCategoryMiddle, selectedCategoryThird} = location.state;
@@ -26,64 +19,62 @@ const Result = () => {
     const fetchData = async () => {
       try {
         const resultData = await sendRequest(selectedAreas, selectedTourType, selectedCategory, selectedCategoryMiddle, selectedCategoryThird);
-        // Add 'liked' property to each item
-        const postsWithLiked = resultData.map(post => ({ ...post, liked: false }));
-        setPosts(postsWithLiked);
+        setPosts(resultData);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('데이터 가져오기 오류_result.js:', error);
       }
     };
 
     fetchData();
-  }, [selectedAreas, selectedTourType, selectedCategory, selectedCategoryMiddle, selectedCategoryThird, currentPage]);
+  }, [selectedAreas, selectedTourType, selectedCategory, selectedCategoryMiddle, selectedCategoryThird, currentPage]); // currentPage를 의존성 배열에 추가하여 페이지가 변경될 때마다 데이터를 다시 불러옴
 
-  const handleScrap = async (place, address, longitude, latitude) => {
-    try {
-      const scrapData = {
-        place: place,
-        address: address,
-        longitude: longitude,
-        latitude: latitude
-      };
-  
-      console.log('스크랩 요청 데이터:', scrapData);
-  
-      await sendScrap(scrapData);
-  
-      // 스크랩 상태를 해당 포스트에 업데이트
-      setPosts(posts =>
-        posts.map(post => {
-          if (post.place === place && post.address === address) {
-            return { ...post, liked: !post.liked };
-          }
-          return post;
-        })
-      );
-  
-      // 로컬 스토리지에서 기존에 스크랩된 항목 가져오기
-      const existingScrappedPosts = JSON.parse(localStorage.getItem('scrappedPosts')) || [];
-  
-      // 새로운 스크랩 항목 추가
-      const newScrappedPost = {
-        place: place,
-        address: address,
-        longitude: longitude,
-        latitude: latitude,
-        liked: true
-      };
-  
-      // 기존에 스크랩된 항목과 새로운 항목 합치기
-      const updatedScrappedPosts = [...existingScrappedPosts, newScrappedPost];
-  
-      // 로컬 스토리지에 업데이트된 스크랩된 항목 저장
-      localStorage.setItem('scrappedPosts', JSON.stringify(updatedScrappedPosts));
-  
-    } catch (error) {
-      console.error('스크랩 요청 에러:', error);
+  // 스크랩(좋아요) 버튼 클릭 시 실행되는 함수
+const handleScrap = async (place, address, longitude, latitude) => {
+  try {
+    const scrapData = {
+      place: place,
+      address: address,
+      longitude: longitude,
+      latitude: latitude
+    };
+
+    console.log('스크랩 요청 데이터:', scrapData);
+
+    // 이미 스크랩된 게시물인지 확인
+    const isScraped = scrapedPosts.some(post => post.place === place && post.address === address);
+    const data = await fetchScrap();
+    console.log('result 스크랩데이터:', data); // 데이터를 콘솔에 출력
+    let scrapId = null; // scrapId 변수를 선언하고 초기값을 null로 설정합니다.
+
+data.forEach(item => {
+    console.log('id 값:', item.id);
+    // isScraped가 true이고 item.place와 place, item.address와 address가 모두 일치할 때 scrapId 값을 설정합니다.
+    if (isScraped && item.place === place && item.address === address) {
+        scrapId = item.id;
     }
-  };
-  
-  
+});
+    if (isScraped) {
+
+      await deleteScrap(scrapId);
+      // 스크랩 해제 후 상태 업데이트
+      setScrapedPosts(scrapedPosts.filter(post => !(post.place === place && post.address === address)));
+    } else {
+      await sendScrap(scrapData);
+      // 스크랩 후 상태 업데이트
+      setScrapedPosts([...scrapedPosts, { place, address }]);
+    }
+
+    // 게시물을 고유하게 식별할 수 있는 속성을 사용하여 게시물의 liked 상태를 업데이트
+    setPosts(posts.map(post => {
+      if (post.place === place && post.address === address) {
+        return { ...post, liked: !post.liked };
+      }
+      return post;
+    }));
+  } catch (error) {
+    console.error('스크랩 요청 오류:', error);
+  }
+};
 
   // 현재 페이지의 게시물 가져오기
   const indexOfLastPost = currentPage * postsPerPage;
@@ -109,7 +100,6 @@ const Result = () => {
                   <img src={post.image || image} className="result_img" alt={post.place || "이미지 없음"} />
                 </div>
                 <HeartButton 
-                  like={post.liked}
                   onClick={() => handleScrap(post.place, post.address, post.longitude, post.latitude)}
                 />
                 <h5 className="result_title">{post.place || "제목 없음"}</h5>

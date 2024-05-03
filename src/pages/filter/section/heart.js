@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import  HeartImg  from "./img/scrap.png";
 import  EmptyHeartImg  from "./img/empty_scrap.png";
 import White from "./img/white-background.png";
 
 import './result.css'
 
-const HeartButton = ({ defaultLike, onClick }) => {
-    const [like, setLike] = useState(defaultLike);
+const HeartButton = ({ onClick }) => {
+    const [like, setLike] = useState(false);
   
     const handleClick = () => {
       setLike(prevLike => !prevLike); // 클릭할 때마다 상태를 토글함
@@ -29,10 +28,6 @@ const HeartButton = ({ defaultLike, onClick }) => {
     );
   };
   
-  HeartButton.propTypes = {
-    defaultLike: PropTypes.bool.isRequired, // 초기 클릭 상태
-    onClick: PropTypes.func.isRequired, // 클릭 이벤트에 대한 콜백 함수
-  };
   
   export default HeartButton;
 
