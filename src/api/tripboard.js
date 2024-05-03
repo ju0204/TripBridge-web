@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const BASE_URL = 'http://localhost:8080';
 
+
 //여행 게시판 글 불러오기
 export const showTripPost = async () => {
     try {
@@ -91,7 +92,7 @@ const getToken = () => {
   return sessionStorage.getItem('accessToken');
 };
 
-//글작성하기
+//글 작성하기(이미지포함)
 export const savePostWithImage = async (formData) => {
   try {
     const token = getToken();
@@ -136,6 +137,7 @@ export const saveComment = async (commentData) => {
   }
 };
 
+//글 삭제
 export const deletePost = async(postId) => {
   try {
     const token = getToken();
@@ -155,3 +157,23 @@ export const deletePost = async(postId) => {
   }
 };
 
+// 댓글 삭제 함수
+export const deleteComment = async (commentId) => {
+  try {
+    const token = getToken();
+    if (!token) {
+      console.error('로그인이 필요합니다.');
+      return;
+    }
+
+    const response = await axios.delete(`${BASE_URL}/trip/comment/${commentId}`, {
+      headers: {
+        Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+      }
+    });
+    return response.data; // 서버로부터의 응답 데이터를 반환
+  } catch (error) {
+    console.error('댓글 삭제 실패:', error);
+    throw error; // 에러를 호출자에게 다시 던짐
+  }
+};

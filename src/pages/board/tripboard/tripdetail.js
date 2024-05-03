@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getTripPostDetail, saveComment, getComments, deletePost } from '../../../api/tripboard';
+import { getTripPostDetail, saveComment, getComments, deletePost, deleteComment } from '../../../api/tripboard';
 import { useParams, useNavigate } from 'react-router-dom';
 import './tripdetail.css';
 import ImageModal from './imageModal';
@@ -46,16 +46,25 @@ const TripDetail = () => {
     }, [postId]);
 
 
-      //게시글 삭제
-      const handleDeletePost = async () => {
-        try {
-          await deletePost(postId);
-          console.log('게시글이 성공적으로 삭제되었습니다.');
-          navigate('/mateboard');
-        } catch (error) {
-          console.error('게시글 삭제 중 오류 발생:', error);
-        }
-      };
+    const handleDeletePost = async () => {
+      try {
+          const shouldDelete = window.confirm('게시글을 삭제하시면 다시 복구할 수 없습니다.\n정말 게시글을 삭제하시겠습니까?');
+          if (shouldDelete) {
+              // 해당 게시글의 댓글들을 불러와서 삭제합니다.
+              const commentsData = await getComments(postId);
+              for (const comment of commentsData) {
+                  await deleteComment(comment.id);
+              }
+              // 게시글 삭제
+              await deletePost(postId);
+              console.log('게시글과 댓글이 성공적으로 삭제되었습니다.');
+              navigate('/tripboard');
+          }
+      } catch (error) {
+          console.error('게시글 또는 댓글 삭제 중 오류 발생:', error);
+      }
+  };
+  
 
     const handleChangeComment = (e) => {
         const { value } = e.target;
@@ -118,16 +127,31 @@ const TripDetail = () => {
                 parent_comment_id: parentId,
             };
             await saveComment(commentData, { headers: { Authorization: `Bearer ${token}` } });
-            console.log('답글이 성공적으로 작성되었습니다.');
+            console.log('대댓글 작성 성공');
             const updatedComments = await getComments(postId);
             setCommentList(updatedComments);
             setReplyingToContent('');
             setReplyingToId(null);
             setReplyingToUser('');
         } catch (error) {
-            console.error('답글 작성 중 오류 발생:', error);
+            console.error('대댓글 작성 중 오류 발생:', error);
         }
     };
+
+    
+  const handleDeleteComment = async (commentId) => {
+    try {
+      const shouldDelete = window.confirm('정말로 이 댓글을 삭제하시겠습니까?');
+      if (shouldDelete) {
+        await deleteComment(commentId);
+        console.log('댓글이 성공적으로 삭제되었습니다.');
+        const updatedComments = await getComments(postId);
+        setCommentList(updatedComments);
+      }
+    } catch (error) {
+      console.error('댓글 삭제 중 오류 발생:', error);
+    }
+  };
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -167,30 +191,35 @@ const TripDetail = () => {
 
         return Object.entries(commentGroups).map(([depth, comments]) => (
             <div key={depth}>
-                {comments.map((comment, index) => (
-                    <div key={index} className={`comment-container depth-${depth} ${isNewComment ? 'new-comment' : ''}`}>
-                        <div className="comment-box">
-                            <div className="info">
-                                {comment.user} &nbsp;&nbsp;|&nbsp;&nbsp; {formatCommentDate(comment.date)}
-                                <button type="button" onClick={() => handleReply(comment.id, comment.user)}>답글</button>
-                            </div>
-                            <div className="content-box">{comment.content}</div>
+              {comments.map((comment, index) => (
+                <div key={index} className={`comment-container depth-${depth} ${isNewComment ? 'new-comment' : ''}`}>
+                  <div className="comment-box">
+                    <>
+                      <div className="info">
+                        <span>{comment.user} | {formatCommentDate(comment.date)}</span>
+                        <div>
+                          <button type="button" onClick={() => handleDeleteComment(comment.id)}>삭제</button>
+                          <button type="button" onClick={() => handleReply(comment.id, comment.user)}>답글</button>
                         </div>
-                        {replyingToId === comment.id && (
-                            <form onSubmit={(e) => handleSubmitReply(e, comment.id)}>
-                                <textarea
-                                    value={replyingToContent}
-                                    onChange={handleChangeReplyContent}
-                                    placeholder={`@${replyingToUser}`}
-                                ></textarea>
-                                <button type="submit">답글 작성</button>
-                            </form>
-                        )}
-                        {comment.children && renderComments(comment.children)}
-                    </div>
-                ))}
+                      </div>
+                      <div className="content-box">{comment.content}</div>
+                    </>
+                  </div>
+                  {replyingToId === comment.id && (
+                    <form onSubmit={(e) => handleSubmitReply(e, comment.id)}>
+                      <textarea
+                        value={replyingToContent}
+                        onChange={handleChangeReplyContent}
+                        placeholder={`@${replyingToUser}`}
+                      ></textarea>
+                      <button type="submit">답글 작성</button>
+                    </form>
+                  )}
+                  {comment.children && renderComments(comment.children)}
+                </div>
+              ))}
             </div>
-        ));
+          ));
     };
 
     return (
@@ -213,7 +242,7 @@ const TripDetail = () => {
                     <div className="trippost-content">{post && post.content}</div>
                 </div>
                 {post && (
-        <div className="delete-button">
+        <div className="action-buttons">
           <button onClick={handleDeletePost}>삭제</button>
         </div>
       )}

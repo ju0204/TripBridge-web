@@ -18,12 +18,10 @@ export const signup = async (userData) => {
 export const login = async (userData) => {
   const saveToken = (token) => {
     sessionStorage.setItem('accessToken', token);
-    console.log('Saved Access Token:', token);
   };
   try {
     const response = await axios.post(`${BASE_URL}/user/login`, userData);
     const accessToken = response.data.data.accessToken;
-    console.log('api_user', response.data.data)
     saveToken(accessToken); 
     return response.data; // 요청에 대한 응답 데이터 반환
   } catch (error) {

@@ -35,7 +35,6 @@
   border: 1px solid #cecece;
   background-color: rgb(255, 255, 255);
   border-radius: 15px;
-  margin-top: 15px;
   padding: 15px; /* 내용 상자의 패딩을 증가시킵니다 */
   overflow-y: auto; /* 내용이 상자를 벗어날 경우 스크롤바를 표시합니다 */
   font-family: 'Noto Sans KR', sans-serif;
@@ -194,7 +193,8 @@
 .comment-container .info {
   font-family: 'Noto Sans KR', sans-serif;
   color: #757575;
-  font-size: 15px;
+  font-size: 14px;
+  margin-left: 5px;
   display: flex; /* 요소들을 플렉스 박스로 설정합니다. */
   justify-content: space-between; /* 요소들을 좌우로 최대한으로 분배하여 정렬합니다. */
   align-items: center; /* 요소들을 수직 가운데 정렬합니다. */

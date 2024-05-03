@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './addmatepost.css';
 import { savePost } from '../../../api/mateboard';
 
@@ -19,7 +19,7 @@ const AddMatePost = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPostData({ ...postData, [name]: value });
-    setErrorMessage(''); // 에러 메시지를 초기화합니다.
+    setErrorMessage('');
   };
 
   const handleSubmit = async (e) => {
@@ -42,7 +42,7 @@ const AddMatePost = () => {
         }
         await savePost(
           {
-            postId : postData.user_id,
+            postId: postData.user_id,
             title: postData.title,
             content: postData.content
           },
@@ -61,26 +61,29 @@ const AddMatePost = () => {
     }
   };
 
-  const handleCancel = () => {
-    setShowModal(false);
-    navigate('mateboard');
+const handleCancel = () => {
+  setShowModal(true); // 모달 표시
+};
+
+  
+  const handleCloseModal = () => {
+    setShowModal(false); // 모달창 닫기
   };
 
-  const handleCloseModal = () => {
-    setShowModal(false);
+  const handleConfirmCancel = () => {
+    handleCloseModal(); // 모달창 닫기
+    navigate('/mateboard'); // 게시판으로 이동
   };
 
   return (
-    <div>
+    <div className="add-mate-post-container">
       {showModal && (
         <div className="modal">
           <div className="modal-content">
             작성 중인 글이 전부 사라집니다. <br />
             <b>정말 취소하시겠습니까?</b>
             <div className="modal-button">
-              <Link to="/mateboard">
-                <button>확인</button>
-              </Link>
+              <button onClick={handleConfirmCancel}>확인</button>
               <button onClick={handleCloseModal}>취소</button>
             </div>
           </div>
