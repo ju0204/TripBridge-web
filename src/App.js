@@ -23,6 +23,7 @@ const App = () => {
   // Function to handle logout
   const handleLogout = () => {
     sessionStorage.removeItem('accessToken');
+    sessionStorage.removeItem('nickname');
     setIsLoggedIn(false);
     setNickname('');
     navigate('/');
@@ -48,7 +49,7 @@ const App = () => {
   // 로그인 상태를 세션 스토리지에 저장
   useEffect(() => {
     if (isLoggedIn) {
-      sessionStorage.setItem('accessToken', 'your_access_token_here');
+      // sessionStorage.setItem('accessToken' );
       sessionStorage.setItem('nickname', nickname);
     }
   }, [isLoggedIn, nickname]);

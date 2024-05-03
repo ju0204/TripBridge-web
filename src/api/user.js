@@ -17,7 +17,8 @@ export const signup = async (userData) => {
 //로그인 요청을 보내는 함수
 export const login = async (userData) => {
   const saveToken = (token) => {
-    localStorage.setItem('accessToken', token);
+    sessionStorage.setItem('accessToken', token);
+    console.log('Saved Access Token:', token);
   };
   try {
     const response = await axios.post(`${BASE_URL}/user/login`, userData);
@@ -35,7 +36,7 @@ export const login = async (userData) => {
 export const logout = async () => {
   try {
     // 토큰 제거
-    localStorage.removeItem('accessToken');
+    sessionStorage.removeItem('accessToken');
     const response = await axios.post(`${BASE_URL}/user/logout`);
     return response.data; // 요청에 대한 응답 데이터 반환
   } catch (error) {

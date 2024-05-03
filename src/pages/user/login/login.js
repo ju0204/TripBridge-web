@@ -27,8 +27,8 @@ const Login = ({ setIsLoggedIn, setNickname }) => {
         const userData = await login(formData);
         setIsLoggedIn(true);
         setNickname(userData.data.nickname);
-        localStorage.setItem('accessToken', userData.data.accessToken); // Store the access token in local storage
-        localStorage.setItem('nickname', userData.data.nickname); // Store the nickname in local storage
+        sessionStorage.setItem('accessToken', userData.data.accessToken); // Store the access token in local storage
+        sessionStorage.setItem('nickname', userData.data.nickname); // Store the nickname in local storage
         console.log('로그인 성공!', userData);
         console.log('로그인 성공! w', userData.result);
         console.log('로그인 성공! w', userData.data.nickname);
