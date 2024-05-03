@@ -5,7 +5,7 @@ import './tripdetail.css';
 import ImageModal from './imageModal';
 
 const getToken = () => {
-    return localStorage.getItem('accessToken');
+    return sessionStorage.getItem('accessToken');
 }
 
 const TripDetail = () => {

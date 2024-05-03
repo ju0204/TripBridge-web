@@ -3,7 +3,7 @@ import axios from 'axios';
 const BASE_URL = 'http://3.35.115.71:8080';
 
 const getToken = () => {
-  return localStorage.getItem('accessToken');
+  return sessionStorage.getItem('accessToken');
 };
 
 export const fetchLocations = async () => {

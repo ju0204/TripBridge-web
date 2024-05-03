@@ -4,7 +4,7 @@ import './addmatepost.css';
 import { savePost } from '../../../api/mateboard';
 
 const getToken = () => {
-  return localStorage.getItem('accessToken');
+  return sessionStorage.getItem('accessToken');
 };
 
 const AddMatePost = () => {

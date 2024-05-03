@@ -90,7 +90,7 @@ export const getComments = async (id) => {
 
 // 토큰 가져오기 함수
 const getToken = () => {
-  return localStorage.getItem('accessToken');
+  return sessionStorage.getItem('accessToken');
 };
 
 

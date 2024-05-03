@@ -88,7 +88,7 @@ export const getComments = async (id) => {
 
 //토큰가져오기
 const getToken = () => {
-  return localStorage.getItem('accessToken');
+  return sessionStorage.getItem('accessToken');
 };
 
 //글작성하기

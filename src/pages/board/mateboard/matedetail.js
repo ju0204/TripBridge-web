@@ -4,7 +4,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import './matedetail.css';
 
 const getToken = () => {
-  return localStorage.getItem('accessToken');
+  return sessionStorage.getItem('accessToken');
 };
 
 const MateDetail = () => {
