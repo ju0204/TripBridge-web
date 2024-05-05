@@ -66,6 +66,8 @@ const getToken = () => {
   return sessionStorage.getItem('accessToken');
 };
 
+
+
 //스크랩 요청 보내기
 export const sendScrap = async (scrapData) => {
   try {
@@ -80,6 +82,7 @@ export const sendScrap = async (scrapData) => {
         Authorization: `Bearer ${token}` // 헤더에 토큰 추가
       }
     });
+    console.log('요청 보내고 받은 데이터',response);
     return response.data; // 서버로부터의 응답 데이터를 반환
   } catch (error) {
     console.error('스크랩 요청 실패:', error);

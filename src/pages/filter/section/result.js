@@ -13,6 +13,9 @@ const Result = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 15;
   const [scrapedPosts, setScrapedPosts] = useState([]);
+  const [showScrapedPopup, setShowScrapedPopup] = useState(false);
+  const [showAlreadyScrapedPopup, setShowAlreadyScrapedPopup] = useState(false);
+
 
   const location = useLocation();
   const { selectedAreas, selectedTourType, selectedCategory, selectedCategoryMiddle, selectedCategoryThird} = location.state;
@@ -41,7 +44,7 @@ const Result = () => {
   }, []); // 컴포넌트가 처음 마운트될 때만 실행되도록 빈 의존성 배열 추가
 
 
-  // 스크랩(좋아요) 버튼 클릭 시 실행되는 함수
+// 스크랩(좋아요) 버튼 클릭 시 실행되는 함수
 const handleScrap = async (place, address, longitude, latitude) => {
   try {
     const scrapData = {
@@ -52,35 +55,13 @@ const handleScrap = async (place, address, longitude, latitude) => {
     };
 
     console.log('스크랩 요청 데이터:', scrapData);
-
-    // 이미 스크랩된 게시물인지 확인
-    const isScraped = scrapedPosts.some(post => post.place === place && post.address === address);
-    const data = await fetchScrap();
-    console.log('result 스크랩데이터:', data); // 데이터를 콘솔에 출력
-    let scrapId = null; // scrapId 변수를 선언하고 초기값을 null로 설정합니다.
-
-    data.forEach(item => {
-        console.log('id 값:', item.id);
-        // isScraped가 true이고 item.place와 place, item.address와 address가 모두 일치할 때 scrapId 값을 설정합니다.
-        if (isScraped && item.place === place && item.address === address) {
-            scrapId = item.id;
-        }
-    });
-        if (isScraped) {
-
-      await deleteScrap(scrapId);
-      // 스크랩 해제 후 상태 업데이트
-      setScrapedPosts(scrapedPosts.filter(post => !(post.place === place && post.address === address)));
-    } else {
-      await sendScrap(scrapData);
-      // 스크랩 후 상태 업데이트
-      setScrapedPosts([...scrapedPosts, { place, address }]);
+    if (scrapedPosts.some(post => post.place === place && post.address === address)) {
+      setShowAlreadyScrapedPopup(true);
+      return;
     }
-
-    // 세션 스토리지에 스크랩된 게시물 상태 저장
-      sessionStorage.setItem('scrapedPosts', JSON.stringify([...scrapedPosts, { place, address }])); // 현재 상태에 새로운 스크랩 게시물 추가
-
-
+    await sendScrap(scrapData);
+    setShowScrapedPopup(true);
+    
     // 게시물을 고유하게 식별할 수 있는 속성을 사용하여 게시물의 liked 상태를 업데이트
     setPosts(posts.map(post => {
       if (post.place === place && post.address === address) {
@@ -90,6 +71,7 @@ const handleScrap = async (place, address, longitude, latitude) => {
     }));
   } catch (error) {
     console.error('스크랩 요청 오류:', error);
+    setShowAlreadyScrapedPopup(true);
   }
 };
 
@@ -117,10 +99,7 @@ const handleScrap = async (place, address, longitude, latitude) => {
                   <img src={post.image || image} className="result_img" alt={post.place || "이미지 없음"} />
                 </div>
                 <button onClick={() => handleScrap(post.place, post.address, post.longitude, post.latitude)} className="scrapbutton">
-                  {scrapedPosts.some(scrapedPost => scrapedPost.place === post.place && scrapedPost.address === post.address)
-                    ? <div><img className="scrap_img"src={HeartImg} alt="Heart Filled" /><img className="white-background" src={White}/></div>
-                    : <div><img className="empetyscrap_img"src={EmptyHeartImg} alt="Heart Outline" /><img className="white-background" src={White}/></div>
-                  }
+                <div><img className="scrap_img"src={HeartImg} alt="Heart Filled" /></div>
                 </button>
                 <h5 className="result_title">{post.place || "제목 없음"}</h5>
               </div>
@@ -160,7 +139,30 @@ const handleScrap = async (place, address, longitude, latitude) => {
           </div>
         </div>
       </motion.div>
+
+      {/* Scraped Popup */}
+      {showScrapedPopup && (
+        <div className="popup">
+          <div className="popup-inner">
+            <p>스크랩되었습니다!</p>
+            <button onClick={() => setShowScrapedPopup(false)}>확인</button>
+          </div>
+        </div>
+      )}
+
+      {/* Already Scraped Popup */}
+      {showAlreadyScrapedPopup && (
+        <div className="popup">
+          <div className="popup-inner">
+            <p>이미 스크랩된 내용입니다.</p>
+            <button onClick={() => setShowAlreadyScrapedPopup(false)}>확인</button>
+          </div>
+        </div>
+      )}
     </div>
+    
+
+    
   );
 };
 
