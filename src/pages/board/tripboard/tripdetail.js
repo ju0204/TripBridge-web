@@ -46,25 +46,25 @@ const TripDetail = () => {
     }, [postId]);
 
 
-    const handleDeletePost = async () => {
-      try {
-          const shouldDelete = window.confirm('게시글을 삭제하시면 다시 복구할 수 없습니다.\n정말 게시글을 삭제하시겠습니까?');
-          if (shouldDelete) {
-              // 해당 게시글의 댓글들을 불러와서 삭제합니다.
-              const commentsData = await getComments(postId);
-              for (const comment of commentsData) {
-                  await deleteComment(comment.id);
-              }
-              // 게시글 삭제
-              await deletePost(postId);
-              console.log('게시글과 댓글이 성공적으로 삭제되었습니다.');
-              navigate('/tripboard');
-          }
-      } catch (error) {
-          console.error('게시글 또는 댓글 삭제 중 오류 발생:', error);
-      }
-  };
-  
+const handleDeletePost = async () => {
+    try {
+        const shouldDelete = window.confirm('게시글을 삭제하시면 다시 복구할 수 없습니다.\n정말 게시글을 삭제하시겠습니까?');
+        if (shouldDelete) {
+            // 해당 게시글의 댓글들을 먼저 삭제합니다.
+            const commentsData = await getComments(postId);
+            for (const comment of commentsData) {
+                await deleteComment(comment.id);
+            }
+            // 댓글 삭제 후 게시글 삭제
+            await deletePost(postId);
+            console.log('게시글과 댓글이 성공적으로 삭제되었습니다.');
+            navigate('/tripboard');
+        }
+    } catch (error) {
+        console.error('게시글 또는 댓글 삭제 중 오류 발생:', error);
+    }
+};
+
 
     const handleChangeComment = (e) => {
         const { value } = e.target;
