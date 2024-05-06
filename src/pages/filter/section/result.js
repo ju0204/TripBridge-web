@@ -60,7 +60,7 @@ const handleScrap = async (place, address, longitude, latitude) => {
       return;
     }
     await sendScrap(scrapData);
-    setShowScrapedPopup(true);
+    setShowScrapedPopup(true)
     
     // 게시물을 고유하게 식별할 수 있는 속성을 사용하여 게시물의 liked 상태를 업데이트
     setPosts(posts.map(post => {
@@ -142,9 +142,9 @@ const handleScrap = async (place, address, longitude, latitude) => {
 
       {/* Scraped Popup */}
       {showScrapedPopup && (
-        <div className="popup">
-          <div className="popup-inner">
-            <p>스크랩되었습니다!</p>
+        <div className="popup-result">
+          <div className="popup-inner1">
+            <p>   스크랩되었습니다!   </p>
             <button onClick={() => setShowScrapedPopup(false)}>확인</button>
           </div>
         </div>
@@ -152,8 +152,8 @@ const handleScrap = async (place, address, longitude, latitude) => {
 
       {/* Already Scraped Popup */}
       {showAlreadyScrapedPopup && (
-        <div className="popup">
-          <div className="popup-inner">
+        <div className="popup-result">
+          <div className="popup-inner2">
             <p>이미 스크랩된 내용입니다.</p>
             <button onClick={() => setShowAlreadyScrapedPopup(false)}>확인</button>
           </div>
