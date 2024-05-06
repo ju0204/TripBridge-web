@@ -202,7 +202,7 @@ img.empetyscrap_img{
 }
 
 /*팝업*/
-.popup {
+.popup-result {
   position: fixed;
   top: 0;
   left: 0;
@@ -214,18 +214,19 @@ img.empetyscrap_img{
   align-items: center;
 }
 
-.popup-inner {
+.popup-inner1 {
   background-color: white;
-  padding: 20px;
+  padding: 40px;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
 }
 
-.popup-inner p {
-  margin-bottom: 10px;
+.popup-inner1 p {
+  margin-bottom: 25px;
 }
 
-.popup-inner button {
+.popup-inner1 button {
   padding: 8px 16px;
   background-color: #007bff;
   color: white;
@@ -234,6 +235,31 @@ img.empetyscrap_img{
   cursor: pointer;
 }
 
-.popup-inner button:hover {
+.popup-inner1 button:hover {
+  background-color: #0056b3;
+}
+
+.popup-inner2 {
+  background-color: white;
+  padding: 30px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.popup-inner2 p {
+  margin-bottom: 20px;
+}
+
+.popup-inner2 button {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.popup-inner2 button:hover {
   background-color: #0056b3;
 }
