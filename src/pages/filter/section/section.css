@@ -24,11 +24,11 @@
 
 .section-box {
   position: relative;
-    margin-top: 3%; /* 예시로 위쪽에 여백 추가 */
+    margin-top: 0%; /* 예시로 위쪽에 여백 추가 */
     margin-bottom: 2.5%;
     padding: 10px;
     border: 1px solid black;
-    height: 85vh;
+    height: 60vh;
     width: 55%;
     background-color: white;
     align-items: center;
@@ -37,7 +37,7 @@
 
 .section1-button-container {
   position: absolute; /* 절대 위치로 설정 */
-  bottom: 40px; /* 아래에 위치하되, 조금 위로 올려줌 */
+  bottom: 20px; /* 아래에 위치하되, 조금 위로 올려줌 */
   left: 0; /* 좌측에 위치하도록 설정 */
   width: 100%; /* 가로 폭을 100%로 설정 */
   text-align: center; /* 가운데 정렬 */  z-index: 1; /* 다른 요소 위에 오도록 설정 */
