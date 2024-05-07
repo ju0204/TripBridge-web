@@ -105,8 +105,6 @@ export const sendSelectedLocations = async (location, routeorder) => {
 };
 
 
-
-
 // Kakao Maps API 키
 const API_KEY = '41269fe83b2600b01b0dc41c4d81616e';
 
