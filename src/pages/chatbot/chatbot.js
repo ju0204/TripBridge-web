@@ -1,78 +1,87 @@
-import React, { useState, useEffect  } from 'react';
+import React, { useState, useEffect } from 'react';
 import ChatBot from 'react-simple-chatbot';
-import { sendRequest, sendScrap, deleteScrap, fetchScrap } from '../../api/filter';
 import { ThemeProvider } from 'styled-components';
-import './chatbot.css';
+import axios from 'axios';
 
-// 커스터마이징
 const theme = {
-    background: '#f5f8fb',
-    fontFamily: 'Helvetica Neue',
-    headerBgColor: '#8F7CEE',
-    headerFontColor: '#fff',
-    headerFontSize: '15px',
-    botBubbleColor: '#8F7CEE',
-    botFontColor: '#fff',
-    userBubbleColor: '#fff',
-    userFontColor: '#4a4a4a',
-  };
+  background: '#f5f8fb',
+  fontFamily: 'Helvetica Neue',
+  headerBgColor: '#8F7CEE',
+  headerFontColor: '#fff',
+  headerFontSize: '15px',
+  botBubbleColor: '#8F7CEE',
+  botFontColor: '#fff',
+  userBubbleColor: '#fff',
+  userFontColor: '#4a4a4a',
+};
 
+const Chatbot = () => {
+  const [locations, setLocations] = useState([]);
 
-
-  const Chatbot = () => {
-    const [scrapedPosts, setScrapedPosts] = useState([]);
-
-    useEffect(() => {
-      const fetchScrapedPosts = async () => {
-        try {
-          const data = await fetchScrap();
-          console.log('스크랩된 게시물 데이터:', data);
-          setScrapedPosts(data); // 데이터를 상태에 설정
-        } catch (error) {
-          console.error('스크랩된 게시물 데이터를 불러오는 중 오류 발생:', error);
+  useEffect(() => {
+    const fetchLocations = async () => {
+      try {
+        const userToken = sessionStorage.getItem('accessToken');
+        if (!userToken) {
+          throw new Error('유저를 찾을 수 없습니다');
         }
-      };
-  
-      fetchScrapedPosts(); // 데이터 불러오기
-    }, []); // 빈 배열을 전달하여 컴포넌트가 처음 렌더링될 때만 실행
-    
-    
-    
-
-      return (
-        <ThemeProvider theme={theme}>
-          <ChatBot
-            steps={[
-              {
-                id: '1',
-                message: 'What number I am thinking?',
-                trigger: '2',
-              },
-              {
-                id: '2',
-    
-                options: [
-                  { value: 1, label: 'Number 1', trigger: '4', options: [{ value: 4, label: '옵션안의 옵션1', trigger: '4' }] },
-                  { value: 2, label: 'Number 2', trigger: '3' },
-                  { value: 3, label: 'Number 3', trigger: '3' },
-                ],
-    
-              },
-              {
-                id: '3',
-                message:'hihi',
-                trigger: '2',
-              },
-              {
-                id: '4',
-                message:'4',
-                // component: <Scrap />,
-                
-              },
-            ]}
-          />
-        </ThemeProvider>
-      );
+        const response = await axios.get('http://3.35.115.71:8080/scrap', {
+          headers: {
+            Authorization: `Bearer ${userToken}`
+          }
+        });
+        setLocations(response.data);
+      } catch (error) {
+        console.error('위치 데이터를 불러오는데 오류가 발생했습니다:', error);
+      }
     };
-    
-    export default Chatbot;
+
+    fetchLocations();
+  }, []);
+
+  useEffect(() => {
+    console.log('옵션:', locations.map(location => ({
+      value: location.place,
+      label: location.place,
+      trigger: '3',
+    })));
+  }, [locations]);
+
+  const steps = [
+    {
+      id: '1',
+      message: 'Select an option:',
+      trigger: '2',
+    },
+    {
+      id: '2',
+      options: [
+        { value: '1', label: '1. 주변 관광지 추천해줘', trigger: '4' },
+        { value: '2', label: '2. 장소 상세 정보 알려줘', trigger: '4' },
+      ],
+    },
+    {
+      id: '3',
+      message: 'You selected {{previousValue}}',
+      end: true,
+    },
+    {
+      id: '4',
+      options: locations.map(location => ({
+        value: location.place,
+        label: location.place,
+        trigger: '3',
+      })),
+    },
+  ];
+
+  return (
+    <ThemeProvider theme={theme}>
+      {locations.length > 0 && (
+        <ChatBot steps={steps} />
+      )}
+    </ThemeProvider>
+  );
+};
+
+export default Chatbot;
