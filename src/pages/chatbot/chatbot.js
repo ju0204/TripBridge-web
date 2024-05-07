@@ -50,29 +50,59 @@ const Chatbot = () => {
   const steps = [
     {
       id: '1',
-      message: 'Select an option:',
+      message: '환영합니다! (첫 멘트)',
       trigger: '2',
     },
     {
       id: '2',
       options: [
-        { value: '1', label: '1. 주변 관광지 추천해줘', trigger: '4' },
+        { value: '1', label: '1. 주변 관광지 추천해줘', trigger: '3' },
         { value: '2', label: '2. 장소 상세 정보 알려줘', trigger: '4' },
+        { value: '4', label: '4. 자유 질문', trigger: '7' },
+        { value: '5', label: '5. 질문끝내기', trigger: 'end' },
       ],
     },
     {
       id: '3',
-      message: 'You selected {{previousValue}}',
-      end: true,
+      options: locations.map(location => ({
+        value: location.place,
+        label: location.place,
+        trigger: '5',
+      })),
     },
     {
       id: '4',
       options: locations.map(location => ({
         value: location.place,
         label: location.place,
-        trigger: '3',
+        trigger: '6',
       })),
     },
+    {
+      id: '5',
+      message: '1번 질문 답: You selsect place {previousValue}',
+      trigger:'2'
+    },
+    {
+      id: '6',
+      message: '2번 질문 답: You selsect place {previousValue}',
+      trigger:'2'
+    },
+    {id: '7',
+          user: true,
+          trigger:'8',
+    },
+    {
+      id: '8',
+      message: 'You qusetion {previousValue}',
+      trigger:'2'
+    },
+    {
+      id: 'end',
+      message: '질문을 마치겠습니다. ',
+      end:true
+    },
+
   ];
 
   return (
