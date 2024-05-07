@@ -164,7 +164,7 @@ const ShowMap = () => {
       <div className="scrap-container">
         <div className="scrap-title">🔖스크랩 목록</div>
         <p/>
-        <b>처음 장소를 첫번째로 선택해주세요.</b>
+        <b>처음의 장소를 첫번째로 선택해주세요.</b>
         <ul className="scrap-list">
           {locations.map((location, index) => (
             <li key={index} onClick={() => handleLocationClick(location)} className={selectedLocations.includes(location) ? 'selected' : ''}>
