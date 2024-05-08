@@ -40,6 +40,7 @@ export const sendSelectedLocations = async (location, routeorder) => {
       throw new Error('유저를 찾을 수 없습니다');
     }
 
+
     // 클라이언트에서 서버로 보낼 데이터
     const postData = {
       id: location.id,  
@@ -74,6 +75,27 @@ export const sendSelectedLocations = async (location, routeorder) => {
       body: JSON.stringify(postData)
     });
 
+    await fetch(`${BASE_URL}/route/chat`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${userToken}`
+      }
+    });
+
+    console.log('이전 데이터를 삭제하는 DELETE 요청을 "/route/chat" 엔드포인트에 보냈습니다.');
+
+   // 다른 데이터베이스로 데이터를 전송합니다. (추가)
+    await fetch(`${BASE_URL}/route/chat`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(postData)
+    });
+
+    console.log('정렬된 데이터를 다른 데이터베이스의 "/route/chat" 엔드포인트에 서버에 전송했습니다.')
+
     // "/route" 엔드포인트에서 업데이트된 데이터 가져오기
     const responseData = await fetch(`${BASE_URL}/route`, {
       method: 'GET',
@@ -87,18 +109,6 @@ export const sendSelectedLocations = async (location, routeorder) => {
 
     // 받은 데이터를 route_order 값을 기준으로 정렬합니다.
     routeData = routeData.sort((a, b) => a.route_order - b.route_order);
-
-    // 다른 데이터베이스로 데이터를 전송합니다. (추가)
-    await fetch(`${BASE_URL}/route/chat`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${userToken}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(routeData)
-    });
-
-    console.log('정렬된 데이터를 다른 데이터베이스의 "/route/chat" 엔드포인트에 서버에 전송했습니다.')
 
     // "/route" 엔드포인트의 데이터 삭제
     await fetch(`${BASE_URL}/route`, {
