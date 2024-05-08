@@ -36,6 +36,27 @@ const Chatbot = () => {
       }
     };
 
+    // const handleChat = async () => {
+    //   try {
+    //     // 질문을 서버로 POST 요청으로 보냄
+    //     const questionResponse = await axios.post('YOUR_QUESTION_API_ENDPOINT', {
+    //       location.place
+    //     });
+    
+    //     // 서버에서 받은 질문에 대한 답변을 가져오기 위해 질문 ID를 추출
+    //     const questionId = questionResponse.data.questionId;
+    
+    //     // 질문 ID를 사용하여 답변을 서버로 GET 요청으로 보냄
+    //     const answerResponse = await axios.get(`YOUR_ANSWER_API_ENDPOINT/${questionId}`);
+    
+    //     const answer = answerResponse.data.answer;
+    //     console.log('답변:', answer);
+    //   } catch (error) {
+    //     console.error('API와의 통신 중 에러가 발생했습니다:', error);
+    //   }
+    // };
+    
+
     fetchLocations();
   }, []);
 

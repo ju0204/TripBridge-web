@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchLocations, searchLocations, sendSelectedLocations } from '../../api/kakaomap';
+import Chatbot from '../chatbot/chatbot';
 import './showmap.css';
 
 const ShowMap = () => {
@@ -9,6 +10,7 @@ const ShowMap = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [map, setMap] = useState(null);
   const [selectedMarkers, setSelectedMarkers] = useState([]);
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
 
   const infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
 
@@ -160,6 +162,9 @@ const ShowMap = () => {
       </div>
       <div className="map-container">
         <div id="kakao-map"></div>
+        <div className={`chatbot-container ${isChatbotOpen ? 'open' : ''}`}>
+          {isChatbotOpen && <Chatbot />}
+        </div>
       </div>
       <div className="scrap-container">
         <div className="scrap-title">🔖스크랩 목록</div>
@@ -174,6 +179,7 @@ const ShowMap = () => {
           ))}
         </ul>
         <button onClick={handleRecommendRoute}>동선 추천</button>
+        <button onClick={() => setIsChatbotOpen(!isChatbotOpen)}>챗봇 {isChatbotOpen ? '닫기' : '열기'}</button>
       </div>
     </div>
   );

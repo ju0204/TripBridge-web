@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://3.35.115.71:8080';
+// const BASE_URL = 'http://3.35.115.71:8080';
+const BASE_URL ='http://localhost:8080'
 
 const getToken = () => {
   return sessionStorage.getItem('accessToken');
@@ -87,6 +88,19 @@ export const sendSelectedLocations = async (location, routeorder) => {
     // 받은 데이터를 route_order 값을 기준으로 정렬합니다.
     routeData = routeData.sort((a, b) => a.route_order - b.route_order);
 
+    // 다른 데이터베이스로 데이터를 전송합니다. (추가)
+    await fetch(`${BASE_URL}/route/chat`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(routeData)
+    });
+
+    console.log('정렬된 데이터를 다른 데이터베이스의 "/route/chat" 엔드포인트에 서버에 전송했습니다.')
+
+    // "/route" 엔드포인트의 데이터 삭제
     await fetch(`${BASE_URL}/route`, {
       method: 'DELETE',
       headers: {
@@ -103,6 +117,7 @@ export const sendSelectedLocations = async (location, routeorder) => {
     throw error;
   }
 };
+
 
 
 // Kakao Maps API 키
