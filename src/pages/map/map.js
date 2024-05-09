@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchLocations, searchLocations, sendSelectedLocations } from '../../api/kakaomap';
+import { fetchLocations, searchLocations, sendSelectedLocations, sendRouteDataToDatabase } from '../../api/kakaomap';
 import Chatbot from '../chatbot/chatbot';
 import './showmap.css';
 
@@ -109,11 +109,16 @@ const ShowMap = () => {
         drawAllRoutes(allRouteData);
   
         console.log('모든 동선 처리 및 그리기 완료');
+  
+        // 수정된 부분: routeData를 다른 데이터베이스로 전송
+        await sendRouteDataToDatabase(allRouteData);
+  
       } catch (error) {
         console.error('오류 발생:', error);
       }
     }
   };
+  
   
   const drawAllRoutes = (allRouteData) => {   
     allRouteData.forEach((routeData) => {
