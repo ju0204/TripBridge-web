@@ -44,10 +44,11 @@ const Filter = ({ isLoggedIn, nickname }) => {
           <div className="img">
             <img className="map" src={map} alt="map" />
           </div>
+          </motion.div>
           <div className="glassButton">
             <Link className="button-start" to='/section' onClick={handleStartClick}>start</Link>
           </div>
-        </motion.div>
+
       </motion.div>
       {showPopup && (
         <div className="popup">

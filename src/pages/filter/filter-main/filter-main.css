@@ -7,23 +7,6 @@
  font-family: 'Noto Sans KR', sans-serif;
 } */
 
-/* .filtermain-container{
-    overflow: hidden;
-    height: 105vh;
-}
-
-.container-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    max-width: 100%;
-    margin-top:100px;
-    background-color:rgba(231, 240, 255, 0.7);
-    overflow-y: hidden; /* 위와 아래 스크롤 숨기기 */
-/* } */
-
 .filtermain-container{
   overflow: hidden;
   height: 100vh;
