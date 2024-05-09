@@ -31,11 +31,8 @@ export const sendRequest = async (selectedAreas, selectedTourType, selectedCateg
       // 응답 데이터 확인
       const responseData = response.data;
 
-      
       console.log('Success_send:', responseData);
       
-
-
       // 응답데이터 추출 
       const places = responseData.response.body.items.item;
       const processedData = places.map(place => ({

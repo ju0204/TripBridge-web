@@ -18,7 +18,7 @@
     height: 100%;
     max-width: 100%;
     margin-top:100px;
-    background-color:rgba(221, 248, 248, 0.6); /* 배경색을 빨간색으로 설정 */
+    background-color:rgba(231, 240, 255, 0.7);
     overflow-y: hidden; /* 위와 아래 스크롤 숨기기 */
 }
 
