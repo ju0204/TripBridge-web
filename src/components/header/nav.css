@@ -13,9 +13,11 @@ font-style: normal; */
 .navbar {
   background-color: white;
   border-bottom-style: solid;
-  border-bottom-color: black;
+  border-bottom-color:rgb(198, 198, 198);
+  border-bottom-width: 1px; /* 굵기를 조정할 값 입력 */
   padding: 10px;
 }
+
 
 .nav-list-1 {
   list-style-type: none;

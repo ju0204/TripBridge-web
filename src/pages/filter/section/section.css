@@ -18,30 +18,31 @@
     height: 100%;
     max-width: 100%;
     margin-top:100px;
-    background-color:rgba(221, 248, 248, 0.6); /* 배경색을 설정 */
+    background-color:rgba(231, 240, 255, 0.7);
     overflow-y: hidden; /* 위와 아래 스크롤 숨기기 */
 }
 
 .section-box {
   position: relative;
-    margin-top: 0%; /* 예시로 위쪽에 여백 추가 */
-    margin-bottom: 2.5%;
+    margin-top: 5%; /* 예시로 위쪽에 여백 추가 */
+    margin-bottom: 2%;
     padding: 10px;
     border: 1px solid black;
-    height: 60vh;
-    width: 55%;
+    height: 75vh;
+    width: 65%;
     background-color: white;
     align-items: center;
     position: relative; /* section-box를 relative로 설정 */
 }
 
 .section1-button-container {
-  position: absolute; /* 절대 위치로 설정 */
+  position: relative; /* 절대 위치로 설정 */
   bottom: 20px; /* 아래에 위치하되, 조금 위로 올려줌 */
   left: 0; /* 좌측에 위치하도록 설정 */
   width: 100%; /* 가로 폭을 100%로 설정 */
   text-align: center; /* 가운데 정렬 */  z-index: 1; /* 다른 요소 위에 오도록 설정 */
-  margin-top: 200px;
+  margin-top: 60px;
+  margin-bottom:20px;
 }
 
 button.section1-button {

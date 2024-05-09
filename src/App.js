@@ -75,6 +75,7 @@ const App = () => {
         <Route path="/section2" element={<Section2 />} />
         <Route path="/result" element={<Result/>} />
         <Route path="/chatbot" element={<Chatbot/>} />
+
       </Routes>
     </div>
   );

@@ -11,7 +11,7 @@ import './result.css';
 const Result = () => {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 15;
+  const postsPerPage = 10;
   const [scrapedPosts, setScrapedPosts] = useState([]);
   const [showScrapedPopup, setShowScrapedPopup] = useState(false);
   const [showAlreadyScrapedPopup, setShowAlreadyScrapedPopup] = useState(false);
@@ -86,7 +86,7 @@ const handleScrap = async (place, address, longitude, latitude) => {
   return (
     <div className="result-container">
       <motion.div className="result-container-box" animate={{ y: -100 }}>
-        <div className="section-box">
+        <div className="result-section-box">
           <div className="section-text-box">
             <p className="text">여행지 추천 장소 입니다!</p>
           </div>
