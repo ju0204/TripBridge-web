@@ -45,7 +45,6 @@ const Filter = ({ isLoggedIn, nickname }) => {
             <img className="map" src={map} alt="map" />
           </div>
           <div className="glassButton">
-            {/* onClick 이벤트 핸들러에 링크 이동 전에 handleStartClick 함수 실행 */}
             <Link className="button-start" to='/section' onClick={handleStartClick}>start</Link>
           </div>
         </motion.div>
