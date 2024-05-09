@@ -8,6 +8,10 @@ const getToken = () => {
     return sessionStorage.getItem('accessToken');
 }
 
+const getLoggedInUser = () => {
+    return sessionStorage.getItem('nickname');
+  };
+
 const TripDetail = () => {
     const { postId } = useParams();
     const [post, setPost] = useState(null);
@@ -19,6 +23,7 @@ const TripDetail = () => {
     const [modalImageUrl, setModalImageUrl] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
+    const loggedInUser = getLoggedInUser();
 
     //게시글
     useEffect(() => {
@@ -198,7 +203,8 @@ const handleDeletePost = async () => {
                       <div className="info">
                         <span>{comment.user} | {formatCommentDate(comment.date)}</span>
                         <div>
-                          <button type="button" onClick={() => handleDeleteComment(comment.id)}>삭제</button>
+                        <button type="button" onClick={() => handleDeleteComment(comment.id)} style={{ display: loggedInUser === comment.user ? 'inline-block' : 'none' }}>삭제</button>
+
                           <button type="button" onClick={() => handleReply(comment.id, comment.user)}>답글</button>
                         </div>
                       </div>
@@ -241,11 +247,11 @@ const handleDeletePost = async () => {
                 <div className="content-box">
                     <div className="trippost-content">{post && post.content}</div>
                 </div>
-                {post && (
-        <div className="action-buttons">
-          <button onClick={handleDeletePost}>삭제</button>
-        </div>
-      )}
+                {loggedInUser && post && loggedInUser === post.user && (
+            <div className="action-buttons">
+                <button onClick={handleDeletePost}>삭제</button>
+            </div>
+            )}
             </div>
             <div className="comment-header">댓글</div>
             <div className="comment-section">

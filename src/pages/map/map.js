@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchLocations, searchLocations, sendSelectedLocations, sendRouteDataToDatabase } from '../../api/kakaomap';
+import { fetchLocations, searchLocations, sendSelectedLocations, sendRouteDataToDatabase, deleteScrap } from '../../api/kakaomap';
 import Chatbot from '../chatbot/chatbot';
 import './showmap.css';
 
@@ -26,6 +26,18 @@ const ShowMap = () => {
 
     fetchData();
   }, []);
+
+  const handleDeleteLocation = async (location) => {
+    try {
+      await deleteScrap(location.id);
+      setLocations(prevLocations => prevLocations.filter(prevLocation => prevLocation.id !== location.id));
+      setSelectedLocations(prevLocations => prevLocations.filter(prevLocation => prevLocation.id !== location.id));
+      setSelectedMarkers(prevMarkers => prevMarkers.filter(marker => marker.id !== location.id));
+      console.log('스크랩이 삭제되었습니다.');
+    } catch (error) {
+      console.error('스크랩 삭제 중 오류 발생:', error);
+    }
+  };
 
   useEffect(() => {
     const handleSearch = async () => {
@@ -180,6 +192,7 @@ const ShowMap = () => {
             <li key={index} onClick={() => handleLocationClick(location)} className={selectedLocations.includes(location) ? 'selected' : ''}>
               <strong>{location.place}</strong>
               <p>{location.address}</p>
+              <button className ="delete-button" onClick={() => handleDeleteLocation(location)}>삭제</button>
             </li>
           ))}
         </ul>
