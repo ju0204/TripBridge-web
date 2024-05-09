@@ -33,6 +33,7 @@
   font-weight: bold;
   margin-bottom: 10px;
   letter-spacing: 2px;
+  margin-top: 0px;
 }
 
 .text-user {
@@ -56,7 +57,7 @@
 
 .glassButton {
   background: #353535;
-  padding: 10px 20px;
+  padding: 20px 35px;
   width : 100px;
   text-align: center;
   border-radius: 30px;
@@ -66,7 +67,7 @@
 .button-start {
   text-decoration: none;
   color: #fff;
-  font-size: 18px;
+  font-size: 43px;
   font-weight: bold;
 }
 
@@ -105,4 +106,7 @@
 
 .popup-content button:hover {
   background: #1e8449;
+}
+.map {
+  width: 500px;
 }

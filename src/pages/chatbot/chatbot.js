@@ -64,29 +64,29 @@ const Chatbot = () => {
 
     const sendRequest1 = async (previousValue) => {
       console.log('sendRequest1 함수가 호출되었습니다. 전달된 값:', previousValue);
-      // 이전 값을 백엔드로 전송
       try {
-        // 이전 값을 JSON 형식으로 변환하여 보냄
         const response = await axios.post(`${BASE_URL}/chatBot/question1`, {
           choicePlace: previousValue
         });
         
         const data = response.data;
-      console.log('Data from backend:', data);
-  
-      setMessage1(data); // 응답 데이터를 상태에 설정
-    } catch (error) {
-      console.error('Error sending data to backend:', error);
-      throw error; // 에러 처리
-    }
-  };
-
+        console.log('Data from backend:', data);
+      
+        // 상태를 업데이트합니다.
+        setMessage1(data);
+    
+      
+      
+      } catch (error) {
+        console.error('Error sending data to backend:', error);
+        throw error;
+      }
+    };
   //userEffect
   useEffect(() => {
     console.log('Message1:', message1);
   }, [message1]);
-
-
+  
   const steps = [
     {
       id: '1',
@@ -107,25 +107,24 @@ const Chatbot = () => {
       options: locations.map(location => ({
         value: location.place,
         label: location.place,
-        trigger: '선택옵션1' // trigger를 logSelectedOption으로 설정
+        trigger: '선택옵션1' 
       })),
     },
     {
-      id: '선택옵션1', // logSelectedOption 이벤트 핸들러 정의
-      message: ({ previousValue }) => {
-        console.log('Selected option:', previousValue); // 선택된 옵션을 콘솔에 출력
-        // 선택된 옵션을 백엔드로 전송
-        sendRequest1(previousValue)
-          .then(() => {
-            console.log('Send request successfully!');
-          })
-          .catch(error => {
-            console.error('Error sending request:', error);
-          });
-        return `${previousValue}를 선택했습니다`; // 메시지 반환
+      id: '선택옵션1', 
+      message: async ({ previousValue }) => {
+        console.log('Selected option:', previousValue);
+        try {
+          await sendRequest1(previousValue);
+          console.log('선택옵션1 Send request successfully!');
+          // 응답을 받은 후에 적절한 메시지를 반환합니다.
+          return `${previousValue}를 선택했습니다.`;
+        } catch (error) {
+          console.error('Error sending request:', error);
+          return '죄송합니다. 서버와의 통신 중 문제가 발생했습니다.';
+        }
       },
-      trigger: 'answer1', // 다음 단계로 이동하는 트리거
-      
+      trigger:'answer1',
     },
     {
       id: 'answer1',
@@ -133,7 +132,7 @@ const Chatbot = () => {
         console.log('message1 상태:', message1); // message1 상태 콘솔에 출력
         return message1; // message1 상태를 출력하고, 없으면 빈 문자열 반환
       },
-      trigger: '2',
+      trigger: '2', // 다음 단계로 넘어가는 트리거를 설정합니다.
     },
 
     {
