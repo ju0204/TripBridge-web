@@ -17,12 +17,9 @@
   }
   .chatbot-container {
     position: absolute; /* 절대 위치로 설정하여 부모 컨테이너 기준으로 위치 조정 */
-    top: 0; /* 지도와 맞닿도록 상단에 위치 */
-    right: 0; /* 우측에 위치 */
-    max-height: 100vh;
     background-color: #fff;
     box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
-    z-index: 10; /* 지도 아래에 위치하도록 설정 */
+    z-index: 30; /* 지도 위에 위치하도록 설정 */
     transition: transform 0.3s ease;
   }
 
@@ -33,7 +30,7 @@
 
   #kakao-map {
     width: 100%; /* 지도의 너비를 화면 너비의 100%로 설정 */
-    height: 100%; /* 지도의 높이를 400px로 설정 */
+    height: 100%;
     margin-bottom: 20px; /* 지도 아래에 여백 추가 */
   }
   

@@ -63,7 +63,7 @@ const App = () => {
         <Route path="/" element={<Main />} />
         <Route path="/login" element={<LogIn setIsLoggedIn={setIsLoggedIn} setNickname={setNickname} />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/contact" element={<MapPage />}/>
+        <Route path="/map" element={<MapPage />}/>
         <Route path="/mateboard" element={<MateBoard />} />
         <Route path="/mateboard/:postId" element={<MateDetail />} />
         <Route path="/mate" element={<AddMatePost />} />

@@ -57,7 +57,18 @@ const ShowMap = () => {
     handleSearch();
   }, [searchQuery]);
 
+  const fitBoundsToRoutes = () => {
+    if (map && selectedMarkers.length > 0) {
+      const bounds = new window.kakao.maps.LatLngBounds();
   
+      selectedMarkers.forEach(marker => {
+        bounds.extend(new window.kakao.maps.LatLng(marker.latitude, marker.longitude));
+      });
+  
+      // Fit the bounds to the map
+      map.setBounds(bounds);
+    }
+  };
 
   const handleLocationClick = async (location) => {
     try {
@@ -142,7 +153,6 @@ const ShowMap = () => {
     }
   };
   
-  
   const handleRecommendRoute = async () => {
     if (selectedMarkers.length > 0) {
       try {
@@ -156,13 +166,16 @@ const ShowMap = () => {
   
         // 수정된 부분: routeData를 다른 데이터베이스로 전송
         await sendRouteDataToDatabase(allRouteData);
-  
         setRouteDrawn(true); // 동선이 그려졌음을 표시
+
+        // 모든 동선 지점을 포함하는 경계를 지도에 맞춰서 보여줍니다.
+        fitBoundsToRoutes();
       } catch (error) {
         console.error('오류 발생:', error);
       }
     }
   };
+  
   
   
   const drawAllRoutes = (allRouteData) => {   
@@ -209,7 +222,7 @@ const ShowMap = () => {
   return (
     <div className="show-map-container">
       <div className="search-container">
-        <input type="text" placeholder="검색하고 싶은 장소를 입력해주세요" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+        <input type="text" placeholder="검색하고 싶은 장소를 입력해주세요." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
         <ul className="search-list">
           {searchResults.map((location, index) => (
             <li key={index} className={`search-result-item ${selectedLocations.includes(location) ? 'selected' : ''}`} onClick={() => handleSearchItemClick(location)}>
