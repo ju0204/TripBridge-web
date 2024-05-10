@@ -170,7 +170,7 @@ const ShowMap = () => {
         <input type="text" placeholder="검색하고 싶은 장소를 입력해주세요" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
         <ul className="search-list">
           {searchResults.map((location, index) => (
-            <li key={index} className="search-result-item" onClick={() => handleSearchItemClick(location)}>
+            <li key={index} className={`search-result-item ${selectedLocations.includes(location) ? 'selected' : ''}`} onClick={() => handleSearchItemClick(location)}>
               <strong>{location.place_name}</strong>
               <p>{location.address_name}</p>
             </li>
@@ -192,14 +192,17 @@ const ShowMap = () => {
             <li key={index} onClick={() => handleLocationClick(location)} className={selectedLocations.includes(location) ? 'selected' : ''}>
               <strong>{location.place}</strong>
               <p>{location.address}</p>
-              <button className ="delete-button" onClick={() => handleDeleteLocation(location)}>삭제</button>
+              <img src="/x.png" alt="Delete" className="delete-button" onClick={() => handleDeleteLocation(location)} />
             </li>
           ))}
         </ul>
+        <div className="scrap-buttons">
+        {/* 동선 추천과 챗봇 열고 닫기 버튼 */}
         <button onClick={handleRecommendRoute}>동선 추천</button>
         <button onClick={() => setIsChatbotOpen(!isChatbotOpen)}>챗봇 {isChatbotOpen ? '닫기' : '열기'}</button>
       </div>
     </div>
+  </div>
   );
 };
 

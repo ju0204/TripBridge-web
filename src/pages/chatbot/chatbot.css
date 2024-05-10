@@ -4,3 +4,27 @@
  font-family: 'Noto Sans KR', sans-serif;
 } */
 
+
+.custom-chatbot {
+    position: fixed;
+    bottom: 80px; /* 화면 하단과의 거리 조절 */
+    right: 20px; /* 화면 우측과의 거리 조절 */
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+  
+  /* 챗봇 메시지 스타일 */
+  .custom-chatbot .rsc-ts-bubble {
+    background-color: #343434; /* 배경 색상 설정 */
+    color: #fff; /* 텍스트 색상 설정 */
+  }
+
+  .custom-chatbot .rsc-os-option-element {
+    background-color: #343434; /* 옵션 버튼 배경 색상 설정 */
+    color: #fff; /* 옵션 버튼 텍스트 색상 설정 */
+  }
+
+  .custom-chatbot .rsc-header {
+    background-color: #343434; /* 상단 배너 배경 색상 설정 */
+    color: #fff; /* 상단 배너 텍스트 색상 설정 */
+  }
+  

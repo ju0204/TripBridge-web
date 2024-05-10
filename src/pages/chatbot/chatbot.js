@@ -1,21 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import ChatBot from 'react-simple-chatbot';
-// import { ThemeProvider } from 'styled-components';
 import axios from 'axios';
 
 import './chatbot.css'
 
-// const theme = {
-//   background: '#f5f8fb',
-//   fontFamily: 'Helvetica Neue',
-//   headerBgColor: '#8F7CEE',
-//   headerFontColor: '#fff',
-//   headerFontSize: '15px',
-//   botBubbleColor: '#8F7CEE',
-//   botFontColor: '#fff',
-//   userBubbleColor: '#fff',
-//   userFontColor: '#4a4a4a',
-// };
 
 const BASE_URL = 'http://localhost:8080';
 
@@ -183,12 +171,14 @@ const Chatbot = () => {
       {locations.length > 0 && (
         <ChatBot
           steps={steps}
-          className="chatbot"
-          // style={{
-          //   width: '700px', // 원하는 너비로 지정
-          //   height: 'auto', // 원하는 높이로 지정
-          // }}
+          className="custom-chatbot"
+          botAvatar="/bot.png"
+          style={{
+            width: '400px', // 원하는 너비로 지정
+            height: 'auto', // 원하는 높이로 지정
+          }}
         />
+
       )}
     </>
   );
