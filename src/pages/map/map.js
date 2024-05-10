@@ -69,11 +69,10 @@ const ShowMap = () => {
       map.setBounds(bounds);
     }
   };
-
   const handleLocationClick = async (location) => {
     try {
       const isAlreadySelected = selectedMarkers.some(marker => marker.id === location.id);
-  
+      
       if (isAlreadySelected) {
         // 이미 선택된 위치인 경우 해당 마커를 지우고 선택된 목록에서 제거합니다.
         const updatedMarkers = selectedMarkers.filter(marker => marker.id !== location.id);
@@ -102,6 +101,9 @@ const ShowMap = () => {
   
         marker.setMap(map);
         location.marker = marker; // 마커 객체를 location에 추가
+  
+        // 클릭한 마커의 위치로 지도를 이동시킵니다.
+        map.panTo(markerPosition);
       }
     } catch (error) {
       console.error('장소 정보를 서버로 전송하는 중 오류가 발생했습니다:', error);
@@ -117,6 +119,9 @@ const ShowMap = () => {
         // 이미 선택된 위치인 경우 해당 마커를 지우고 선택된 목록에서 제거합니다.
         const updatedMarkers = selectedMarkers.filter(marker => marker.id !== location.id);
         setSelectedMarkers(updatedMarkers);
+  
+        const updatedLocations = selectedLocations.filter(selectedLocation => selectedLocation.id !== location.id);
+        setSelectedLocations(updatedLocations);
   
         const markerToRemove = selectedMarkers.find(marker => marker.id === location.id);
         if (markerToRemove) {
@@ -147,6 +152,8 @@ const ShowMap = () => {
   
         marker.setMap(map);
         selectedLocation.marker = marker; // 마커 객체를 selectedLocation에 추가
+
+        map.panTo(markerPosition);
       }
     } catch (error) {
       console.error('장소 정보를 서버로 전송하는 중 오류가 발생했습니다:', error);
@@ -177,7 +184,6 @@ const ShowMap = () => {
   };
   
   
-  
   const drawAllRoutes = (allRouteData) => {   
     allRouteData.forEach((routeData) => {
       drawRoute(routeData);
@@ -196,6 +202,7 @@ const ShowMap = () => {
     polyline.setMap(map);
   };
 
+  //다시하기
   const handleReset = () => {
     setRouteDrawn(false); // 동선 그리기 상태 초기화
     setSelectedLocations([]); // 선택된 위치 초기화
@@ -205,6 +212,8 @@ const ShowMap = () => {
     window.location.reload();
   };
   
+
+  //기본맵
   const initializeMap = () => {
     const mapContainer = document.getElementById('kakao-map');
     const options = {
@@ -224,12 +233,13 @@ const ShowMap = () => {
       <div className="search-container">
         <input type="text" placeholder="검색하고 싶은 장소를 입력해주세요." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
         <ul className="search-list">
-          {searchResults.map((location, index) => (
-            <li key={index} className={`search-result-item ${selectedLocations.includes(location) ? 'selected' : ''}`} onClick={() => handleSearchItemClick(location)}>
-              <strong>{location.place_name}</strong>
-              <p>{location.address_name}</p>
-            </li>
-          ))}
+        {searchResults.map((location, index) => (
+  <li key={index} className={`search-result-item ${selectedLocations.some(selectedLocation => selectedLocation.place === location.place_name) ? 'selected' : ''}`} onClick={() => handleSearchItemClick(location)}>
+    <strong>{location.place_name}</strong>
+    <p>{location.address_name}</p>
+  </li>
+))}
+
         </ul>
       </div>
       <div className="map-container">

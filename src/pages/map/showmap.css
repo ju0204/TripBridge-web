@@ -143,8 +143,9 @@
   }
 
   .search-result-item.selected {
-    border: 2px solid #387eff; /* 선택된 항목에 대한 테두리 스타일 */
+    border: 2px solid #387eff;
   }
+  
   
   .search-list li strong {
     margin : 0px 5px;
