@@ -44,22 +44,6 @@ const Chatbot = () => {
 
   }, [locations]);
 
-    //보내는 함수 
-    const sendRequest1 = async (choicePlace) => {
-      console.log('sendRequest1 함수가 호출되었습니다. 선택된 장소:', choicePlace);
-      try {
-        const response = await axios.post(`${BASE_URL}/chatBot/question1`, {
-          choicePlace: choicePlace
-        });
-        const data = response.data;
-        console.log('Data from backend:', data);
-        return data;
-      } catch (error) {
-        console.error('Error sending data to backend:', error);
-        throw error;
-      }
-    };
-
     const Answer = ({ previousStep, triggerNextStep }) => {
       const [message1, setMessage1] = useState(null);
       const [loading, setLoading] = useState(true);
@@ -97,6 +81,46 @@ const Chatbot = () => {
     
       return null;
     }
+
+    const Answer2 = ({ previousStep, triggerNextStep }) => {
+      const [message2, setMessage2] = useState(null);
+      const [loading, setLoading] = useState(true);
+    
+      useEffect(() => {
+        const fetchData = async () => {
+          console.log("ANSWER 2", previousStep.value)
+          const previousValue = previousStep.value;
+          try {
+            // Send request to backend with previous value
+            const response = await axios.post(`${BASE_URL}/chatBot/question2`, {
+              choicePlace: previousValue
+            });
+            const data = response.data;
+            console.log('Data from backend:', data);
+            setMessage2(data);
+            setLoading(false);
+            // Move to next step
+            triggerNextStep();
+          } catch (error) {
+            console.error('Error sending data to backend:', error);
+            setLoading(false);
+          }
+        };
+    
+        fetchData();
+      }, [previousStep.value, triggerNextStep]);
+    
+      if (loading) {
+        return <p>Loading...</p>;
+      }
+    
+      if (message2 !== null) {
+        return <p>{message2}</p>;
+      }
+    
+      return null;
+    }
+    
     
   
   const steps = [
@@ -120,7 +144,6 @@ const Chatbot = () => {
         value: location.place,
         label: location.place,
         trigger: '선택옵션1',
-        action: () => sendRequest1(location.place) // 옵션 선택 시 서버로 요청 보내기
       })),
     },
     {
@@ -134,17 +157,14 @@ const Chatbot = () => {
       options: locations.map(location => ({
         value: location.place,
         label: location.place,
-        trigger: '선택옵션2' // trigger를 logSelectedOption으로 설정
+        trigger: '선택옵션2' // trigger를 선택옵션2로 설정
       })),
     },
     {
-      id: '선택옵션2', // logSelectedOption 이벤트 핸들러 정의
-      message: ({ steps, previousValue }) => {
-        const messageOfStep1 = steps['1'].message;
-        console.log('Selected option2:', messageOfStep1); // 선택된 옵션을 콘솔에 출력
-        return '{previousValue}를 선택했습니다'; // 메시지 반환
-      },
-      trigger: '2' // 다음 단계로 이동
+      id: '선택옵션2', // 선택옵션2 이벤트 핸들러 정의
+      component: <Answer2 />, // Answer2 컴포넌트로 변경
+      waitAction: true, // 서버 응답을 기다립니다.
+      trigger: '2', // 다음 단계로 이동
     },
     {
       id: '5',
