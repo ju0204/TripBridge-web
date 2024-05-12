@@ -7,7 +7,7 @@
 
 .custom-chatbot {
     position: fixed;
-    bottom: 80px; /* 화면 하단과의 거리 조절 */
+    bottom: 100px; /* 화면 하단과의 거리 조절 */
     right: 20px; /* 화면 우측과의 거리 조절 */
     font-family: 'Noto Sans KR', sans-serif;
   }
