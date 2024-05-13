@@ -108,9 +108,9 @@
   padding: 0 10px;
 }
 
-
 .scrapbutton {
   background: transparent;
+  border: none;
   color: #2c2c2c;  
   cursor: pointer;
   display: flex;
@@ -119,7 +119,6 @@
   padding: 10px;
   font-size: 30px;
 }
-
 .scrapbutton:hover {
   background: transparent;
 }
