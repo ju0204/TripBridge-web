@@ -86,9 +86,7 @@ const handleScrap = async (place, address, longitude, latitude) => {
     <div className="result-container">
       <motion.div className="result-container-box" animate={{ y: -100 }}>
         <div className="result-section-box">
-        <div className="section-text-box">
-            <p className="text">추천 관광지</p>
-          </div>
+        <div className="section-text-box">추천 관광지</div>
            {/* 백엔드에서 가져온 게시물 데이터를 표시하는 부분 */}
           <div className="result-wrapper">
             {currentPosts.map(post => (

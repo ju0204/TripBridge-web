@@ -129,11 +129,13 @@ const Chatbot = () => {
       useEffect(() => {
         const fetchData = async () => {
           console.log("ANSWER 3", previousStep.value)
-          const previousValue = previousStep.value;
           try {
+            const userToken = sessionStorage.getItem('accessToken');
             // Send request to backend with previous value
             const response = await axios.get(`${BASE_URL}/chatBot/question3`, {
-              // choicePlace: previousValue
+              headers: {
+                'Authorization': `Bearer ${userToken}` // yourAccessToken을 실제 토큰 값으로 대체해야 합니다.
+              },
             });
             const data = response.data;
             console.log('Data from backend:', data);
@@ -167,18 +169,17 @@ const Chatbot = () => {
     
       useEffect(() => {
         const fetchData = async () => {
-          // sessionStorage에서 accessToken 가져오기
-          const accessToken = sessionStorage.getItem('accessToken');
-          
-          console.log("ANSWER ", previousStep.value)
+          console.log("ANSWER4 ", previousStep.value)
           const previousValue = previousStep.value;
           try {
+            const userToken = sessionStorage.getItem('accessToken');
             const response = await axios.get(`${BASE_URL}/chatBot/question4`, {
-              // 헤더에 accessToken 추가
               headers: {
-                Authorization: `Bearer ${accessToken}`
+                'Authorization': `Bearer ${userToken}` // 여기서 'yourAccessToken'을 실제 토큰 값으로 대체해야 합니다.
               },
-              schedule: previousValue
+              params: {
+                schedule: previousValue // '몇박 며칠' 값 전달
+              }
             });
             const data = response.data;
             console.log('Data from backend:', data);
@@ -205,7 +206,6 @@ const Chatbot = () => {
     
       return null;
     }
-    
     
   
   const steps = [
@@ -268,8 +268,9 @@ const Chatbot = () => {
     },
     {id: '선택옵션4',
     component: <Answer4 />, 
-    waitAction: true, 
-    trigger: '2', // 다음 단계로 이동 
+      waitAction: true, 
+    trigger: '2', // 다음 단계로 이동
+      
     },
 
     {
@@ -298,4 +299,4 @@ const Chatbot = () => {
   );
 };
 
-export default Chatbot; 
+export default Chatbot;
