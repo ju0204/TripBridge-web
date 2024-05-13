@@ -16,15 +16,18 @@
   .custom-chatbot .rsc-ts-bubble {
     background-color: #343434; /* 배경 색상 설정 */
     color: #fff; /* 텍스트 색상 설정 */
+    font-family: 'Noto Sans KR', sans-serif;
   }
 
   .custom-chatbot .rsc-os-option-element {
     background-color: #343434; /* 옵션 버튼 배경 색상 설정 */
     color: #fff; /* 옵션 버튼 텍스트 색상 설정 */
+    font-family: 'Noto Sans KR', sans-serif;
   }
 
   .custom-chatbot .rsc-header {
     background-color: #343434; /* 상단 배너 배경 색상 설정 */
     color: #fff; /* 상단 배너 텍스트 색상 설정 */
+    font-family: 'Noto Sans KR', sans-serif;
   }
   
