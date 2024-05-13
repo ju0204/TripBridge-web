@@ -46,14 +46,14 @@ const Filter = ({ isLoggedIn, nickname }) => {
           </div>
           </motion.div>
           <div className="glassButton">
-            <Link className="button-start" to='/section' onClick={handleStartClick}>start</Link>
+            <Link className="button-start" to='/section' onClick={handleStartClick}>START</Link>
           </div>
 
       </motion.div>
       {showPopup && (
         <div className="popup">
           <div className="popup-content">
-            <p>로그인을 해야 합니다!</p>
+            <p>로그인 후 이용이 가능합니다!</p>
             <button onClick={handleClosePopup}>닫기</button>
           </div>
         </div>
