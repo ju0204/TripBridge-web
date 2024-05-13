@@ -2,6 +2,13 @@
 
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 
+@font-face {
+  font-family: 'JalnanGothic';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/JalnanGothic.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 /* .notosanskr * { 
  font-family: 'Noto Sans KR', sans-serif;
 } */
@@ -24,18 +31,18 @@
 }
 
 .section-text-box {
-  text-align: center;
-
+  
 }
 
 .text {
   font-size: 1.5rem;
-  font-weight: 500;
   letter-spacing: 2px;
-  font-family: 'Noto Sans KR', sans-serif;
   /* background-color: rgb(212, 212, 212);
-  padding: 5px 10px;
+  width : 200px;
+  padding: 8px 10px;
   border-radius: 30px; */
+  font-family: 'JalnanGothic';
+  margin-bottom: 30px;
 }
 
 .result-wrapper {
@@ -66,13 +73,26 @@
 .result_img_div {
   height: 200px;
   overflow: hidden;
+  display: flex; /* Flexbox 사용 */
+  align-items: center; /* 수직 가운데 정렬 */
+  justify-content: center; /* 수평 가운데 정렬 */
+  border-bottom: 1px solid #ccc;
 }
 
 .result_img {
+  display: block; /* 이미지를 블록 요소로 설정 */
   width: 100%;
   height: 100%;
   object-fit: cover;
+  margin: 0 auto; /* 수평 가운데 정렬 */
 }
+
+.result_img2 {
+  width: 30%;
+  height: auto;
+  color: #ccc;
+}
+
 
 .result-t {
   align-items: center;
@@ -86,10 +106,12 @@
 
 .result_title {
   font-size: 1.1rem;
+  font-weight: 500;
+  color:#2c2c2c;
 }
 
 .result_title2 {
-  font-size: 15px;
+  font-size: 14px;
   color: #757575;
   padding: 0 10px;
 }
@@ -135,8 +157,8 @@
   left: 50%;
   transform: translate(-50%, -50%);
   background-color:white;
-  padding: 20px;
-  border-radius: 5px;
+  border: 1px solid #b5b5b5;
+  padding: 10px;
 }
 
 .popup-inner1,
@@ -149,17 +171,18 @@
 .popup-inner1 p,
 .popup-inner2 p {
   font-size: 1.1rem;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .popup-inner1 button,
 .popup-inner2 button {
-  padding: 10px 20px;
+  padding: 5px 15px;
   background-color: #2f2f2f;
   color: #fff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  align-items: center;
 }
 
 .popup-inner1 button:hover,

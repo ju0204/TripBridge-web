@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
 import { sendRequest, sendScrap} from '../../../api/filter';
-import image from './img/no_img.jpg';
 import { useLocation } from 'react-router-dom';
 import { CiBookmarkCheck } from "react-icons/ci";
+import { MdOutlineImageNotSupported } from "react-icons/md";
 
 import './result.css';
 //세션 스토리지 부분 2개 
@@ -93,9 +93,13 @@ const handleScrap = async (place, address, longitude, latitude) => {
           <div className="result-wrapper">
             {currentPosts.map(post => (
               <div className="result" key={post.contentId}>
-                <div className="result_img_div">
-                  <img src={post.image || image} className="result_img" alt={post.place || "이미지 없음"} />
-                </div>
+              <div className="result_img_div">
+                {post.image ? (
+                  <img src={post.image} className="result_img" alt={post.place || "이미지 없음"} />
+                ) : (
+                  <MdOutlineImageNotSupported className="result_img2" />
+                )}
+              </div>
                 <button onClick={() => handleScrap(post.place, post.address, post.longitude, post.latitude)} className="scrapbutton">
                 <CiBookmarkCheck />
                 </button>
@@ -155,7 +159,7 @@ const handleScrap = async (place, address, longitude, latitude) => {
       {showAlreadyScrapedPopup && (
         <div className="popup-result">
           <div className="popup-inner2">
-            <p>이미 스크랩된 내용입니다.</p>
+            <p>이미 스크랩 된 장소입니다.</p>
             <button onClick={() => setShowAlreadyScrapedPopup(false)}>확인</button>
           </div>
         </div>
