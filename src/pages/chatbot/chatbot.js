@@ -76,7 +76,11 @@ const Chatbot = () => {
       }
     
       if (message1 !== null) {
-        return <p>{message1}</p>;
+        return (
+          <div className="custom-answer">
+            {message1}
+          </div>
+        );
       }
     
       return null;
@@ -115,7 +119,11 @@ const Chatbot = () => {
       }
     
       if (message2 !== null) {
-        return <p>{message2}</p>;
+        return (
+          <div className="custom-answer">
+            {message2}
+          </div>
+        );
       }
     
       return null;
@@ -134,7 +142,7 @@ const Chatbot = () => {
       options: [
         { value: '1', label: '1. 주변 관광지 추천해줘', trigger: '3' },
         { value: '2', label: '2. 장소 상세 정보 알려줘', trigger: '4' },
-        { value: '4', label: '4. 자유 질문', trigger: '7' },
+        { value: '3', label: '3. 이동 수단과 예상 비용', trigger: '5' },
         { value: '5', label: '5. 질문끝내기', trigger: 'end' },
       ],
     },
@@ -166,17 +174,7 @@ const Chatbot = () => {
       waitAction: true, // 서버 응답을 기다립니다.
       trigger: '2', // 다음 단계로 이동
     },
-    {
-      id: '5',
-      message: '1번 질문 답: You selsect place {previousValue}',
-      trigger:'2'
-    },
-    {
-      id: '6',
-      message: '2번 질문 답: You selsect place {previousValue}',
-      trigger:'2'
-    },
-    {id: '7',
+    {id: '5',
           user: true,
           trigger:'8',
     },
@@ -200,6 +198,7 @@ const Chatbot = () => {
           steps={steps}
           className="custom-chatbot"
           botAvatar="/bot.png"
+          // userAvatar="/your-image.png" // 사용자 이미지
           style={{
             width: '400px', // 원하는 너비로 지정
             height: 'auto', // 원하는 높이로 지정

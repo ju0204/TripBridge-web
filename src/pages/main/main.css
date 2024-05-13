@@ -30,12 +30,10 @@
   width: 100%; /* 너비를 100%로 설정하여 부모 요소에 맞춤 */
   margin: 0; /* 마진을 초기화하여 부모 요소와의 간격을 없앰 */
   padding: 0; /* 패딩을 초기화하여 내부 여백을 없앰 */
-  max-width: 100%;
 }
 
 .slider-item1 {
   width: 100%; /* 부모 요소인 .wrapper와 동일한 너비를 갖도록 설정 */
-  box-sizing: border-box; /* width가 콘텐츠 영역까지 포함되도록 설정 */
   text-align: center;
   background-color: #ecf7f7;
   margin: 0;
@@ -230,9 +228,7 @@
   margin-left: 150px;
   margin-right: 150px;
   /* box-shadow: 0 14px 28px rgba(0,0,0,0.25),  14px 0 35px rgba(36, 36, 36, 0.25); */
-  border-radius: 10px;
-  /* background-color: rgba(255, 255, 255, 0.1); 마지막끝이 투명색 */
-  
+  border-radius: 10x;
 }
 
 
@@ -304,10 +300,6 @@
   text-align: center;
 }
 
-/*footer*/
-.footer {
-  
-}
 
 .footer-trip {
   font-family: 'Noto Sans KR', sans-serif;
