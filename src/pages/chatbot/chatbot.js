@@ -4,8 +4,8 @@ import ChatBot from 'react-simple-chatbot';
 import axios from 'axios';
 
 import './chatbot.css'
-
-const BASE_URL = 'http://3.35.115.71:8080';
+const BASE_URL = 'http://localhost:8080';
+// const BASE_URL = 'http://3.35.115.71:8080';
 
 const Chatbot = () => {
   const [locations, setLocations] = useState([]);
@@ -122,47 +122,6 @@ const Chatbot = () => {
       return null;
     }
     
-    const Answer3 = ({ previousStep, triggerNextStep }) => {
-      const [message3, setMessage3] = useState(null);
-      const [loading, setLoading] = useState(true);
-    
-      useEffect(() => {
-        const fetchData = async () => {
-          console.log("ANSWER 3", previousStep.value)
-          try {
-            const userToken = sessionStorage.getItem('accessToken');
-            // Send request to backend with previous value
-            const response = await axios.get(`${BASE_URL}/chatBot/question3`, {
-              headers: {
-                'Authorization': `Bearer ${userToken}` // yourAccessToken을 실제 토큰 값으로 대체해야 합니다.
-              },
-            });
-            const data = response.data;
-            console.log('Data from backend:', data);
-            setMessage3(data);
-            setLoading(false);
-            // Move to next step
-            triggerNextStep();
-          } catch (error) {
-            console.error('Error sending data to backend:', error);
-            setLoading(false);
-          }
-        };
-    
-        fetchData();
-      }, [previousStep.value, triggerNextStep]);
-    
-      if (loading) {
-        return <p>Loading...</p>;
-      }
-    
-      if (message3 !== null) {
-        return <p>{message3}</p>;
-      }
-    
-      return null;
-    }
-    
     const Answer4 = ({ previousStep, triggerNextStep }) => {
       const [message4, setMessage4] = useState(null);
       const [loading, setLoading] = useState(true);
@@ -171,14 +130,6 @@ const Chatbot = () => {
         const fetchData = async () => {
           console.log("ANSWER4 ", previousStep.value)
           const previousValue = previousStep.value;
-          try {
-            const userToken = sessionStorage.getItem('accessToken');
-            const response = await axios.get(`${BASE_URL}/chatBot/question4`, {
-              headers: {
-                'Authorization': `Bearer ${userToken}` // 여기서 'yourAccessToken'을 실제 토큰 값으로 대체해야 합니다.
-              },
-              params: {
-                schedule: previousValue // '몇박 며칠' 값 전달
               }
             });
             const data = response.data;
