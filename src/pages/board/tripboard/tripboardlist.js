@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './tripboardlist.css';
 import { Link } from 'react-router-dom';
 import { showTripPost } from '../../../api/tripboard';
+// import { LuPencilLine } from "react-icons/lu";
+import { HiMiniPencilSquare } from "react-icons/hi2";
 
 const TripPostList = () => {
   const [posts, setPosts] = useState([]);
@@ -39,8 +41,10 @@ const TripPostList = () => {
 
   return (
     <div>
-      <div className='trip-board-banner'>/배너/</div>
-      <div className="trip-board-main">여행 게시판</div>
+      <div class='trip-board-banner'>
+          <img src='/trip.jpg' alt=''/>
+          <div className="trip-board-main">여행 게시판</div>
+      </div>
       <div className="trip-board-container">
         <div className="post-header">
           <div className="post-header-item">번호</div>
@@ -70,7 +74,7 @@ const TripPostList = () => {
             </button>
           ))}
         </div>
-        <Link to="/trip" className="write-post-button">✏️글쓰기</Link>
+        <Link to="/trip" className="write-post-button"><HiMiniPencilSquare />&nbsp;글쓰기</Link>
       </div>
     </div>
   );

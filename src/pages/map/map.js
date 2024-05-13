@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { fetchLocations, searchLocations, sendSelectedLocations, sendRouteDataToDatabase, deleteScrap } from '../../api/kakaomap';
+import { BsBookmarkStar } from "react-icons/bs";
 import Chatbot from '../chatbot/chatbot';
 import './showmap.css';
 
@@ -249,7 +250,7 @@ const ShowMap = () => {
         </div>
       </div>
       <div className="scrap-container">
-        <div className="scrap-title">🔖스크랩 목록</div>
+        <div className="scrap-title"><BsBookmarkStar />&nbsp;스크랩 목록</div>
         <p/>
         <b>처음 방문할 장소를 첫번째로 선택해주세요.</b>
         <ul className="scrap-list">
