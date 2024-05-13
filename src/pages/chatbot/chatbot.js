@@ -4,11 +4,12 @@ import ChatBot from 'react-simple-chatbot';
 import axios from 'axios';
 
 import './chatbot.css'
-
-const BASE_URL = 'http://3.35.115.71:8080';
+const BASE_URL = 'http://localhost:8080';
+// const BASE_URL = 'http://3.35.115.71:8080';
 
 const Chatbot = () => {
   const [locations, setLocations] = useState([]);
+  // const [route, setRoute] = useState([]);
 
 
 
@@ -29,7 +30,7 @@ const Chatbot = () => {
         console.error('위치 데이터를 불러오는데 오류가 발생했습니다:', error);
       }
     };
-  
+
     fetchLocations();
   }, []);
 
@@ -40,7 +41,7 @@ const Chatbot = () => {
       trigger: '3',
     })));
 
-    
+    // console.log("유저 동선",route);
 
   }, [locations]);
 
@@ -76,11 +77,7 @@ const Chatbot = () => {
       }
     
       if (message1 !== null) {
-        return (
-          <div className="custom-answer">
-            {message1}
-          </div>
-        );
+        return <p>{message1}</p>;
       }
     
       return null;
@@ -119,16 +116,99 @@ const Chatbot = () => {
       }
     
       if (message2 !== null) {
-        return (
-          <div className="custom-answer">
-            {message2}
-          </div>
-        );
+        return <p>{message2}</p>;
       }
     
       return null;
     }
     
+    const Answer3 = ({ previousStep, triggerNextStep }) => {
+      const [message3, setMessage3] = useState(null);
+      const [loading, setLoading] = useState(true);
+    
+      useEffect(() => {
+        const fetchData = async () => {
+          console.log("ANSWER 3", previousStep.value)
+          const previousValue = previousStep.value;
+          try {
+            const userToken = sessionStorage.getItem('accessToken');
+            // Send request to backend with previous value
+            const response = await axios.get(`${BASE_URL}/chatBot/question3`, {
+              headers: {
+                'Authorization': `Bearer ${userToken}` // yourAccessToken을 실제 토큰 값으로 대체해야 합니다.
+              },
+            });
+            const data = response.data;
+            console.log('Data from backend:', data);
+            setMessage3(data);
+            setLoading(false);
+            // Move to next step
+            triggerNextStep();
+          } catch (error) {
+            console.error('Error sending data to backend:', error);
+            setLoading(false);
+          }
+        };
+    
+        fetchData();
+      }, [previousStep.value, triggerNextStep]);
+    
+      if (loading) {
+        return <p>Loading...</p>;
+      }
+    
+      if (message3 !== null) {
+        return <p>{message3}</p>;
+      }
+    
+      return null;
+    }
+    
+    const Answer4 = ({ previousStep, triggerNextStep }) => {
+      const [message4, setMessage4] = useState(null);
+      const [loading, setLoading] = useState(true);
+    
+      useEffect(() => {
+        const fetchData = async () => {
+          console.log("ANSWER4 ", previousStep.value)
+          const previousValue = previousStep.value;
+          // const answerData = {
+          //   schedule: previousValue
+          // };
+          try {
+            const userToken = sessionStorage.getItem('accessToken');
+            const response = await axios.post(`${BASE_URL}/chatBot/question4`, {
+              schedule: previousValue
+            }, {
+              headers: {
+                'Authorization': `Bearer ${userToken}` 
+              }
+            });
+            const data = response.data;
+            console.log('Data from backend:', data);
+            setMessage4(data);
+            setLoading(false);
+            // 다음 단계로 진행
+            triggerNextStep();
+          } catch (error) {
+            console.error('Error sending data to backend:', error);
+            setLoading(false);
+          }
+        };
+    
+        fetchData();
+      }, [previousStep.value, triggerNextStep]);
+    
+      if (loading) {
+        return <p>Loading...</p>;
+      }
+    
+      if (message4 !== null) {
+        return <p>{message4}</p>;
+      }
+    
+      return null;
+    }
     
   
   const steps = [
@@ -142,7 +222,8 @@ const Chatbot = () => {
       options: [
         { value: '1', label: '1. 주변 관광지 추천해줘', trigger: '3' },
         { value: '2', label: '2. 장소 상세 정보 알려줘', trigger: '4' },
-        { value: '3', label: '3. 이동 수단과 예상 비용', trigger: '5' },
+        { value: '3', label: '3. 동선들의 이동 수단과 예상 비용 알려줘', trigger: '5' },
+        { value: '4', label: '4. 동선을 방문할때 일정표 알려줘', trigger: '6' },
         { value: '5', label: '5. 질문끝내기', trigger: 'end' },
       ],
     },
@@ -174,15 +255,27 @@ const Chatbot = () => {
       waitAction: true, // 서버 응답을 기다립니다.
       trigger: '2', // 다음 단계로 이동
     },
-    {id: '5',
-          user: true,
-          trigger:'8',
+    {
+      id: '5',
+      component: <Answer3 />, 
+      waitAction: true, 
+      trigger: '2', 
     },
     {
-      id: '8',
-      message: 'You qusetion {previousValue}',
-      trigger:'2'
+      id: '6',
+      options: [
+        { value: '1박 2일', label: '1박 2일', trigger:'선택옵션4' },
+        { value: '2박 3일', label: '2박 3일', trigger:'선택옵션4' },
+        { value: '3박 4일', label: '3박 4일', trigger:'선택옵션4' },
+      ],
     },
+    {id: '선택옵션4',
+    component: <Answer4 />, 
+      waitAction: true, 
+    trigger: '2', // 다음 단계로 이동
+      
+    },
+
     {
       id: 'end',
       message: '질문을 마치겠습니다. ',
@@ -198,7 +291,6 @@ const Chatbot = () => {
           steps={steps}
           className="custom-chatbot"
           botAvatar="/bot.png"
-          // userAvatar="/your-image.png" // 사용자 이미지
           style={{
             width: '400px', // 원하는 너비로 지정
             height: 'auto', // 원하는 높이로 지정
