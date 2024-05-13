@@ -26,8 +26,7 @@ const Nav = ({ isLoggedIn, nickname, onLogout }) => {
     <nav className="navbar">
       <div className="nav-container">
         <ul className="nav-list-1">
-          <li className="nav-item"><div className="styled-trip">Trip-Bridge</div></li>
-          <li className="nav-item"><Link className="styled-link" to="/">홈</Link></li>
+          <li className="nav-item"><Link className="styled-trip" to="/">Trip-Bridge</Link></li>
           <li className="nav-item"><Link className="styled-link" to="/filter">여행지 추천</Link></li>
           <li className="nav-item"><Link className="styled-link" to="/map">동선추천</Link></li>
           <li className="nav-item" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
@@ -52,7 +51,7 @@ const Nav = ({ isLoggedIn, nickname, onLogout }) => {
           {isLoggedIn && (
             <>
               <li className="nav-item">
-                <div className="styled-user">{nickname}님 환영합니다.</div>
+                <div className="styled-user">{nickname}님</div>
               </li>
               <li className="nav-item"><Link className="styled-link" onClick={onLogout} to="/">로그아웃</Link></li>
             </>

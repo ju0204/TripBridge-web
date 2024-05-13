@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
-import { sendRequest, sendScrap, deleteScrap, fetchScrap } from '../../../api/filter';
-import image from './img/no_img.jpg';
-import  HeartImg  from "./img/scrap.png";
-import  EmptyHeartImg  from "./img/empty_scrap.png";
-import White from "./img/white-background.png";
+import { sendRequest, sendScrap} from '../../../api/filter';
 import { useLocation } from 'react-router-dom';
+import { CiBookmarkCheck } from "react-icons/ci";
+import { MdOutlineImageNotSupported } from "react-icons/md";
+
 import './result.css';
 //세션 스토리지 부분 2개 
 const Result = () => {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 10;
+  const postsPerPage = 8;
   const [scrapedPosts, setScrapedPosts] = useState([]);
   const [showScrapedPopup, setShowScrapedPopup] = useState(false);
   const [showAlreadyScrapedPopup, setShowAlreadyScrapedPopup] = useState(false);
@@ -87,21 +86,25 @@ const handleScrap = async (place, address, longitude, latitude) => {
     <div className="result-container">
       <motion.div className="result-container-box" animate={{ y: -100 }}>
         <div className="result-section-box">
-          <div className="section-text-box">
-            <p className="text">여행지 추천 장소 입니다!</p>
-          </div>
-
+        <div className="section-text-box">추천 관광지</div>
            {/* 백엔드에서 가져온 게시물 데이터를 표시하는 부분 */}
           <div className="result-wrapper">
             {currentPosts.map(post => (
               <div className="result" key={post.contentId}>
-                <div className="result_img_div">
-                  <img src={post.image || image} className="result_img" alt={post.place || "이미지 없음"} />
-                </div>
+              <div className="result_img_div">
+                {post.image ? (
+                  <img src={post.image} className="result_img" alt={post.place || "이미지 없음"} />
+                ) : (
+                  <MdOutlineImageNotSupported className="result_img2" />
+                )}
+              </div>
                 <button onClick={() => handleScrap(post.place, post.address, post.longitude, post.latitude)} className="scrapbutton">
-                <div><img className="scrap_img"src={HeartImg} alt="Heart Filled" /></div>
+                <CiBookmarkCheck />
                 </button>
-                <h5 className="result_title">{post.place || "제목 없음"}</h5>
+                <div className='result-t'>
+                <div className="result_title">{post.place || "제목 없음"}</div>
+                <div className="result_title2">{post.address}</div>
+                </div>
               </div>
             ))}
           </div>
@@ -144,7 +147,7 @@ const handleScrap = async (place, address, longitude, latitude) => {
       {showScrapedPopup && (
         <div className="popup-result">
           <div className="popup-inner1">
-            <p>   스크랩되었습니다!   </p>
+            <p>   스크랩 되었습니다.   </p>
             <button onClick={() => setShowScrapedPopup(false)}>확인</button>
           </div>
         </div>
@@ -154,7 +157,7 @@ const handleScrap = async (place, address, longitude, latitude) => {
       {showAlreadyScrapedPopup && (
         <div className="popup-result">
           <div className="popup-inner2">
-            <p>이미 스크랩된 내용입니다.</p>
+            <p>이미 스크랩 된 장소입니다.</p>
             <button onClick={() => setShowAlreadyScrapedPopup(false)}>확인</button>
           </div>
         </div>

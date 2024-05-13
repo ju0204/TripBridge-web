@@ -1,5 +1,12 @@
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 
+@font-face {
+  font-family: 'JalnanGothic';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/JalnanGothic.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 /*font-family: 'Noto Sans KR', sans-serif;*/
 
 /* 전체 레이아웃 설정 */
@@ -39,15 +46,34 @@
     width: 20%;
     overflow-y: scroll;
     padding: 20px;
+    position: relative;
   }
 
   .scrap-buttons {
-    position: sticky;
-    bottom: 0;
-    width : auto;
-    background-color: transparent;
-    z-index: 1; /* 다른 요소 위에 오도록 설정합니다. */
+    position: fixed; /* 버튼을 고정합니다. */
+    bottom: 15px; /* 하단에 배치합니다. */
+    z-index: 1; /* 다른 요소 위에 올라가도록 설정합니다. */
   }
+
+    
+  .scrap-buttons button {
+    font-family: 'Noto Sans KR', sans-serif;
+    letter-spacing: 1px;
+    padding: 13px 30px; /* 버튼 내부 여백 설정 */
+    background-color: #3f3f3f; /* 배경색 설정 */
+    color: white; /* 글자색 설정 */
+    border: none; /* 테두리 없앰 */
+    border-radius: 15px; /* 버튼 모서리를 둥글게 만듦 */
+    cursor: pointer; /* 커서를 포인터로 변경하여 마우스 호버 시 인터랙션을 나타냄 */
+    transition: background-color 0.2s ease; /* 배경색 변화에 대한 부드러운 전환 효과 추가 */
+    margin-right: 5px; /* 각 버튼 사이의 간격을 조정합니다. */
+  }
+
+  /* 버튼에 호버 효과 추가 */
+  .scrap-buttons button:hover {
+    background-color: #5a5a5a; /* 호버 시 배경색 변경 */
+  }
+
 
   .scrap-title {
     font-size: 25px;
@@ -103,7 +129,6 @@
     left: 0;
   }
 
-  
   .search-container {
     width: 20%;
     overflow-y:scroll;
@@ -112,7 +137,6 @@
     flex-direction: column; /* 검색창과 검색결과를 세로로 배치 */
   }
   
-
   .search-container input[type="text"] {
     padding: 8px 15px;
     border: 1px solid #ccc;
@@ -120,8 +144,6 @@
     font-size: 15px;
     font-family: 'Noto Sans KR', sans-serif;
   }
-  
-  
   
   .search-list {
     list-style: none;
@@ -166,51 +188,33 @@
     display: inline-block;
     max-width: calc(100% - 100px); /* 삭제 버튼의 최대 너비까지만 표시 */
   }
-  
-button {
-  font-family: 'Noto Sans KR', sans-serif;
-  letter-spacing: 1px;
-  padding: 20px 28px; /* 버튼 내부 여백 설정 */
-  background-color: #3f3f3f; /* 배경색 설정 */
-  color: white; /* 글자색 설정 */
-  border: none; /* 테두리 없앰 */
-  border-radius: 10px; /* 버튼 모서리를 둥글게 만듦 */
-  cursor: pointer; /* 커서를 포인터로 변경하여 마우스 호버 시 인터랙션을 나타냄 */
-  transition: background-color 0.2s ease; /* 배경색 변화에 대한 부드러운 전환 효과 추가 */
-  margin-right: 10px; /* 각 버튼 사이의 간격을 조정합니다. */
-}
 
-/* 버튼에 호버 효과 추가 */
-button:hover {
-  background-color: #5a5a5a; /* 호버 시 배경색 변경 */
-}
+  .marker-label {
+    background-color: #2c2c2c;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 600;
+  }
 
-.marker-label {
-  background-color: #2c2c2c;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 5px;
-  font-size: 14px;
-  font-weight: 600;
-}
+  .delete-button {
+    background-color: transparent;
+    border-radius: 15px;
+    padding : 5px 5px;
+    color: #2c2c2c;
+    border: none; /* 테두리 없음 */
+    cursor: pointer; /* 마우스 오버 시 커서 모양 */
+    font-size: 14px; /* 폰트 크기 */
+    position: absolute; /* 절대 위치로 설정하여 부모 요소에 대한 위치 설정 */
+    top: 5px; /* 상단 여백 조정 */
+    right: 5px; /* 우측 여백 조정 */
+    width: 20px;
+    height: 20px;
+  }
 
-.delete-button {
-  background-color: transparent;
-  border-radius: 15px;
-  padding : 5px 5px;
-  color: #2c2c2c;
-  border: none; /* 테두리 없음 */
-  cursor: pointer; /* 마우스 오버 시 커서 모양 */
-  font-size: 14px; /* 폰트 크기 */
-  position: absolute; /* 절대 위치로 설정하여 부모 요소에 대한 위치 설정 */
-  top: 5px; /* 상단 여백 조정 */
-  right: 5px; /* 우측 여백 조정 */
-  width: 20px;
-  height: 20px;
-}
+  .delete-button:hover {
+    background-color: grey;
+  }
 
-.delete-button:hover {
-  background-color: grey;
-}
-
-/* 추가적인 스타일링을 원하실 경우 여기에 추가하세요 */
+  /* 추가적인 스타일링을 원하실 경우 여기에 추가하세요 */
