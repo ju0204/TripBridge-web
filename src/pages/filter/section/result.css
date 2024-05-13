@@ -19,7 +19,7 @@
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  height: 88vh;
+  height: 90vh;
   font-family: 'Noto Sans KR', sans-serif;
 }
 
@@ -145,6 +145,7 @@
   color: #2c2c2c;
   cursor: pointer;
   border-radius: 10px;
+  margin-bottom: 20px;
 }
 
 .pagination1 button:hover {

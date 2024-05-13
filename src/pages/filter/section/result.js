@@ -149,7 +149,7 @@ const handleScrap = async (place, address, longitude, latitude) => {
       {showScrapedPopup && (
         <div className="popup-result">
           <div className="popup-inner1">
-            <p>   스크랩되었습니다!   </p>
+            <p>   스크랩 되었습니다.   </p>
             <button onClick={() => setShowScrapedPopup(false)}>확인</button>
           </div>
         </div>
