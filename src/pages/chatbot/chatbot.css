@@ -28,4 +28,10 @@
     background-color: #343434; /* 상단 배너 배경 색상 설정 */
     color: #fff; /* 상단 배너 텍스트 색상 설정 */
   }
+
+  .message {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+  }
   

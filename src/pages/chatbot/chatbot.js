@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import ChatBot from 'react-simple-chatbot';
-// import { ThemeProvider } from 'styled-components';
 import axios from 'axios';
 
 import './chatbot.css'
@@ -9,7 +8,6 @@ const BASE_URL = 'http://localhost:8080';
 
 const Chatbot = () => {
   const [locations, setLocations] = useState([]);
-  // const [route, setRoute] = useState([]);
 
 
 
@@ -73,11 +71,11 @@ const Chatbot = () => {
       }, [previousStep.value, triggerNextStep]);
     
       if (loading) {
-        return <p>Loading...</p>;
+        return <div className="message">Loading...</div>;
       }
-    
+  
       if (message1 !== null) {
-        return <p>{message1}</p>;
+        return <div className="message">{message1}</div>;
       }
     
       return null;
@@ -112,11 +110,11 @@ const Chatbot = () => {
       }, [previousStep.value, triggerNextStep]);
     
       if (loading) {
-        return <p>Loading...</p>;
+        return <div className="message">Loading...</div>;
       }
-    
+  
       if (message2 !== null) {
-        return <p>{message2}</p>;
+        return <div className="message">{message2}</div>;
       }
     
       return null;
@@ -154,11 +152,11 @@ const Chatbot = () => {
       }, [previousStep.value, triggerNextStep]);
     
       if (loading) {
-        return <p>Loading...</p>;
+        return <div className="message">Loading...</div>;
       }
-    
+  
       if (message3 !== null) {
-        return <p>{message3}</p>;
+        return <div className="message">{message3}</div>;
       }
     
       return null;
@@ -200,11 +198,11 @@ const Chatbot = () => {
       }, [previousStep.value, triggerNextStep]);
     
       if (loading) {
-        return <p>Loading...</p>;
+        return <div className="message">Loading...</div>;
       }
-    
+  
       if (message4 !== null) {
-        return <p>{message4}</p>;
+        return <div className="message">{message4}</div>;
       }
     
       return null;
