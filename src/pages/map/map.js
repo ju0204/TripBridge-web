@@ -184,24 +184,54 @@ const ShowMap = () => {
     }
   };
   
-  
-  const drawAllRoutes = (allRouteData) => {   
-    allRouteData.forEach((routeData) => {
-      drawRoute(routeData);
-    });
+  const drawAllRoutes = async (allRouteData) => {   
+    try {
+      const routes = await Promise.all(allRouteData.map((routeData, index) => drawRoute(routeData, index + 1)));
+      // 각 동선의 마커에 번호를 표시합니다.
+      routes.forEach(route => {
+        route.forEach((marker, index) => {
+          const label = new window.kakao.maps.CustomOverlay({
+            position: marker.getPosition(),
+            content: `<div style="padding: 3px; background-color: blue; color: white; border-radius: 50%; text-align: center; width: 20px; height: 20px; line-height: 20px;">${index + 1}</div>`,
+            xAnchor: 0.5,
+            yAnchor: 1.5
+          });
+          label.setMap(map);
+        });
+      });
+    } catch (error) {
+      console.error('오류 발생:', error);
+    }
   };
   
+  const drawRoute = async (routeData, routeIndex) => {
+    try {
+      const path = routeData.map(point => new window.kakao.maps.LatLng(point.latitude, point.longitude));
+      const polyline = new window.kakao.maps.Polyline({
+        path,
+        strokeWeight: 5,
+        strokeOpacity: 0.7,
+        strokeStyle: 'solid'
+      });
+      polyline.setMap(map);
+      
+      // 경로의 각 지점에 마커를 생성합니다.
+      const markers = await Promise.all(path.map(async (position, index) => {
+        const marker = new window.kakao.maps.Marker({
+          position,
+          map: map
+        });
+        return marker;
+      }));
   
-  const drawRoute = (routeData) => {
-    const path = routeData.map(point => new window.kakao.maps.LatLng(point.latitude, point.longitude));
-    const polyline = new window.kakao.maps.Polyline({
-      path,
-      strokeWeight: 5,
-      strokeOpacity: 0.7,
-      strokeStyle: 'solid'
-    });
-    polyline.setMap(map);
+      console.log(`동선 ${routeIndex} 그리기 완료`);
+      return markers;
+    } catch (error) {
+      console.error(`동선 ${routeIndex} 그리는 중 오류 발생:`, error);
+      throw error;
+    }
   };
+  
 
   //다시하기
   const handleReset = () => {
