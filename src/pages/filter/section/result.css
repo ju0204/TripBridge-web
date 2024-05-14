@@ -77,13 +77,17 @@
   height: 100%;
   object-fit: cover;
   margin: 0 auto; /* 수평 가운데 정렬 */
+  cursor: pointer;
 }
 
 .result_img2 {
   width: 30%;
   height: auto;
   color: #ccc;
+  cursor: pointer;
 }
+
+
 
 
 .result-t {
@@ -182,4 +186,51 @@
 .popup-inner1 button:hover,
 .popup-inner2 button:hover {
   background-color: #5b5b5b;
+}
+
+
+/*설명 팝업*/
+.Ex-popup-result {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검은 배경 */
+  z-index: 9999; /* 다른 요소 위에 표시되도록 함 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.Ex-popup-inner1 {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* 수직 가운데 정렬 */
+  text-align: center; /* 내부 요소들을 가운데 정렬 */
+  background-color: rgba(255, 255, 255, 0.902);
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  max-width: 45%;
+}
+
+.Ex-popup-inner1 p {
+  margin-bottom: 10px;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.Ex-popup-inner1 button {
+  padding: 10px 20px;
+  background-color: #65a8ef;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 25px;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.Ex-popup-inner1 button:hover {
+  background-color: #046ddc;
 }

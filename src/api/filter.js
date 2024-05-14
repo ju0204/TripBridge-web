@@ -40,6 +40,8 @@ export const sendRequest = async (selectedAreas, selectedTourType, selectedCateg
         image: place.firstimage,
         longitude: place.mapx,
         latitude: place.mapy,
+        contentTypeId : place.contenttypeid,
+        contentId: place.contentid
         //필요한 데이터 추가
       }));
 
@@ -104,8 +106,11 @@ export const fetchScrap = async () => {
       place: location.place,
       address: location.address,
       latitude: location.latitude,
-      longitude: location.longitude
+      longitude: location.longitude,
+      contentTypeId : location.contenttypeid,
+      contentId: location.contentid
     }));
+    
 
     console.log('가져온 스크랩 데이터:', scrapData); // 스크랩 데이터 콘솔 출력
 
@@ -137,3 +142,33 @@ export const deleteScrap = async (scrapId) => {
   }
 };
 
+//상세설명 나오게 하는 코드
+const parseXmlString = (xmlString) => {
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
+  const overviewNode = xmlDoc.querySelector('overview');
+  if (overviewNode) {
+    return overviewNode.textContent.trim();
+  } else {
+    return null;
+  }
+};
+
+export const fetchEx = async (exData) => {
+  try {
+    const { contentTypeId, contentId } = exData;
+    console.log("내가 보낼 것 : ", contentTypeId, contentId)
+    const response = await axios.get(`${BASE_URL}/place?contentTypeId=${contentTypeId}&contentId=${contentId}`, {
+      
+    });
+    console.log('응답 받아온 설명 데이터:', response);
+    const xmlString = response.data;
+    const overview = parseXmlString(xmlString);
+    console.log('overview:', overview);
+
+    return overview;
+  } catch (error) {
+    console.error('설명 데이터를 불러오는데 오류가 발생했습니다 :', error);
+    return []; // 오류 발생 시 빈 배열 반환
+  }
+};
