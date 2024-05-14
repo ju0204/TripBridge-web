@@ -3,8 +3,8 @@ import ChatBot from 'react-simple-chatbot';
 import axios from 'axios';
 
 import './chatbot.css'
-const BASE_URL = 'http://localhost:8080';
-// const BASE_URL = 'http://3.35.115.71:8080';
+// const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'http://3.35.115.71:8080';
 
 const Chatbot = () => {
   const [locations, setLocations] = useState([]);
@@ -73,12 +73,20 @@ const Chatbot = () => {
       if (loading) {
         return <div className="message">Loading...</div>;
       }
-  
+      
       if (message1 !== null) {
-        return <div className="message">{message1}</div>;
+        return (
+          <div className="message">
+            {message1.split('\n').map((line, index) => (
+              <span key={index}>
+                {line}
+                <br />
+              </span>
+            ))}
+          </div>
+        );
       }
-    
-      return null;
+      return null;      
     }
 
     const Answer2 = ({ previousStep, triggerNextStep }) => {
@@ -112,12 +120,20 @@ const Chatbot = () => {
       if (loading) {
         return <div className="message">Loading...</div>;
       }
-  
+      
       if (message2 !== null) {
-        return <div className="message">{message2}</div>;
+        return (
+          <div className="message">
+            {message2.split('\n').map((line, index) => (
+              <span key={index}>
+                {line}
+                <br />
+              </span>
+            ))}
+          </div>
+        );
       }
-    
-      return null;
+      return null;      
     }
     
     const Answer3 = ({ previousStep, triggerNextStep }) => {
@@ -154,12 +170,20 @@ const Chatbot = () => {
       if (loading) {
         return <div className="message">Loading...</div>;
       }
-  
+      
       if (message3 !== null) {
-        return <div className="message">{message3}</div>;
+        return (
+          <div className="message">
+            {message3.split('\n').map((line, index) => (
+              <span key={index}>
+                {line}
+                <br />
+              </span>
+            ))}
+          </div>
+        );
       }
-    
-      return null;
+      return null;      
     }
     
     const Answer4 = ({ previousStep, triggerNextStep }) => {
@@ -200,12 +224,20 @@ const Chatbot = () => {
       if (loading) {
         return <div className="message">Loading...</div>;
       }
-  
+      
       if (message4 !== null) {
-        return <div className="message">{message4}</div>;
+        return (
+          <div className="message">
+            {message4.split('\n').map((line, index) => (
+              <span key={index}>
+                {line}
+                <br />
+              </span>
+            ))}
+          </div>
+        );
       }
-    
-      return null;
+      return null;      
     }
     
   
@@ -237,7 +269,7 @@ const Chatbot = () => {
       id: '선택옵션1',
       component: <Answer />,
       waitAction: true, // 서버 응답을 기다립니다.
-      trigger: '2',
+      trigger: 'try',
     },
     {
       id: '4',
@@ -251,13 +283,13 @@ const Chatbot = () => {
       id: '선택옵션2', // 선택옵션2 이벤트 핸들러 정의
       component: <Answer2 />, // Answer2 컴포넌트로 변경
       waitAction: true, // 서버 응답을 기다립니다.
-      trigger: '2', // 다음 단계로 이동
+      trigger: 'try', // 다음 단계로 이동
     },
     {
       id: '5',
       component: <Answer3 />, 
       waitAction: true, 
-      trigger: '2', 
+      trigger: 'try', 
     },
     {
       id: '6',
@@ -270,7 +302,7 @@ const Chatbot = () => {
     {id: '선택옵션4',
     component: <Answer4 />, 
       waitAction: true, 
-    trigger: '2', // 다음 단계로 이동
+    trigger: 'try', // 다음 단계로 이동
       
     },
 
@@ -279,6 +311,10 @@ const Chatbot = () => {
       message: '질문을 마치겠습니다. ',
       end:true
     },
+    {
+      id: 'try',
+      options : [ { value : '다시 질문 하기', label : '다시 질문 하기', trigger : '2'}],
+    }
 
   ];
 
@@ -290,7 +326,7 @@ const Chatbot = () => {
           className="custom-chatbot"
           botAvatar="/bot.png"
           style={{
-            width: '400px', // 원하는 너비로 지정
+            width: '500px', // 원하는 너비로 지정
             height: 'auto', // 원하는 높이로 지정
           }}
         />

@@ -288,7 +288,15 @@ const ShowMap = () => {
             <li key={index} onClick={() => handleLocationClick(location)} className={selectedLocations.includes(location) ? 'selected' : ''}>
               <strong>{location.place}</strong>
               <p>{location.address}</p>
-              <img src="/x.png" alt="Delete" className="delete-button" onClick={() => handleDeleteLocation(location)} />
+              <img
+                src="/x.png"
+                alt="Delete"
+                className="delete-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeleteLocation(location);
+                }}
+              />
             </li>
           ))}
         </ul>
