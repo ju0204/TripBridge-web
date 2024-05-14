@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
-import { sendRequest, sendScrap} from '../../../api/filter';
+import { sendRequest, sendScrap, fetchEx} from '../../../api/filter';
 import { useLocation } from 'react-router-dom';
 import { CiBookmarkCheck } from "react-icons/ci";
 import { MdOutlineImageNotSupported } from "react-icons/md";
@@ -14,6 +14,10 @@ const Result = () => {
   const [scrapedPosts, setScrapedPosts] = useState([]);
   const [showScrapedPopup, setShowScrapedPopup] = useState(false);
   const [showAlreadyScrapedPopup, setShowAlreadyScrapedPopup] = useState(false);
+  const [showExPopup, setShowExPopup] = useState(false);
+  const [exPopupContent, setExPopupContent] = useState('');
+  const [showAlreadyExPopup, setShowAlreadyExPopup] = useState(false);
+
 
 
   const location = useLocation();
@@ -74,6 +78,32 @@ const handleScrap = async (place, address, longitude, latitude) => {
   }
 };
 
+//이미지 띄우면 상세 설명
+const handleImageClick = async (contentTypeId,contentId) => {
+  try {
+    const exData = {
+      contentTypeId: contentTypeId,
+      contentId: contentId,
+    };
+
+    console.log('상세설명 요청 데이터:', exData);
+    // fetchEx 함수 호출 및 결과를 변수에 할당
+    const responseData = await fetchEx(exData);
+    
+    // 반환된 데이터를 이용하여 원하는 작업 수행
+    console.log('받은 이미지 데이터:', responseData);
+    
+
+    // await fetchEx(exData);
+    setExPopupContent(responseData);
+    setShowExPopup(true);
+    
+  } catch (error) {
+    console.error('상세설명 요청 오류:', error);
+    setShowAlreadyExPopup(true);
+  }
+};
+
   // 현재 페이지의 게시물 가져오기
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
@@ -92,11 +122,13 @@ const handleScrap = async (place, address, longitude, latitude) => {
             {currentPosts.map(post => (
               <div className="result" key={post.contentId}>
               <div className="result_img_div">
+
                 {post.image ? (
-                  <img src={post.image} className="result_img" alt={post.place || "이미지 없음"} />
+                  <img src={post.image} className="result_img" alt={post.place || "이미지 없음"} onClick={() => handleImageClick(post.contentTypeId, post.contentId)}/>
                 ) : (
-                  <MdOutlineImageNotSupported className="result_img2" />
+                  <MdOutlineImageNotSupported className="result_img2" onClick={() => handleImageClick(post.contentTypeId, post.contentId)}/>
                 )}
+
               </div>
                 <button onClick={() => handleScrap(post.place, post.address, post.longitude, post.latitude)} className="scrapbutton">
                 <CiBookmarkCheck />
@@ -162,7 +194,29 @@ const handleScrap = async (place, address, longitude, latitude) => {
           </div>
         </div>
       )}
+
+      {/* Ex Popup */}
+      {showExPopup && (
+        <div className="Ex-popup-result">
+          <div className="Ex-popup-inner1">
+          <p>{exPopupContent}</p>
+            <button onClick={() => setShowExPopup(false)}>닫기</button>
+          </div>
+        </div>
+      )}
+
+       {/* Already Ex Popup */}
+       {showAlreadyExPopup && (
+        <div className="popup-result">
+          <div className="popup-inner2">
+            <p>상세 정보가 없습니다!</p>
+            <button onClick={() => setShowAlreadyExPopup(false)}>확인</button>
+          </div>
+        </div>
+      )}
+
     </div>
+    
     
 
     
