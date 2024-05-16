@@ -169,6 +169,11 @@
   background-color: #afafaf;
 }
 
+.pagination1 button.active {
+  background-color: #afafaf;
+  color: white;
+}
+
 .popup-result {
   position: fixed;
   top: 50%;
@@ -177,6 +182,7 @@
   background-color:white;
   border: 1px solid #b5b5b5;
   padding: 10px;
+  border-radius: 5px;
 }
 
 .popup-inner1,

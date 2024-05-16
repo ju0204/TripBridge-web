@@ -112,8 +112,21 @@ const handleImageClick = async (contentTypeId,contentId) => {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
 
-  // 페이지네이션 클릭
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+// 페이지네이션 클릭
+const paginate = (pageNumber) => {
+  // 다음 페이지 범위로 이동할 때
+  if (pageNumber === currentPage + 10) {
+    setCurrentPage(pageNumber); // 다음 페이지로 이동
+  } 
+  // 이전 페이지 범위로 이동할 때
+  else if (pageNumber === currentPage - 10) {
+    setCurrentPage(pageNumber); // 이전 페이지로 이동
+  } 
+  else {
+    setCurrentPage(pageNumber); // 일반적인 페이지 이동
+  }
+};
+
 
   return (
     <div className="result-container">
@@ -143,41 +156,36 @@ const handleImageClick = async (contentTypeId,contentId) => {
               </div>
             ))}
           </div>
-
           {/* 페이지 네이션 */}
           <div className="pagination1">
             <button
               disabled={currentPage === 1} // 현재 페이지가 1페이지면 비활성화
-              onClick={() => paginate(1)} // 맨 처음 페이지로 이동하는 함수 호출
+              onClick={() => paginate(Math.max(1, currentPage - 10))} // 이전 페이지 범위로 이동하는 함수 호출
             >
               {"<<"}
             </button>
-            {Array.from({ length: Math.ceil(posts.length / postsPerPage) }, (_, i) => {
-              const startPage = currentPage <= 5 ? 1 : currentPage - 4; // Calculate the start page of the range
-              const endPage = Math.min(startPage + 9, Math.ceil(posts.length / postsPerPage)); // Calculate the end page of the range
-              if (i + 1 >= startPage && i + 1 <= endPage) { // Only render buttons within the range
-                return (
-                  <button 
-                    key={i + 1} 
-                    className={currentPage === i + 1 ? "active" : ""} // 현재 페이지와 일치할 때 active 클래스 추가
-                    onClick={() => paginate(i + 1)}
-                  >
-                    {i + 1}
-                  </button>
-                );
-              }
-              return null; // Render nothing for pages outside the range
+            {Array.from({ length: Math.min(10, Math.ceil(posts.length / postsPerPage)) }, (_, i) => {
+              const pageNumber = ((Math.ceil(currentPage / 10) - 1) * 10) + i + 1;
+              if (pageNumber > Math.ceil(posts.length / postsPerPage)) return null; // 페이지 범위를 벗어나면 버튼을 렌더링하지 않음
+              return (
+                <button 
+                  key={pageNumber} 
+                  className={currentPage === pageNumber ? "active" : ""} // 현재 페이지와 일치할 때 active 클래스 추가
+                  onClick={() => paginate(pageNumber)}
+                >
+                  {pageNumber}
+                </button>
+              );
             })}
             <button
-              disabled={currentPage === Math.ceil(posts.length / postsPerPage)} // 현재 페이지가 마지막 페이지면 비활성화
-              onClick={() => paginate(Math.ceil(posts.length / postsPerPage))} // 맨 마지막 페이지로 이동하는 함수 호출
+              disabled={currentPage + 10 >= Math.ceil(posts.length / postsPerPage)} // 현재 페이지가 마지막 페이지 범위의 시작 페이지와 가까울 때 비활성화
+              onClick={() => paginate(currentPage + 10)} // 다음 페이지 범위로 이동하는 함수 호출
             >
               {">>"}
             </button>
           </div>
         </div>
       </motion.div>
-
       {/* Scraped Popup */}
       {showScrapedPopup && (
         <div className="popup-result">

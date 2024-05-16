@@ -1,5 +1,61 @@
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* font-family: 'Noto Sans KR', sans-serif; */
+
+@font-face {
+  font-family: 'JalnanGothic';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/JalnanGothic.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+.banner-text {
+  position: absolute;
+  top: 29%;
+  left: 10%;
+  z-index: 1; /* 이미지 위에 텍스트가 보이도록 설정 */
+  color: white;
+  font-size: 60px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  font-family: "Montserrat", sans-serif;
+  text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.5); /* 그림자 효과 추가 */
+  }
+
+.banner-text2{
+  position: absolute;
+  top: 38%;
+  left: 10%;
+  z-index: 1; /* 이미지 위에 텍스트가 보이도록 설정 */
+  color: rgb(255, 255, 255);
+  font-size: 23px;
+  font-weight: 400;
+  font-family: 'Noto Sans KR', sans-serif;
+  letter-spacing: 2px;
+}
+
+.left-icon {
+  position: absolute;
+  top: 35%;
+  left: 1%;
+  transform: translateY(-50%);
+  color : white;
+  background-color: #3a3a3a84;
+  border-radius: 5px;
+}
+
+.right-icon {
+  position: absolute;
+  top: 35%;
+  right: 1%;
+  transform: translateY(-50%);
+  color : white;
+  background-color: #3a3a3a5c;
+  border-radius: 5px;
+}
 
 
 .func-container {
@@ -8,43 +64,55 @@
   padding: 20px; /* 좌우 여백 설정 */
   width : 70%;
   margin : 0 auto;
+  margin-top: 15px;
   font-family: 'Noto Sans KR', sans-serif;
+  text-decoration: none; /* 링크의 밑줄 제거 */
 }
 
-.func1 {
+.func1, .func2, .func3, .func4 {
   background-color: #ffffff; /* 배경색 */ 
   width : 250px;
   height: 300px;
-  padding: 10px;
+  padding: 25px 20px;
   font-size: 25px;
-  font-weight: 600;
-  color: #2c2c2c;
-  border : 2px solid #3a3a3a;
+  color: #191919;
+  border : 1px solid #d9d9d9;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
   border-radius: 8px; /* 둥근 모서리 설정 */
+  font-family: 'JalnanGothic';
+  transition: transform 0.2s ease;
+  text-decoration: none; /* 링크의 밑줄 제거 */
 }
 
-.func2 {
-  background-color: #ffffff; /* 배경색 */
-  width : 250px;
-  padding: 10px;
-  border : 2px solid #3a3a3a;
-  border-radius: 8px; /* 둥근 모서리 설정 */
-
+.func1:hover,
+.func2:hover,
+.func3:hover,
+.func4:hover {
+  transform: translateY(-10px);
+  color:rgb(255, 122, 122);
 }
 
-.func3 {
-  background-color: #ffffff; /* 배경색 */
-  width : 250px;
-  padding: 10px;
-  border : 2px solid #3a3a3a;
-  border-radius: 8px; /* 둥근 모서리 설정 */
 
+.detail {
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: 400;
+  color: #7e7e7e;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
-.func4 {
-  background-color: #ffffff; /* 배경색 */
-  width : 250px;
-  padding: 10px;
-  border : 2px solid #3a3a3a;
-  border-radius: 8px; /* 둥근 모서리 설정 */
+
+@keyframes slideAnimation {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.Img {
+  animation: slideAnimation 0.7s ease-in-out;
+  width: 100%;
+  height: auto;
 }
