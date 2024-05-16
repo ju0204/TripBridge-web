@@ -117,3 +117,23 @@ font-style: normal; */
   background-color: rgb(230, 230, 230);
   border-radius: 15px;
 }
+
+.styled-link-login {
+  color: black;
+  text-decoration: none;
+  margin-left: 10px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+}
+
+.styled-link-siginup {
+  color: black;
+  text-decoration: none;
+  margin-left: 10px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  font-family: 'Noto Sans KR', sans-serif;
+  cursor: pointer;
+}

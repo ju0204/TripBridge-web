@@ -240,16 +240,16 @@ const Chatbot = () => {
       return null;      
     }
     
-    const CustomMessage = () => (
-      <div>
-        환영합니다!<br/>첫 멘트
-      </div>
-    );
+    // const CustomMessage = () => (
+    //   <div>
+    //     환영합니다!<br/>첫 멘트
+    //   </div>
+    // );
   
   const steps = [
     {
       id: '1',
-      message: '',
+      message: '환영합니다.',
       trigger: '2',
     },
     {
