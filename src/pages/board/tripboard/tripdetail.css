@@ -92,7 +92,3 @@ textarea {
   font-family: 'Noto Sans KR', sans-serif;
 }
 
-
-button[type="submit"]:hover {
-  background-color: #696969;
-}

@@ -106,7 +106,8 @@ const SignUp = () => {
   return (
     <div className="sign-up-page">
       <div className="sign-up-container">
-        <h1 className="title">회원가입</h1>
+        <h1 className="title">SIGN UP</h1>
+        <hr className="hr-signup"/>
         <form className="sign-up-form" onSubmit={handleSubmit}>
           <label className="styled-label">이름</label>
           <input
@@ -197,7 +198,7 @@ const SignUp = () => {
           {/* Checkbox error message */}
           {errors.confirmCheckbox && <span className="styled-error-agree">{errors.confirmCheckbox}</span>}
           <div className="styled-button-container">
-            <button className="styled-button" type="submit">
+            <button className="signup-styled-button" type="submit">
               회원가입
             </button>
           </div>
