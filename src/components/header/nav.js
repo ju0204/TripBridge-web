@@ -53,7 +53,7 @@ const Nav = ({ isLoggedIn, nickname, onLogout }) => {
               <li className="nav-item">
                 <div className="styled-user">{nickname}님</div>
               </li>
-              <li className="nav-item"><Link className="styled-link" onClick={onLogout} to="/">로그아웃</Link></li>
+              <li className="nav-item"><Link className="styled-link-logout" onClick={onLogout} to="/">LOGOUT</Link></li>
             </>
           )}
         </ul>
