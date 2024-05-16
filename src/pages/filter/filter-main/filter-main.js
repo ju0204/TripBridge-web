@@ -51,8 +51,8 @@ const Filter = ({ isLoggedIn, nickname }) => {
 
       </motion.div>
       {showPopup && (
-        <div className="popup">
-          <div className="popup-content">
+        <div className="main-popup">
+          <div className="main-popup-content">
             <p>로그인 후 이용이 가능합니다!</p>
             <button onClick={handleClosePopup}>닫기</button>
           </div>

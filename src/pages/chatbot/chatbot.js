@@ -240,21 +240,26 @@ const Chatbot = () => {
       return null;      
     }
     
+    const CustomMessage = () => (
+      <div>
+        환영합니다!<br/>첫 멘트
+      </div>
+    );
   
   const steps = [
     {
       id: '1',
-      message: '환영합니다! (첫 멘트)',
+      message: '',
       trigger: '2',
     },
     {
       id: '2',
       options: [
-        { value: '1', label: '1. 주변 관광지 추천해줘', trigger: '3' },
-        { value: '2', label: '2. 장소 상세 정보 알려줘', trigger: '4' },
-        { value: '3', label: '3. 동선들의 이동 수단과 예상 비용 알려줘', trigger: '5' },
-        { value: '4', label: '4. 동선을 방문할때 일정표 알려줘', trigger: '6' },
-        { value: '5', label: '5. 질문끝내기', trigger: 'end' },
+        { value: '1', label: '1. 주변 관광지 추천', trigger: '3' },
+        { value: '2', label: '2. 장소 상세 정보 안내', trigger: '4' },
+        { value: '3', label: '3. 동선들의 이동 수단과 예상 비용', trigger: '5' },
+        { value: '4', label: '4. 동선 방문 시 일정 추천', trigger: '6' },
+        { value: '5', label: '5. 질문 끝내기', trigger: 'end' },
       ],
     },
     {
