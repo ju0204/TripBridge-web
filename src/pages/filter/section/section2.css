@@ -1,0 +1,49 @@
+
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+/* .notosanskr * { 
+ font-family: 'Noto Sans KR', sans-serif;
+} */
+
+.select-type {
+  overflow-y: auto; /* Add scrollbars when content overflows vertically */
+  height: 280px; /* Set a maximum height for the container */
+}
+
+.cate-type {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 22px;
+  font-weight: 400;
+  text-align: left;
+  color : #e5e5e5;
+  margin-left: 20px;
+  background-color: #ffffff3b;
+  border-radius: 10px;
+  padding: 8px 25px;
+  letter-spacing: 1px;
+  }
+
+.cate-ex {
+  display: inline-block;
+  padding: 8px 20px;
+  margin: 12px 10px;
+  border: 2px solid #b2b2b2;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 18px;
+  color :#d8d7d7;
+}
+
+.cate-ex:hover {
+  background-color: #e7e7e77c;
+}
+
+.cate-ex.selected {
+  background-color: #e7e7e7c8;
+  font-family: 'Noto Sans KR', sans-serif;
+  color: #2c2c2c;
+  font-weight: 600;
+}
+
+

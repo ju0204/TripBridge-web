@@ -42,7 +42,7 @@ const TripPostList = () => {
   return (
     <div>
       <div class='trip-board-banner'>
-          <img src='/trip.jpg' alt=''/>
+          <img src='/board/trip.jpg' alt=''/>
           <div className="trip-board-main">여행 게시판</div>
       </div>
       <div className="trip-board-container">
@@ -56,7 +56,7 @@ const TripPostList = () => {
           {currentPosts.map((post, index) => (
             <div className={`post-item ${index === currentPosts.length - 1 ? 'last-item' : ''}`} key={post.id}>
               <div className="post-content">
-                <div className="post-data">{indexOfFirstPost + index + 1}</div>
+                <div className="post-data">{posts.length - indexOfFirstPost - index}</div>
                 <div className="post-data">
                   <Link to={`/tripboard/${post.id}`} className="post-title">{post.title}</Link>
                 </div>
@@ -68,13 +68,19 @@ const TripPostList = () => {
         </div>
         {/* 페이지 네이션 */}
         <div className="pagination">
-          {Array.from({ length: Math.ceil(posts.length / postsPerPage) }, (_, i) => (
-            <button key={i + 1} onClick={() => paginate(i + 1)}>
-              {i + 1}
-            </button>
-          ))}
+          {Array.from({ length: Math.ceil(posts.length / postsPerPage) }, (_, i) => {
+            return (
+              <button 
+                key={i + 1} 
+                onClick={() => paginate(i + 1)} 
+                className={currentPage === i + 1 ? 'active' : ''}
+              >
+                {i + 1}
+              </button>
+            );
+          })}
         </div>
-        <Link to="/trip" className="write-post-button"><HiMiniPencilSquare />&nbsp;글쓰기</Link>
+        <Link to="/mate" className="write-post-button">✏️글쓰기</Link>
       </div>
     </div>
   );

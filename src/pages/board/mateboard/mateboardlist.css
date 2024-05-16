@@ -163,24 +163,25 @@
 .pagination {
   display: flex;
   justify-content: center;
-  margin-top: 20px;
-  font-family: 'Noto Sans KR', sans-serif;
+  margin-top: 30px;
 }
 
 .pagination button {
-  border: 1px solid #a8a8a8;
-  border-radius: 10px;
-  cursor: pointer;
-  margin: 0 3px;
+  margin: 0 5px;
   padding: 5px 10px;
-  transition: background-color 0.3s ease;
-  font-family: 'Noto Sans KR', sans-serif;
+  border: none;
+  background-color: transparent;
+  color: #2c2c2c;
+  cursor: pointer;
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
 
 .pagination button:hover {
-  background-color: #7c7c7c;
+  background-color: #afafaf;
 }
 
 .pagination button.active {
-  background-color: #7c7c7c;
+  background-color: #afafaf;
+  color: white;
 }
