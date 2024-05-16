@@ -4,7 +4,7 @@
   max-width: 75%;
   margin: 0 auto;
   padding: 20px;
-  margin-top: 20px;
+  margin-top: 10px;
   height: 700px; /* 컨테이너의 높이를 고정합니다 */
   font-family: 'Noto Sans KR', sans-serif;
 }
@@ -43,7 +43,7 @@
 .matepost-content {
   margin-top: 10px;
   font-size: 15px;
-  height: 500px;
+  height: 300px;
 }
 
 .action-button {

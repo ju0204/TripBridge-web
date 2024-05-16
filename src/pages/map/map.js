@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { fetchLocations, searchLocations, sendSelectedLocations, sendRouteDataToDatabase, deleteScrap } from '../../api/kakaomap';
 import { BsBookmarkStar } from "react-icons/bs";
+import { CgClose } from "react-icons/cg";
 import Chatbot from '../chatbot/chatbot';
 import './showmap.css';
 
@@ -70,6 +71,7 @@ const ShowMap = () => {
       map.setBounds(bounds);
     }
   };
+  
   const handleLocationClick = async (location) => {
     try {
       const isAlreadySelected = selectedMarkers.some(marker => marker.id === location.id);
@@ -288,9 +290,7 @@ const ShowMap = () => {
             <li key={index} onClick={() => handleLocationClick(location)} className={selectedLocations.includes(location) ? 'selected' : ''}>
               <strong>{location.place}</strong>
               <p>{location.address}</p>
-              <img
-                src="/x.png"
-                alt="Delete"
+              <CgClose
                 className="delete-button"
                 onClick={(e) => {
                   e.stopPropagation();
