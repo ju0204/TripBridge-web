@@ -1,4 +1,6 @@
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+@import url('https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
 
 /* .notosanskr * { 
  font-family: 'Noto Sans KR', sans-serif;
@@ -14,6 +16,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    /* text-align: center; */
     justify-content: center;
     max-width: 500px;
     margin-top: 50px; /* 수직 가운데 정렬 */
@@ -73,23 +76,26 @@
     
   }
   
-  .styled-button {
+  .signup-styled-button {
     padding: 8px 10px;
-    width: 100px; /*버튼 가로 크기 조절*/
-    background-color: #007bff;
-    color: white;
+    width: 150px; /*버튼 가로 크기 조절*/
+    background-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
     border: none;
-    border-radius: 5px;
+    /* border-radius: 10px; */
     cursor: pointer;
     font-family: 'Noto Sans KR', sans-serif;
+    margin-top: 30px;
   }
   
   .title {
-    font-size: 30px;
-    font-family: 'Noto Sans KR', sans-serif;;
-    font-weight: 800;
-    letter-spacing: 4px; 
-    margin-bottom: 40px;
+    font-size: 45px;
+    font-family: "Ubuntu", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+    /* font-weight: 900; */
+    letter-spacing: 3px; 
+    margin-bottom: 3px;
     margin-top:50px;
   }
   
@@ -191,6 +197,18 @@
 }
 
 /* Other styles remain unchanged */
+.hr-signup {
+  transform: rotate(0deg);
+  width: 88px; /* 가로 길이를 조절합니다. */
+  height: 4px; /* 세로 길이를 조절합니다. */
+  border: none; /* 기본 테두리를 제거합니다. */
+   /* 가로 선의 두께와 색상을 설정합니다. */
+  margin-left: auto; /* 좌측 여백을 설정합니다. */
+ margin-top: 0px;
+ margin-bottom: 40px;
+ background-color: rgba(163, 163, 163, 0.6);
+ align-self: center;
+}
 
 
 

@@ -57,7 +57,8 @@ const Login = ({ setIsLoggedIn, setNickname }) => {
 
   return (
     <div className="login-container">
-      <h1 className="title">로그인</h1>
+      <h1 className="title">LOGIN</h1>
+      <hr className="hr-login"/>
       <form className="login-form" onSubmit={handleSubmit}>
         <label className="styled-label">이메일 주소</label>
         <input
@@ -82,7 +83,7 @@ const Login = ({ setIsLoggedIn, setNickname }) => {
         {errors.password && <span className="styled-error">{errors.password}</span>}
         {errorMessage && <span className="styled-error">{errorMessage}</span>} {/* 추가: 오류 메시지 표시 */}
         <div className="styled-button-container">
-          <button className="styled-button" type="submit">로그인</button>
+          <button className="login-styled-button" type="submit">로그인</button>
         </div>
       </form>
     </div>

@@ -257,7 +257,9 @@ const handleDeletePost = async () => {
             <div className="comment-section">
                 <form onSubmit={handleSubmitComment}>
                     <textarea value={comment} onChange={handleChangeComment}></textarea>
-                    <button type="submit">댓글 작성</button>
+                    <div className="action-buttons">
+                        <button>댓글 작성</button>
+                    </div>
                 </form>
                 <div className='comment-list'>
                     <div className='comment-semiheader'>댓글 목록</div>
