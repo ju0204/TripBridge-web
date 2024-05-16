@@ -77,7 +77,7 @@
   font-size: 30px;
 }
 
-.popup {
+.main-popup {
   position: fixed; /* 고정 위치 */
   top: 50%; /* 화면 세로 중앙에 위치 */
   left: 50%; /* 화면 가로 중앙에 위치 */
@@ -87,17 +87,18 @@
   z-index: 1000; /* 다른 요소 위에 표시 */
   background-color: rgb(255, 255, 255); /* 배경색 및 투명도 지정 */
   text-align: center; /* 버튼 가운데 정렬 */
+  border: 1px solid #b5b5b5;
 }
 
-.popup-content {
+.main-popup-content {
   color: #2c2c2c; /* 텍스트 색상 */
 }
 
-.popup-content p {
+.main-popup-content p {
   margin: 0; /* 문단의 상하 여백 제거 */
 }
 
-.popup-content button {
+.main-popup-content button {
   background-color: #383838; /* 버튼 배경색 */
   color: white; /* 버튼 텍스트 색상 */
   border: none; /* 테두리 제거 */
@@ -107,7 +108,7 @@
   margin-top: 20px; /* 위쪽 여백 추가 */
 }
 
-.popup-content button:hover {
+.main-popup-content button:hover {
   background-color: #5b5b5b; /* 호버 시 배경색 변경 */
 }
 
