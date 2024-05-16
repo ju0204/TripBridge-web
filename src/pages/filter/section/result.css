@@ -189,15 +189,15 @@
 }
 
 
-/*설명 팝업*/
+/* Explanation Popup */
 .Ex-popup-result {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* 반투명한 검은 배경 */
-  z-index: 9999; /* 다른 요소 위에 표시되도록 함 */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  z-index: 9999; /* Ensure it appears above other elements */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -206,8 +206,8 @@
 .Ex-popup-inner1 {
   display: flex;
   flex-direction: column;
-  align-items: center; /* 수직 가운데 정렬 */
-  text-align: center; /* 내부 요소들을 가운데 정렬 */
+  align-items: center; /* Vertical centering */
+  text-align: center; /* Center align internal elements */
   background-color: rgba(255, 255, 255, 0.902);
   padding: 20px;
   border-radius: 5px;
@@ -215,9 +215,18 @@
   max-width: 45%;
 }
 
-.Ex-popup-inner1 p {
+.Ex-popup-inner1 .centered-text {
   margin-bottom: 10px;
   font-family: 'Noto Sans KR', sans-serif;
+  text-align: center; /* Center align text */
+  width: 100%; /* Ensure full width to center align properly */
+}
+
+.Ex-popup-inner1 .ex-text{
+  margin-bottom: 10px;
+  font-family: 'Noto Sans KR', sans-serif;
+  text-align: left; /* Left align text */
+  width: 100%; /* Ensure full width to left align properly */
 }
 
 .Ex-popup-inner1 button {

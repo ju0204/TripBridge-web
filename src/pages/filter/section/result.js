@@ -92,11 +92,12 @@ const handleImageClick = async (contentTypeId,contentId) => {
     
     // 반환된 데이터를 이용하여 원하는 작업 수행
     console.log('받은 이미지 데이터:', responseData);
-    
 
-    // await fetchEx(exData);
-    setExPopupContent(responseData);
+    const cleanedData = responseData.replace(/<[^>]*>/g, '');
+
+    setExPopupContent(cleanedData);
     setShowExPopup(true);
+    
     
   } catch (error) {
     console.error('상세설명 요청 오류:', error);
@@ -199,7 +200,8 @@ const handleImageClick = async (contentTypeId,contentId) => {
       {showExPopup && (
         <div className="Ex-popup-result">
           <div className="Ex-popup-inner1">
-          <p>{exPopupContent}</p>
+          <p className="centered-text">상세정보</p>
+          <p className="ex-text">{exPopupContent}</p>
             <button onClick={() => setShowExPopup(false)}>닫기</button>
           </div>
         </div>
