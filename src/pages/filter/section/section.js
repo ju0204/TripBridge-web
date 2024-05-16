@@ -1,341 +1,149 @@
 import React, { useState } from 'react';
-import { FaCheck } from "react-icons/fa";
-import { motion } from "framer-motion";
-// import { sendSelectedArea } from '../../../api/filter';
 import { sendRequest } from '../../../api/filter';
 import { useNavigate } from 'react-router-dom';
 
-import Bag  from './img/bag.png';
 import './section.css';
 
 const Section = () => {
   const [selectedAreas, setSelectedAreas] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
-  const navigate = useNavigate(); // useHistory 대신 useNavigate 사용
-
+  const navigate = useNavigate();
 
   const handleAreaClick = (area) => {
-    // const isSelected = selectedAreas.includes(area);
-    // if (isSelected) {
-    //   // 이미 선택된 지역을 클릭하면 선택을 취소합니다.
-    //   setSelectedAreas(selectedAreas.filter(item => item !== area));
-    // } else {
-    //   // 이미 선택된 지역이 아니면 선택합니다.
-    //   setSelectedAreas([...selectedAreas, area]);
-    // }
+    // Clear the previously selected areas
     setSelectedAreas([area]);
   };
-  
-  
 
+  const handleSubmit = async () => {
+    console.log('handleSubmit 함수가 호출되었습니다.');
 
-const handleSubmit = async () => {
-  console.log('handleSubmit 함수가 호출되었습니다.');
-
-  if (selectedAreas.length > 0) {
-    try {
-      navigate('/section2', { state: { selectedAreas }});
-      // sendSelectedArea 함수를 호출하여 요청을 보냅니다.
-      const responseData = await sendRequest(selectedAreas);
-      console.log('Success:', responseData); // 응답 데이터를 콘솔에 출력합니다.
-      // 선택된 지역이 있을 때만 다음 작업을 수행합니다.
-      // 예를 들어, 다음 페이지로 이동할 수 있습니다.
-    } catch (error) {
-      console.error('Error while sending data:', error);
+    if (selectedAreas.length > 0) {
+      try {
+        navigate('/section2', { state: { selectedAreas }});
+        const responseData = await sendRequest(selectedAreas);
+        console.log('Success:', responseData);
+      } catch (error) {
+        console.error('Error while sending data:', error);
+      }
+    } else {
+      console.log("지역을 선택해주세요.");
+      setShowPopup(true);
     }
-  } else {
-    console.log("지역을 선택해주세요.");
-    setShowPopup(true);
-  }
-};
-
-  
-  
-  
-  
+  };
 
   return (
     <div className="filtersection-container">
-      <div className="section-container-box" >
+      <div className="section-container-box">
         <div className="section-box">
-          <div className="section-text-box">
-            <p className="section-text1">이번 여행, 어디로 가고 싶으신가요?</p>
-            <p className="section-text2">여행을 떠나고 싶은 지역을 선택해주세요.</p>
-          </div>
-
-          <div className="select-area">
-            <ul>
-              <li>
-                <input
-                  className="checkbox-input"
-                  type="checkbox"
-                  id="area1"
-                  checked={selectedAreas.includes("1")}
-                  onChange={() => handleAreaClick("1")}
-                />
-                <label className={`checkbox-label ${selectedAreas.includes("1") ? 'selected' : ''}`} htmlFor="area1">
+          <div className="section-text1">이번 여행, 어디로 가고 싶으신가요?</div>
+          <div className="section-text2">여행을 떠나고 싶은 지역을 선택해주세요.</div>
+                <div
+                  className={`checkbox-label ${selectedAreas.includes("1") ? 'selected' : ''}`}
+                  onClick={() => handleAreaClick("1")}
+                >
                   서울
-                  <div className="icon-wrapper">
-                    {selectedAreas.includes("1") && (
-                      <FaCheck  className="icon" />
-                    )}
-                  </div>
-                </label>
-                <input
-                  className="checkbox-input"
-                  type="checkbox"
-                  id="area2"
-                  checked={selectedAreas.includes("2")}
-                  onChange={() => handleAreaClick("2")}
-                />
-                <label className={`checkbox-label ${selectedAreas.includes("2") ? 'selected' : ''}`} htmlFor="area2">
+                </div>
+                <div
+                  className={`checkbox-label ${selectedAreas.includes("2") ? 'selected' : ''}`}
+                  onClick={() => handleAreaClick("2")}
+                >
                   인천
-                  <div className="icon-wrapper">
-                    {selectedAreas.includes("2") && (
-                      <FaCheck  className="icon" />
-                    )}
-                  </div>
-                </label>
-                <input
-                  className="checkbox-input"
-                  type="checkbox"
-                  id="area3"
-                  checked={selectedAreas.includes("3")}
-                  onChange={() => handleAreaClick("3")}
-                />
-                <label className={`checkbox-label ${selectedAreas.includes("3") ? 'selected' : ''}`} htmlFor="area3">
+                </div>
+                <div
+                  className={`checkbox-label ${selectedAreas.includes("3") ? 'selected' : ''}`}
+                  onClick={() => handleAreaClick("3")}
+                >
                   대전
-                  <div className="icon-wrapper">
-                    {selectedAreas.includes("3") && (
-                      <FaCheck  className="icon" />
-                    )}
-                  </div>
-                </label>
-                <input
-                  className="checkbox-input"
-                  type="checkbox"
-                  id="area4"
-                  checked={selectedAreas.includes("4")}
-                  onChange={() => handleAreaClick("4")}
-                />
-                <label className={`checkbox-label ${selectedAreas.includes("4") ? 'selected' : ''}`} htmlFor="area4">
+                </div>
+                <div
+                  className={`checkbox-label ${selectedAreas.includes("4") ? 'selected' : ''}`}
+                  onClick={() => handleAreaClick("4")}
+                >
                   대구
-                  <div className="icon-wrapper">
-                    {selectedAreas.includes("4") && (
-                      <FaCheck  className="icon" />
-                    )}
-                  </div>
-                </label>
-                <input
-                  className="checkbox-input"
-                  type="checkbox"
-                  id="area5"
-                  checked={selectedAreas.includes("5")}
-                  onChange={() => handleAreaClick("5")}
-                />
-                <label className={`checkbox-label ${selectedAreas.includes("5") ? 'selected' : ''}`} htmlFor="area5">
+                </div>
+                <div
+                  className={`checkbox-label ${selectedAreas.includes("5") ? 'selected' : ''}`}
+                  onClick={() => handleAreaClick("5")}
+                >
                   광주
-                  <div className="icon-wrapper">
-                    {selectedAreas.includes("5") && (
-                      <FaCheck  className="icon" />
-                    )}
-                  </div>
-                </label>
-                <input
-                  className="checkbox-input"
-                  type="checkbox"
-                  id="area6"
-                  checked={selectedAreas.includes("6")}
-                  onChange={() => handleAreaClick("6")}
-                />
-                <label className={`checkbox-label ${selectedAreas.includes("6") ? 'selected' : ''}`} htmlFor="area6">
+                </div>
+                <div
+                  className={`checkbox-label ${selectedAreas.includes("6") ? 'selected' : ''}`}
+                  onClick={() => handleAreaClick("6")}
+                >
                   부산
-                  <div className="icon-wrapper">
-                    {selectedAreas.includes("6") && (
-                      <FaCheck  className="icon" />
-                    )}
-                  </div>
-                </label>
-                <input
-                  className="checkbox-input"
-                  type="checkbox"
-                  id="area7"
-                  checked={selectedAreas.includes("7")}
-                  onChange={() => handleAreaClick("7")}
-                />
-                <label className={`checkbox-label ${selectedAreas.includes("7") ? 'selected' : ''}`} htmlFor="area7">
+                </div>
+                <div
+                  className={`checkbox-label ${selectedAreas.includes("7") ? 'selected' : ''}`}
+                  onClick={() => handleAreaClick("7")}
+                >
                   울산
-                  <div className="icon-wrapper">
-                    {selectedAreas.includes("7") && (
-                      <FaCheck  className="icon" />
-                    )}
-                  </div>
-                </label>
-                <input
-                  className="checkbox-input"
-                  type="checkbox"
-                  id="area8"
-                  checked={selectedAreas.includes("8")}
-                  onChange={() => handleAreaClick("8")}
-                />
-                <label className={`checkbox-label ${selectedAreas.includes("8") ? 'selected' : ''}`} htmlFor="area8">
+                </div>
+                <div
+                  className={`checkbox-label ${selectedAreas.includes("8") ? 'selected' : ''}`}
+                  onClick={() => handleAreaClick("8")}
+                >
                   세종
-                  <div className="icon-wrapper">
-                    {selectedAreas.includes("8") && (
-                      <FaCheck  className="icon" />
-                    )}
-                  </div>
-                </label>
-                <input
-                  className="checkbox-input"
-                  type="checkbox"
-                  id="area31"
-                  checked={selectedAreas.includes("31")}
-                  onChange={() => handleAreaClick("31")}
-                />
-                <label className={`checkbox-label ${selectedAreas.includes("31") ? 'selected' : ''}`} htmlFor="area31">
+                </div>
+                <div
+                  className={`checkbox-label ${selectedAreas.includes("31") ? 'selected' : ''}`}
+                  onClick={() => handleAreaClick("31")}
+                >
                   경기
-                  <div className="icon-wrapper">
-                    {selectedAreas.includes("31") && (
-                      <FaCheck  className="icon" />
-                    )}
-                  </div>
-                </label>
-                <input
-                  className="checkbox-input"
-                  type="checkbox"
-                  id="area32"
-                  checked={selectedAreas.includes("32")}
-                  onChange={() => handleAreaClick("32")}
-                />
-                <label className={`checkbox-label ${selectedAreas.includes("32") ? 'selected' : ''}`} htmlFor="area32">
+                </div>
+                <div
+                  className={`checkbox-label ${selectedAreas.includes("32") ? 'selected' : ''}`}
+                  onClick={() => handleAreaClick("32")}
+                >
                   강원
-                  <div className="icon-wrapper">
-                    {selectedAreas.includes("32") && (
-                      <FaCheck  className="icon" />
-                    )}
-                  </div>
-                </label>
-                <input
-                  className="checkbox-input"
-                  type="checkbox"
-                  id="area33"
-                  checked={selectedAreas.includes("33")}
-                  onChange={() => handleAreaClick("33")}
-                />
-                <label className={`checkbox-label ${selectedAreas.includes("33") ? 'selected' : ''}`} htmlFor="area33">
+                </div>
+                <div
+                  className={`checkbox-label ${selectedAreas.includes("33") ? 'selected' : ''}`}
+                  onClick={() => handleAreaClick("33")}
+                >
                   충북
-                  <div className="icon-wrapper">
-                    {selectedAreas.includes("33") && (
-                      <FaCheck  className="icon" />
-                    )}
-                  </div>
-                </label>
-                <input
-                  className="checkbox-input"
-                  type="checkbox"
-                  id="area34"
-                  checked={selectedAreas.includes("34")}
-                  onChange={() => handleAreaClick("34")}
-                />
-                <label className={`checkbox-label ${selectedAreas.includes("34") ? 'selected' : ''}`} htmlFor="area34">
+                </div>
+                <div
+                  className={`checkbox-label ${selectedAreas.includes("34") ? 'selected' : ''}`}
+                  onClick={() => handleAreaClick("34")}
+                >
                   충남
-                  <div className="icon-wrapper">
-                    {selectedAreas.includes("34") && (
-                      <FaCheck  className="icon" />
-                    )}
-                  </div>
-                </label>
-                <input
-                  className="checkbox-input"
-                  type="checkbox"
-                  id="area35"
-                  checked={selectedAreas.includes("35")}
-                  onChange={() => handleAreaClick("35")}
-                />
-                <label className={`checkbox-label ${selectedAreas.includes("35") ? 'selected' : ''}`} htmlFor="area35">
+                </div>
+                <div
+                  className={`checkbox-label ${selectedAreas.includes("35") ? 'selected' : ''}`}
+                  onClick={() => handleAreaClick("35")}
+                >
                   경북
-                  <div className="icon-wrapper">
-                    {selectedAreas.includes("35") && (
-                      <FaCheck  className="icon" />
-                    )}
-                  </div>
-                </label>
-                <input
-                  className="checkbox-input"
-                  type="checkbox"
-                  id="area36"
-                  checked={selectedAreas.includes("36")}
-                  onChange={() => handleAreaClick("36")}
-                />
-                <label className={`checkbox-label ${selectedAreas.includes("36") ? 'selected' : ''}`} htmlFor="area36">
+                </div>
+                <div
+                  className={`checkbox-label ${selectedAreas.includes("36") ? 'selected' : ''}`}
+                  onClick={() => handleAreaClick("36")}
+                >
                   경남
-                  <div className="icon-wrapper">
-                    {selectedAreas.includes("36") && (
-                      <FaCheck  className="icon" />
-                    )}
-                  </div>
-                </label>
-                <input
-                  className="checkbox-input"
-                  type="checkbox"
-                  id="area37"
-                  checked={selectedAreas.includes("37")}
-                  onChange={() => handleAreaClick("37")}
-                />
-                <label className={`checkbox-label ${selectedAreas.includes("37") ? 'selected' : ''}`} htmlFor="area37">
+                </div>
+                <div
+                  className={`checkbox-label ${selectedAreas.includes("37") ? 'selected' : ''}`}
+                  onClick={() => handleAreaClick("37")}
+                >
                   전북
-                  <div className="icon-wrapper">
-                    {selectedAreas.includes("37") && (
-                      <FaCheck  className="icon" />
-                    )}
-                  </div>
-                </label>
-                <input
-                  className="checkbox-input"
-                  type="checkbox"
-                  id="area38"
-                  checked={selectedAreas.includes("38")}
-                  onChange={() => handleAreaClick("38")}
-                />
-                <label className={`checkbox-label ${selectedAreas.includes("38") ? 'selected' : ''}`} htmlFor="area38">
+                </div>
+                <div
+                  className={`checkbox-label ${selectedAreas.includes("38") ? 'selected' : ''}`}
+                  onClick={() => handleAreaClick("38")}
+                >
                   전남
-                  <div className="icon-wrapper">
-                    {selectedAreas.includes("38") && (
-                      <FaCheck  className="icon" />
-                    )}
-                  </div>
-                </label>
-                <input
-                  className="checkbox-input"
-                  type="checkbox"
-                  id="area39"
-                  checked={selectedAreas.includes("39")}
-                  onChange={() => handleAreaClick("39")}
-                />
-                <label className={`checkbox-label ${selectedAreas.includes("39") ? 'selected' : ''}`} htmlFor="area39">
+                </div>
+                <div
+                  className={`checkbox-label ${selectedAreas.includes("39") ? 'selected' : ''}`}
+                  onClick={() => handleAreaClick("39")}
+                >
                   제주
-                  <div className="icon-wrapper">
-                    {selectedAreas.includes("39") && (
-                      <FaCheck  className="icon" />
-                    )}
-                  </div>
-                </label>
-
-                
-              </li>
-              
-
-              {/* 다른 지역에 대한 라벨 및 입력란을 여기에 추가할 수 있습니다. */}
-              
-            </ul>
+                </div>
           </div>
-
-        </div>
-        <div className="section1-button-container">
+          <div className="section1-button-container">
             <button className="section1-button" type="button" onClick={handleSubmit}>다음</button>
+          </div>
         </div>
-      </div>
       {showPopup && (
         <div className="popup">
           <div className="popup-content">
