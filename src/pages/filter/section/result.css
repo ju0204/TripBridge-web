@@ -47,6 +47,15 @@
   margin-left: auto; /* 오른쪽 끝에 배치 */
 }
 
+.toscrap {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 600;
+  text-decoration: none; /* 링크의 밑줄을 없앰 */
+  color : #2c2c2c;
+  font-size: 17px;
+  margin-left: auto; /* 오른쪽 끝에 배치 */
+}
+
 
 .result-wrapper {
   display: grid;

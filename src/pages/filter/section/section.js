@@ -56,10 +56,9 @@ const handleSubmit = async () => {
 
   return (
     <div className="filtersection-container">
-      <motion.div className="section-container-box" animate={{ y: -100 }}>
+      <div className="section-container-box" >
         <div className="section-box">
           <div className="section-text-box">
-            <div className="section-icon-div"><img className="section-icon" src={Bag} /><hr className="hr"/></div>
             <p className="section-text1">이번 여행, 어디로 가고 싶으신가요?</p>
             <p className="section-text2">여행을 떠나고 싶은 지역을 선택해주세요.</p>
           </div>
@@ -336,7 +335,7 @@ const handleSubmit = async () => {
         <div className="section1-button-container">
             <button className="section1-button" type="button" onClick={handleSubmit}>다음</button>
         </div>
-      </motion.div>
+      </div>
       {showPopup && (
         <div className="popup">
           <div className="popup-content">

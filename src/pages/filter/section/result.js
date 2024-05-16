@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion } from "framer-motion";
 import { sendRequest, sendScrap, fetchEx} from '../../../api/filter';
 import { useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { FaArrowAltCircleRight } from "react-icons/fa";
 import { CiBookmarkCheck } from "react-icons/ci";
 import { MdOutlineImageNotSupported } from "react-icons/md";
 
@@ -117,7 +119,7 @@ const handleImageClick = async (contentTypeId,contentId) => {
     <div className="result-container">
       <motion.div className="result-container-box" animate={{ y: -100 }}>
         <div className="result-section-box">
-        <div className="section-text-box">추천 관광지</div>
+        <div className="section-textbox">추천 관광지<Link className="toscrap" to="/map"><FaArrowAltCircleRight />스크랩 목록 확인하러 가기</Link></div>
            {/* 백엔드에서 가져온 게시물 데이터를 표시하는 부분 */}
           <div className="result-wrapper">
             {currentPosts.map(post => (

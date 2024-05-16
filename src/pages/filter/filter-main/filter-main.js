@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { motion } from "framer-motion";
 import { Link } from 'react-router-dom';
-import map from '../filter-img/map.png'
+
 
 
 import './filter-main.css'; // 분리한 CSS 파일을 불러옵니다.
@@ -23,7 +22,7 @@ const Filter = ({ isLoggedIn, nickname }) => {
 
   return (
     <div className="filtermain-container">
-      <motion.div className="container-box" animate={{ y: -100 }}>
+      <div className="container-box">
         <div className="filter-text">
           <p className="text-main">여행지 추천</p>
           {!isLoggedIn && (
@@ -40,16 +39,10 @@ const Filter = ({ isLoggedIn, nickname }) => {
             취향에 맞는 여행을 선택하고 추천받아보세요!
           </p>
         </div>
-        <motion.div className="filter-box">
-          <div className="img">
-            <img className="map" src={map} alt="map" />
-          </div>
-          </motion.div>
           <div className="glassButton">
             <Link className="button-start" to='/section' onClick={handleStartClick}>START</Link>
           </div>
-
-      </motion.div>
+      </div>
       {showPopup && (
         <div className="main-popup">
           <div className="main-popup-content">

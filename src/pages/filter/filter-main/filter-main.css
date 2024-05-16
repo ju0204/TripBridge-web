@@ -1,5 +1,11 @@
-
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+@font-face {
+  font-family: 'JalnanGothic';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/JalnanGothic.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 
 /* background-color:rgba(231, 240, 255, 0.7); */
 
@@ -10,7 +16,7 @@
 
 .filtermain-container{
   overflow: hidden;
-  height: 89vh;
+  height: 87.6vh;
   font-family: 'Noto Sans KR', sans-serif;
 }
 
@@ -20,8 +26,8 @@
   align-items: center;
   justify-content: center;
   height: 100%; /* 혹은 다른 값을 설정하여 레이아웃을 조정 */
-  margin-top: 100px;
-  background-color: rgba(231, 240, 255, 0.7);
+  background-image: url('/public/filtermain.jpg');
+  background-size: 100%; 
   font-family: 'Noto Sans KR', sans-serif;
 }
 
@@ -29,45 +35,44 @@
 .filter-text {
   text-align: center;
   font-family: 'Noto Sans KR', sans-serif;
+  margin-bottom: 130px;
 }
 
 /* 여행지추천 */
 .text-main {
+  font-family: 'JalnanGothic';
   font-size: 55px;
-  font-weight: 600;
-  color: #2c2c2c;
-  margin-bottom: 30px;
-  /* background-color: rgba(175, 204, 255, 0.7);
-  border-radius: 50px;
-  width: 500px;
-  padding: 15px; */
-  letter-spacing: 2px;
-  margin-top: 0px;
+  color: #ffffff;
+  letter-spacing: 5px;
+  margin-bottom: 20px;
 }
 
 .text-user {
   font-size: 25px;
   font-weight: 600;
   margin-bottom: 10px;
+  color : #e5e5e5;
+  /* background-color: #a0a0a079;
+  padding: 2px 2px;
+  border-radius: 10px; */
 }
 
 .text-ex {
   font-size: 16px;
-  color: #2c2c2c;
-  margin-bottom: 20px;
+  color: #e9e9e9c4;
 }
 
 .glassButton {
-  background: #353535;
+  background: #bebec8;
   padding: 5px;
   width : 200px;
-  border-radius: 50px;
+  border-radius: 10px;
   text-align: center;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 .glassButton:hover{
-  background-color: #555555; /* 호버 시 배경색 변경 */
+  background-color: #a0a0a0; /* 호버 시 배경색 변경 */
   transition: background-color 0.5s ease; /* 호버 효과를 부드럽게 만들기 위한 transition 속성 추가 */
 }
 
@@ -91,7 +96,7 @@
 }
 
 .main-popup-content {
-  color: #2c2c2c; /* 텍스트 색상 */
+  color: #afafaf; /* 텍스트 색상 */
 }
 
 .main-popup-content p {
@@ -99,7 +104,7 @@
 }
 
 .main-popup-content button {
-  background-color: #383838; /* 버튼 배경색 */
+  background-color: #cecece; /* 버튼 배경색 */
   color: white; /* 버튼 텍스트 색상 */
   border: none; /* 테두리 제거 */
   padding: 5px 15px; /* 버튼 안쪽 여백 */
@@ -110,10 +115,4 @@
 
 .main-popup-content button:hover {
   background-color: #5b5b5b; /* 호버 시 배경색 변경 */
-}
-
-
-
-.map {
-  width: 350px;
 }
