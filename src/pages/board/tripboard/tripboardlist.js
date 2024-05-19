@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './tripboardlist.css';
 import { Link } from 'react-router-dom';
 import { showTripPost } from '../../../api/tripboard';
-// import { LuPencilLine } from "react-icons/lu";
-import { HiMiniPencilSquare } from "react-icons/hi2";
+import { LuPencil } from "react-icons/lu";
 
 const TripPostList = () => {
   const [posts, setPosts] = useState([]);
@@ -80,7 +79,7 @@ const TripPostList = () => {
             );
           })}
         </div>
-        <Link to="/mate" className="write-post-button">✏️글쓰기</Link>
+        <Link to="/trip" className="write-post-button"><LuPencil />&nbsp;글쓰기</Link>
       </div>
     </div>
   );

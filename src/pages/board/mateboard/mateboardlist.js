@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './mateboardlist.css';
 import { Link } from 'react-router-dom';
 import { showMatePost } from '../../../api/mateboard';
+import { LuPencil } from "react-icons/lu";
 
 const MatePostList = () => {
   const [posts, setPosts] = useState([]);
@@ -83,7 +84,7 @@ const MatePostList = () => {
             );
           })}
         </div>
-        <Link to="/mate" className="write-post-button">✏️글쓰기</Link>
+        <Link to="/mate" className="write-post-button"><LuPencil className='pencil'/>&nbsp;글쓰기</Link>
       </div>
     </div>
   );
