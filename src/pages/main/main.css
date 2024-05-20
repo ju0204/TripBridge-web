@@ -11,6 +11,34 @@
   font-style: normal;
 }
 
+.inner {
+  position: relative;
+  width: 100%; /* Adjust as necessary */
+  height: 480px; /* Ensure this matches your banner height */
+}
+
+.inner .banner-container {
+  position: relative;
+}
+
+.inner .Img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.main-text {
+  font-family: 'Noto Sans KR', sans-serif; 
+  position: absolute;
+  bottom: 20px;
+  right: 60px;
+  color: rgba(255, 255, 255, 0.823);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 1px;
+  z-index: 10;
+}
+
 
 .banner-text {
   position: absolute;
@@ -30,7 +58,7 @@
   top: 330px;
   left: 180px;
   z-index: 1; /* 이미지 위에 텍스트가 보이도록 설정 */
-  color: rgb(255, 255, 255);
+  color: rgba(255, 255, 255, 0.941);
   font-size: 23px;
   font-weight: 500;
   font-family: 'Noto Sans KR', sans-serif;
@@ -157,4 +185,20 @@
   animation: slideAnimation 0.7s ease-in-out;
   width: 100%;
   height: auto;
+}
+
+.footer {
+  background-color: #ffffff;
+  padding: 25px;
+  bottom: 0;
+  width: 97%;
+  margin-top: 70px;
+  border-top: 1px solid #e0e0e0;
+}
+
+.footer-text{
+  font-size: 12px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-weight: 600;
+  color: #8d8d8d;
 }
