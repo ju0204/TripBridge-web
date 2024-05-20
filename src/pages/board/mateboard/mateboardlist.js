@@ -86,6 +86,9 @@ const MatePostList = () => {
         </div>
         <Link to="/mate" className="write-post-button"><LuPencil className='pencil'/>&nbsp;글쓰기</Link>
       </div>
+      <div className="footer">
+      <div className="footer-text">ⓒ TripBridge. All Rights Reserved.</div>
+      </div>
     </div>
   );
 };

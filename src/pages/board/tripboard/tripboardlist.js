@@ -81,6 +81,9 @@ const TripPostList = () => {
         </div>
         <Link to="/trip" className="write-post-button"><LuPencil />&nbsp;글쓰기</Link>
       </div>
+      <div className="footer">
+      <div className="footer-text">ⓒ TripBridge. All Rights Reserved.</div>
+      </div>
     </div>
   );
 };

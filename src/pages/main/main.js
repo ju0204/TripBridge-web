@@ -41,25 +41,46 @@ const Main = () => {
       <div style={{ overflow: 'hidden' }}>
         <Container currentSlide={currentSlide}>
         <div className="inner">
+          <div className="banner-container">
             <img src="./main/seoul.jpg" alt="배너1" className="Img" />
+            <div className="main-text">서울| 도심의 야경</div>
+          </div>
+        </div>
+          <div className="inner">
+            <div className="banner-container">
+              <img src="./main/suwon.jpg" alt="배너2" className="Img" />
+              <div className="main-text">경기| 수원화성</div>
+            </div>
           </div>
           <div className="inner">
-            <img src="./main/suwon.jpg" alt="배너2" className="Img" />
+            <div className="banner-container">
+              <img src="./main/gangwon.jpg" alt="배너3" className="Img" />
+              <div className="main-text">강원| 설악산</div>
+            </div>
           </div>
           <div className="inner">
-            <img src="./main/gangwon.jpg" alt="배너3" className="Img" />
+            <div className="banner-container">
+              <img src="./main/jj.jpg" alt="배너4" className="Img" />
+              <div className="main-text">전주| 한옥마을</div>
+            </div>
           </div>
           <div className="inner">
-            <img src="./main/jj.jpg" alt="배너4" className="Img" />
+            <div className="banner-container">
+              <img src="./main/busan2.jpg" alt="배너5" className="Img" />
+              <div className="main-text">부산| 광안대교</div>
+            </div>
           </div>
           <div className="inner">
-            <img src="./main/busan2.jpg" alt="배너5" className="Img" />
+            <div className="banner-container">
+              <img src="./main/gyeongju.jpg" alt="배너6" className="Img" />
+              <div className="main-text">경주| 안압지</div>
+            </div>
           </div>
           <div className="inner">
-            <img src="./main/gyeongju.jpg" alt="배너6" className="Img" />
-          </div>
-          <div className="inner">
-            <img src="./main/jeju.jpg" alt="배너7" className="Img" />
+            <div className="banner-container">
+              <img src="./main/jeju.jpg" alt="배너7" className="Img" />
+              <div className="main-text">제주| 제주시 해변</div>
+            </div>
           </div>
         </Container>
         <GrFormPrevious size={45} className="left-icon" onClick={handleClickNext} />
@@ -92,6 +113,9 @@ const Main = () => {
           </Link>
         </div>
 
+      </div>
+      <div className="footer">
+      <div className="footer-text">ⓒ TripBridge. All Rights Reserved.</div>
       </div>
     </div>
   );
