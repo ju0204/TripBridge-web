@@ -14,8 +14,8 @@
 
 .banner-text {
   position: absolute;
-  top: 29%;
-  left: 10%;
+  top: 250px;
+  left: 180px;
   z-index: 1; /* 이미지 위에 텍스트가 보이도록 설정 */
   color: white;
   font-size: 60px;
@@ -27,19 +27,19 @@
 
 .banner-text2{
   position: absolute;
-  top: 38%;
-  left: 10%;
+  top: 330px;
+  left: 180px;
   z-index: 1; /* 이미지 위에 텍스트가 보이도록 설정 */
   color: rgb(255, 255, 255);
   font-size: 23px;
-  font-weight: 400;
+  font-weight: 500;
   font-family: 'Noto Sans KR', sans-serif;
   letter-spacing: 2px;
 }
 
 .left-icon {
   position: absolute;
-  top: 35%;
+  top: 320px;
   left: 1%;
   transform: translateY(-50%);
   color : white;
@@ -49,7 +49,7 @@
 
 .right-icon {
   position: absolute;
-  top: 35%;
+  top: 320px;
   right: 1%;
   transform: translateY(-50%);
   color : white;
@@ -60,42 +60,84 @@
 
 .func-container {
   display: flex;
-  justify-content: space-between; /* 기능 카드들을 가로로 나열하고 간격을 동일하게 배치합니다 */
-  padding: 20px; /* 좌우 여백 설정 */
-  width : 70%;
-  margin : 0 auto;
-  margin-top: 15px;
+  justify-content: space-between;
+  width: 1300px;
+  margin: 0 auto;
+  margin-top: 5px;
   font-family: 'Noto Sans KR', sans-serif;
-  text-decoration: none; /* 링크의 밑줄 제거 */
+  text-decoration: none;
+  position: relative; /* Ensure relative positioning for absolute child elements */
 }
 
 .func1, .func2, .func3, .func4 {
-  background-color: #ffffff; /* 배경색 */ 
-  width : 250px;
-  height: 300px;
-  padding: 25px 20px;
+  background-color: #ffffff;
+  width: 250px;
+  height: 200px;
+  margin-bottom: 15px;
+  padding: 25px;
   font-size: 25px;
   color: #191919;
-  border : 1px solid #d9d9d9;
+  border: 1px solid #d9d9d9;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  border-radius: 8px; /* 둥근 모서리 설정 */
+  border-radius: 8px;
   font-family: 'JalnanGothic';
   transition: transform 0.2s ease;
-  text-decoration: none; /* 링크의 밑줄 제거 */
+  position: relative; /* Ensure relative positioning for absolute child elements */
+}
+
+.moveto {
+  position: absolute;
+  bottom: 10px;
+  right: 25px;
+  font-size: 45px;
+  color: #191919;
+  transition: transform 0.2s ease;
+  text-decoration: none;
+}
+
+@keyframes moveArrow {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(5px); /* Adjust the amount of movement as desired */
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.moveto svg {
+  transition: transform 0.2s ease; /* Ensure smooth transition for transform */
+}
+
+.func1:hover .moveto svg,
+.func2:hover .moveto svg,
+.func3:hover .moveto svg,
+.func4:hover .moveto svg {
+  animation: moveArrow 0.7s linear infinite; /* Apply moveArrow animation on .moveto svg within .func1 hover */
+}
+
+.func1:hover .moveto,
+.func2:hover .moveto,
+.func3:hover .moveto,
+.func4:hover .moveto {
+  color: rgb(255, 122, 122); /* Change color on .moveto within .func1 hover */
 }
 
 .func1:hover,
 .func2:hover,
 .func3:hover,
 .func4:hover {
-  transform: translateY(-10px);
-  color:rgb(255, 122, 122);
+  transform: translateY(-10px); /* Example transform on .func1, .func2, .func3, .func4 hover */
+  color: rgb(255, 122, 122); /* Change color on .func1, .func2, .func3, .func4 hover */
 }
 
 
+
 .detail {
-  margin-top: 10px;
-  font-size: 15px;
+  margin-top: 15px;
+  font-size: 16px;
   font-weight: 400;
   color: #7e7e7e;
   font-family: 'Noto Sans KR', sans-serif;
