@@ -43,7 +43,7 @@ const MatePostList = () => {
     <div>
       <div class='mate-board-banner'>
           <img src='/board/mate.jpg' alt=''/>
-          <div className="mate-board-main">여행 메이트 구하기</div>
+          <div className="mate-board-main">메이트 게시판</div>
       </div>
       <div className="mate-board-container">
         <div className="post-header">

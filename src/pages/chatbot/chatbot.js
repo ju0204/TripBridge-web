@@ -239,16 +239,22 @@ const Chatbot = () => {
   const steps = [
     {
       id: '1',
-      message: '환영합니다.',
+      message: '안녕하세요!',
+      trigger: 'ment1',
+    },
+    {
+      id: 'ment1',
+      message: '다음의 질문을 활용하여 여행을 즐겨보세요! (3,4번은 동선추천 기능을 이용한 후에 사용해주세요.)',
       trigger: '2',
     },
+  
     {
       id: '2',
       options: [
         { value: '1', label: '1. 주변 관광지 추천', trigger: '3' },
-        { value: '2', label: '2. 장소 상세 정보 안내', trigger: '4' },
-        { value: '3', label: '3. 동선들의 이동 수단과 예상 비용', trigger: '5' },
-        { value: '4', label: '4. 동선 방문 시 일정 추천', trigger: '6' },
+        { value: '2', label: '2. 장소 이용 정보 안내', trigger: '4' },
+        { value: '3', label: '3. 동선간의 이동 수단과 예상 비용', trigger: '5' },
+        { value: '4', label: '4. 여행 동선에 따른 일정 추천', trigger: '6' },
         { value: '5', label: '5. 질문 끝내기', trigger: 'end' },
       ],
     },
