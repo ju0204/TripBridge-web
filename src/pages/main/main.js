@@ -1,51 +1,70 @@
 import React from "react";
-import styled  from 'styled-components';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import './main.css'
-import { useState, useEffect } from 'react';
-import { GrFormNext,GrFormPrevious } from "react-icons/gr";
+import { useState, useEffect, useRef } from 'react';
+import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { TbCircleArrowRight } from "react-icons/tb";
+
+const Container = styled.div`
+  width: ${(props) => props.totalSlides * 100}vw;
+  height: 480px;
+  transition: transform 0.5s ease-in-out;
+  transform: translateX(-${(props) => (props.currentSlide - 1) * 100}vw);
+  overflow: hidden;
+  display: flex;
+`;
 
 const Main = () => {
   const [currentSlide, setCurrentSlide] = useState(1);
+  const slideInterval = useRef(null);
+  const isTransitioning = useRef(false);
+
+  const startSlideShow = () => {
+    slideInterval.current = setInterval(() => {
+      setCurrentSlide((prev) => (prev === 7 ? 1 : prev + 1));
+    }, 3000);
+  };
+
   const handleClickPrev = () => {
+    if (isTransitioning.current) return;
+    isTransitioning.current = true;
+    clearInterval(slideInterval.current);
     setCurrentSlide((prev) => (prev === 1 ? 7 : prev - 1));
+    setTimeout(() => {
+      isTransitioning.current = false;
+      startSlideShow();
+    }, 500);
   };
 
   const handleClickNext = () => {
+    if (isTransitioning.current) return;
+    isTransitioning.current = true;
+    clearInterval(slideInterval.current);
     setCurrentSlide((prev) => (prev === 7 ? 1 : prev + 1));
+    setTimeout(() => {
+      isTransitioning.current = false;
+      startSlideShow();
+    }, 500);
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev === 7 ? 1 : prev + 1));
-    }, 3000);
-    return () => clearInterval(interval);
+    startSlideShow();
+    return () => clearInterval(slideInterval.current);
   }, []);
-
-  const Container = styled.div`
-    width: ${7 * 100}vw; /* Adjusted for 5 banners */
-    height: 480px;
-    transition: transform 0.5s ease-in-out;
-    transform: translateX(-${(currentSlide - 1) * 100}vw);
-    overflow: hidden;
-    display: flex; /* Ensures inner divs are in a row */
-  `;
-
-
 
   return (
     <div className="main">
       <div className="banner-text">TRIP BRIDGE</div>
       <div className="banner-text2">나만의 여행을 즐길 수 있는 곳, 트립 브릿지</div>
       <div style={{ overflow: 'hidden' }}>
-        <Container currentSlide={currentSlide}>
-        <div className="inner">
-          <div className="banner-container">
-            <img src="./main/seoul.jpg" alt="배너1" className="Img" />
-            <div className="main-text">서울| 도심의 야경</div>
+        <Container currentSlide={currentSlide} totalSlides={7}>
+          <div className="inner">
+            <div className="banner-container">
+              <img src="./main/seoul.jpg" alt="배너1" className="Img" />
+              <div className="main-text">서울| 도심의 야경</div>
+            </div>
           </div>
-        </div>
           <div className="inner">
             <div className="banner-container">
               <img src="./main/suwon.jpg" alt="배너2" className="Img" />
@@ -83,39 +102,38 @@ const Main = () => {
             </div>
           </div>
         </Container>
-        <GrFormPrevious size={45} className="left-icon" onClick={handleClickNext} />
-        <GrFormNext size={45} className="right-icon" onClick={handleClickPrev} />
+        <GrFormPrevious size={45} className="left-icon" onClick={handleClickPrev} />
+        <GrFormNext size={45} className="right-icon" onClick={handleClickNext} />
       </div>
 
       <div className="func-container">
-        <div className = "func1"> 여행지 추천
+        <div className="func1"> 여행지 추천
           <div className="detail">나만의 완벽한 여행지!<br />원하는 조건에 맞는 여행지를 쉽게 찾을 수 있습니다.</div>
-          <Link to = "/filter" className = "moveto">
+          <Link to="/filter" className="moveto">
             <TbCircleArrowRight />
           </Link>
         </div>
         <div className="func2">동선 추천
           <div className="detail">여행의 시작은 계획에서부터!<br /> 편리한 동선 설계로 여행 준비를 도와드립니다.</div>
-          <Link to = "/map" className = "moveto">
+          <Link to="/map" className="moveto">
             <TbCircleArrowRight />
           </Link>
         </div>
         <div className="func3">여행 게시판
           <div className="detail">모두 함께 만드는 여행 커뮤니티!<br /> 여행 정보를 나누고 서로에게 영감을 주는 공간입니다.</div>
-          <Link to = "/tripboard" className = "moveto">
+          <Link to="/tripboard" className="moveto">
             <TbCircleArrowRight />
           </Link>
         </div>
         <div className="func4">여행 메이트 게시판
           <div className="detail">혼자보다 함께가 더 즐거운 여행!<br /> 마음 맞는 여행 메이트를 여기서 찾을 수 있습니다.</div>
-          <Link to = "/mateboard" className = "moveto">
+          <Link to="/mateboard" className="moveto">
             <TbCircleArrowRight />
           </Link>
         </div>
-
       </div>
       <div className="footer">
-      <div className="footer-text">ⓒ TripBridge. All Rights Reserved.</div>
+        <div className="footer-text">ⓒ TripBridge. All Rights Reserved.</div>
       </div>
     </div>
   );
