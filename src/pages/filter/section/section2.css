@@ -10,29 +10,39 @@
   height: 280px; /* Set a maximum height for the container */
 }
 
+.section-box2 {
+  padding: 15px;
+  border: none; 
+  border-radius: 5px;
+  width: 900px;
+  height: 500px;
+  background-color: rgba(35, 35, 35, 0.577);
+  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.57);
+  text-align: left; /* text-align: center에서 left로 변경 */
+}
+
 .cate-type {
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 22px;
   font-weight: 400;
-  text-align: left;
-  color : #e5e5e5;
+  color: #e5e5e5;
   margin-left: 20px;
   background-color: #ffffff3b;
   border-radius: 10px;
   padding: 8px 25px;
   letter-spacing: 1px;
-  }
+}
 
 .cate-ex {
-  display: inline-block;
+  display: inline-block; /* inline-block에서 block으로 변경 */
   padding: 8px 20px;
-  margin: 12px 10px;
+  margin: 12px -10px 12px 25px;
   border: 2px solid #b2b2b2;
   border-radius: 10px;
   cursor: pointer;
   font-family: 'Noto Sans KR', sans-serif;
   font-size: 18px;
-  color :#d8d7d7;
+  color: #d8d7d7;
 }
 
 .cate-ex:hover {
@@ -46,4 +56,19 @@
   font-weight: 600;
 }
 
+.button-container {
+  text-align: center; /* 버튼을 중앙 정렬 */
+  margin-top: 20px; /* 버튼과 위 요소들 간의 간격 조정 */
+}
 
+.result-btn {
+  padding: 10px 50px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #ffffffd3;
+  color: #252525;
+  text-align: center;
+}

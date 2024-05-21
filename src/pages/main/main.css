@@ -150,7 +150,7 @@
 .func2:hover .moveto,
 .func3:hover .moveto,
 .func4:hover .moveto {
-  color: rgb(255, 122, 122); /* Change color on .moveto within .func1 hover */
+  color: #2395ff;
 }
 
 .func1:hover,
@@ -158,7 +158,7 @@
 .func3:hover,
 .func4:hover {
   transform: translateY(-10px); /* Example transform on .func1, .func2, .func3, .func4 hover */
-  color: rgb(255, 122, 122); /* Change color on .func1, .func2, .func3, .func4 hover */
+  color: #0084ff;
 }
 
 

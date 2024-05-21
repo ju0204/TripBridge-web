@@ -11,6 +11,11 @@
 }
 
 .modal-content {
+    background-color: white;
+    padding: 30px; /* 내부 패딩을 조절하여 모달 크기 조정 */
+    margin: 0 auto;
+    border-radius: 10px;
+    text-align: center;
     display: flex;
     justify-content: center;
     align-items: center;

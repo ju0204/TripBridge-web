@@ -213,6 +213,7 @@ const ShowMap = () => {
         path,
         strokeWeight: 5,
         strokeOpacity: 0.7,
+        strokeColor: '#00008B', // 여기에 원하는 색상 코드를 넣어주세요
         strokeStyle: 'solid'
       });
       polyline.setMap(map);

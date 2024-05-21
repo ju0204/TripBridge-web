@@ -326,7 +326,9 @@ const Chatbot = () => {
             <ChatBot
               steps={steps}
               className="custom-chatbot"
+              headerTitle= "Trip Bot"
               botAvatar="/bot.png"
+              userAvatar="/user.png"
               style={{
                 width: '500px', // 원하는 너비로 지정
                 height: 'auto', // 원하는 높이로 지정

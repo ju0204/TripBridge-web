@@ -106,7 +106,7 @@ const handleSubmit = async () => {
 return (
   <div className="filtersection-container">
     <div className="section-container-box">
-      <div className="section-box">
+      <div className="section-box2">
           <div className="section-text1">원하는 타입을 직접 선택해 장소를 추천 받아볼까요?</div>
           <div className="section-text2"><FaArrowCircleRight className='rightrow' /> 원하는 관광타입을 선택해주세요!</div>
         <div className="select-type">
@@ -230,7 +230,9 @@ return (
                 </>
               )}
         </div>
-        <button className="section-button" type="button" onClick={handleSubmit}>결과 보기</button>
+        <div className="button-container"> {/* 버튼 감싸는 div 추가 */}
+          <button className="result-btn" onClick={handleSubmit}>결과 보기</button>
+        </div>
       </div>
       {/* 결과 보기 버튼 */}
     </div>
