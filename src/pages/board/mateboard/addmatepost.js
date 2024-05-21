@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './addmatepost.css';
+import '../../board/addpost.css';
 import { savePost } from '../../../api/mateboard';
 
 const getToken = () => {
@@ -79,7 +79,7 @@ const handleCancel = () => {
     <div className="add-mate-post-container">
       {showModal && (
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-content2">
             작성 중인 글이 전부 사라집니다. <br />
             <b>정말 취소하시겠습니까?</b>
             <div className="modal-button">
