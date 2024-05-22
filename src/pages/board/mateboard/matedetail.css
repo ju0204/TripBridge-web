@@ -4,9 +4,9 @@
   max-width: 75%;
   margin: 0 auto;
   padding: 20px;
-  margin-top: 10px;
-  height: 700px; /* 컨테이너의 높이를 고정합니다 */
+  margin-top: 20px;
   font-family: 'Noto Sans KR', sans-serif;
+  height: auto; /* container의 높이를 자동으로 조절 */  
 }
 
 .matepost-details {
@@ -23,27 +23,29 @@
   font-size: 30px;
   letter-spacing: 2px;
   font-weight: bold;
-  margin-left : 5px;
+  margin-left:5px;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
 .matepost-info {
-  margin-bottom: 5px;
+  margin-bottom: 20px;
   margin-left : 10px;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
 .content-box {
   border: 1px solid #cecece;
   background-color: rgb(255, 255, 255);
   border-radius: 15px;
-  padding: 15px; /* 내용 상자의 패딩을 증가시킵니다 */
+  padding : 5px 10px;
   overflow-y: auto; /* 내용이 상자를 벗어날 경우 스크롤바를 표시합니다 */
   font-family: 'Noto Sans KR', sans-serif;
 }
 
 .matepost-content {
-  margin-top: 10px;
   font-size: 15px;
   height: 300px;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
 .action-button {
@@ -96,7 +98,7 @@
 
 .edit-form textarea {
   flex: 85%; /* 입력 필드의 너비를 설정 */
-  height: 500px; /* 내용 입력란에 대한 높이 설정 */
+  height: 300px; /* 내용 입력란에 대한 높이 설정 */
   padding: 8px;
   font-size: 15px;
   border: 1px solid #ccc;
@@ -143,7 +145,7 @@
   padding: 10px;
   margin: 5px;
   letter-spacing: 1px;
-  border-radius: 15px;
+  border-radius: 10px;
   height: 70px;
   resize: none;
   font-family: 'Noto Sans KR', sans-serif;
@@ -174,8 +176,6 @@
 
 .comment-container {
   border-bottom: 1px solid #ccc;
-  padding-bottom: 5px;
-  width: 98%;
   margin-left: 10px;
   margin-right: 5px; /* 오른쪽 여백을 5px로 지정 */
 }
@@ -186,8 +186,8 @@
 }
 
 .comment-box {
-  padding: 10px;
-  border-radius: 15px;
+  padding: 5px;
+  border-radius: 10px;
 }
 
 .comment-container .info {
@@ -210,7 +210,7 @@
 }
 
 .comment-container .info button:hover {
-  background-color: grey; /* 마우스를 올렸을 때 버튼 배경색 변경 */
+  background-color: rgb(100, 100, 100); /* 마우스를 올렸을 때 버튼 배경색 변경 */
 }
 
 

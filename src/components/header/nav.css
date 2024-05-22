@@ -95,6 +95,7 @@ font-style: normal; */
 }
 
 .dropdown-item {
+  font-family: 'Noto Sans KR', sans-serif;
   display: block;
   position: absolute;
   background-color: #fff;
