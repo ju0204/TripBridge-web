@@ -13,6 +13,13 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'TmonMonsori';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/TmonMonsori.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .inner {
   position: relative;
   width: 100%; /* Adjust as necessary */
@@ -48,10 +55,11 @@
   left: 180px;
   z-index: 1; /* 이미지 위에 텍스트가 보이도록 설정 */
   color: white;
-  font-size: 60px;
+  font-size: 58px;
   font-weight: 600;
   letter-spacing: 2px;
-  font-family: "Montserrat", sans-serif;
+  /* font-family: "Montserrat", sans-serif; */
+  font-family: 'TmonMonsori';
   text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.5); /* 그림자 효과 추가 */
   }
 
