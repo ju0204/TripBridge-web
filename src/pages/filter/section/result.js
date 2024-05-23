@@ -211,7 +211,8 @@ const paginate = (pageNumber) => {
         <div className="Ex-popup-result">
           <div className="Ex-popup-inner1">
           <p className="centered-text">상세정보</p>
-          <p className="ex-text">{exPopupContent}</p>
+          <div className="ex-containter"><p className="ex-text">{exPopupContent}</p></div>
+          {/* <p className="ex-text">{exPopupContent}</p> */}
             <button onClick={() => setShowExPopup(false)}>닫기</button>
           </div>
         </div>

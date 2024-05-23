@@ -229,15 +229,19 @@
   text-align: center; /* Center align internal elements */
   background-color: rgb(255, 255, 255);
   padding: 30px;
+  padding: 20px;
   border-radius: 5px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
   max-width: 45%;
 }
 
 .Ex-popup-inner1 .centered-text {
-  font-family: 'JalnanGothic';
-  font-size:25px;
-  letter-spacing: 2px;
+  margin-bottom: 10px;
+  font-family: 'Noto Sans KR', sans-serif;
+  text-align: center; /* Center align text */
+  width: 100%; /* Ensure full width to center align properly */
+  font-size: 25px;
+  font-weight: 700;
 }
 
 .Ex-popup-inner1 .ex-text{
@@ -263,4 +267,11 @@
 
 .Ex-popup-inner1 button:hover {
   background-color: #424242;
+}
+
+.ex-containter {
+  /* border-top: 1px solid; */
+  padding-left:10px;
+  padding-right: 10px;
+  padding-bottom: 15px;
 }
