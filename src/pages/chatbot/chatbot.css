@@ -43,6 +43,7 @@
   
 
   .custom-chatbot .rsc-header {
+    font-family: 'Noto Sans KR', sans-serif;
     cursor: move;
     background-color: #2e2e2e;
     color: #f1f1f1;
