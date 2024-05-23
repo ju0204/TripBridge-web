@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './addtrippost.css';
+import '../../board/addpost.css';
 import { savePostWithImage } from '../../../api/tripboard';
 
 const AddTripPost = () => {
@@ -85,7 +85,7 @@ const AddTripPost = () => {
     <div className="add-trip-post-container">
       {showModal && (
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-content2">
             작성 중인 글이 전부 사라집니다. <br />
             <b>정말 취소하시겠습니까?</b>
             <div className="modal-button">

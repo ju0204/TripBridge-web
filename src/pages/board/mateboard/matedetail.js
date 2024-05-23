@@ -7,6 +7,10 @@ const getToken = () => {
   return sessionStorage.getItem('accessToken');
 };
 
+const getLoggedInUser = () => {
+  return sessionStorage.getItem('nickname');
+};
+
 const MateDetail = () => {
   const { postId } = useParams();
   const [post, setPost] = useState(null);
@@ -18,7 +22,8 @@ const MateDetail = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState('');
   const [editedContent, setEditedContent] = useState('');
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
+  const loggedInUser = getLoggedInUser();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -174,54 +179,15 @@ const MateDetail = () => {
       console.error('댓글 삭제 중 오류 발생:', error);
     }
   };
-  
-
-// // 댓글 수정
-// const handleEditComment = (commentId, content) => {
-//   setIsEditingComment(true);
-//   setEditedCommentId(commentId);
-//   setEditedComment(content);
-// };
-
-// const handleChangeEditedComment = (e) => {
-//   setEditedComment(e.target.value);
-// };
-
-// const handleSubmitEditComment = async (e) => {
-//   e.preventDefault();
-//   try {
-//     const token = getToken();
-//     if (!token) {
-//       console.error('로그인이 필요합니다.');
-//       return;
-//     }
-//     const editedCommentData = {
-//       content: editedComment,
-//     };
-//     await updateComment(editedCommentId, editedCommentData, { headers: { Authorization: `Bearer ${token}` } });
-//     console.log('댓글 수정 성공');
-//     // 댓글 수정 후에도 댓글 목록을 다시 불러와야 합니다.
-//     const updatedComments = await getComments(postId);
-//     setCommentList(updatedComments);
-//     setIsEditingComment(false);
-//     setEditedComment('');
-//     setEditedCommentId('');
-//   } catch (error) {
-//     console.error('댓글 수정 오류:', error);
-//   }
-// };
-
-// const handleCancelEditComment = () => {
-//   setIsEditingComment(false);
-//   setEditedComment('');
-//   setEditedCommentId('');
-// };
 
   const formatDate = (dateString) => {
-    if (!dateString) return '';
     const date = new Date(dateString);
-    if (isNaN(date.getTime())) return '';
-    return date.toISOString().split('T')[0];
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    const hours = String(date.getHours()).padStart(2, '0');
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}`;
   };
 
   const formatCommentDate = (dateString) => {
@@ -255,7 +221,9 @@ const MateDetail = () => {
                 <div className="info">
                   <span>{comment.user} | {formatCommentDate(comment.date)}</span>
                   <div>
-                    <button type="button" onClick={() => handleDeleteComment(comment.id)}>삭제</button>
+                  {loggedInUser && comment.user === loggedInUser && (
+                        <button type="button" onClick={() => handleDeleteComment(comment.id)}>삭제</button>
+                      )}
                     <button type="button" onClick={() => handleReply(comment.id, comment.user)}>답글</button>
                   </div>
                 </div>
@@ -276,8 +244,7 @@ const MateDetail = () => {
           </div>
         ))}
       </div>
-    ));
-    
+    ));    
   };
 
   return (
@@ -310,10 +277,12 @@ const MateDetail = () => {
             <div className="content-box">
               <div className="matepost-content">{post && post.content}</div>
             </div>
+            {loggedInUser && post && loggedInUser === post.user && (
             <div className="action-buttons">
               <button onClick={handleDeletePost}>삭제</button>
               <button onClick={handleEditPost}>수정</button>
             </div>
+          )}
           </>
         )}
       </div>

@@ -1,5 +1,12 @@
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 
+@font-face {
+  font-family: 'JalnanGothic';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/JalnanGothic.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 /*font-family: 'Noto Sans KR', sans-serif;*/
 
 /* 전체 레이아웃 설정 */
@@ -7,19 +14,66 @@
     display: flex;
     height: 88vh;
     font-family: 'Noto Sans KR', sans-serif;
-    letter-spacing: 1.5px;
+    letter-spacing: 1px;
+  }
+
+  .map-and-chatbot-container {
+    position: relative; /* 자식 컨테이너를 relative로 설정 */
+    width: 100%;
+    height: 100%;
   }
   
-  .scrap-container {
-    width: 20%;
-    overflow-y: scroll;
-    padding: 20px;
+  .chatbot-container {
+    position: absolute; /* 절대 위치로 설정하여 부모 컨테이너 기준으로 위치 조정 */
+    background-color: #fff;
+    box-shadow: -2px 0 4px rgba(0, 0, 0, 0.1);
+    z-index: 30; /* 지도 위에 위치하도록 설정 */
+    transition: transform 0.3s ease;
   }
 
   .map-container {
     width: 80%;
     position: relative;
   }
+
+  #kakao-map {
+    width: 100%; /* 지도의 너비를 화면 너비의 100%로 설정 */
+    height: 100%;
+    margin-bottom: 20px; /* 지도 아래에 여백 추가 */
+  }
+  
+  .scrap-container {
+    width: 20%;
+    overflow-y: scroll;
+    padding: 20px;
+    position: relative;
+  }
+
+  .scrap-buttons {
+    position: fixed; /* 버튼을 고정합니다. */
+    bottom: 15px; /* 하단에 배치합니다. */
+    z-index: 1; /* 다른 요소 위에 올라가도록 설정합니다. */
+  }
+
+    
+  .scrap-buttons button {
+    font-family: 'Noto Sans KR', sans-serif;
+    letter-spacing: 1px;
+    padding: 13px 30px; /* 버튼 내부 여백 설정 */
+    background-color: #3f3f3f; /* 배경색 설정 */
+    color: white; /* 글자색 설정 */
+    border: none; /* 테두리 없앰 */
+    border-radius: 10px; /* 버튼 모서리를 둥글게 만듦 */
+    cursor: pointer; /* 커서를 포인터로 변경하여 마우스 호버 시 인터랙션을 나타냄 */
+    transition: background-color 0.2s ease; /* 배경색 변화에 대한 부드러운 전환 효과 추가 */
+    margin-right: 7px; /* 각 버튼 사이의 간격을 조정합니다. */
+  }
+
+  /* 버튼에 호버 효과 추가 */
+  .scrap-buttons button:hover {
+    background-color: #5a5a5a; /* 호버 시 배경색 변경 */
+  }
+
 
   .scrap-title {
     font-size: 25px;
@@ -30,12 +84,13 @@
     list-style: none;
     padding: 0;
   }
-  
+
   .scrap-list li {
+    position: relative; /* 상대 위치로 설정하여 자식 요소에 대한 위치 조정 가능 */
     padding: 10px;
     margin-bottom: 15px;
     background-color: #ffffff;
-    border-radius: 15px;
+    border-radius: 10px;
     border: 1px solid #a7a7a7;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
@@ -45,6 +100,11 @@
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
     background-color: rgb(243, 243, 243);
   }
+
+  .scrap-list li.selected {
+    border: 2px solid #387eff;
+  }
+    
   
   .scrap-list li strong {
     margin : 0px 5px;
@@ -69,7 +129,6 @@
     left: 0;
   }
 
-  
   .search-container {
     width: 20%;
     overflow-y:scroll;
@@ -78,7 +137,6 @@
     flex-direction: column; /* 검색창과 검색결과를 세로로 배치 */
   }
   
-
   .search-container input[type="text"] {
     padding: 8px 15px;
     border: 1px solid #ccc;
@@ -86,8 +144,6 @@
     font-size: 15px;
     font-family: 'Noto Sans KR', sans-serif;
   }
-  
-  
   
   .search-list {
     list-style: none;
@@ -98,7 +154,7 @@
     padding: 10px;
     margin-bottom: 15px;
     background-color: #ffffff;
-    border-radius: 15px;
+    border-radius: 10px;
     border: 1px solid #a7a7a7;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: box-shadow 0.3s ease;
@@ -108,6 +164,11 @@
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
     background-color: rgb(243, 243, 243);
   }
+
+  .search-result-item.selected {
+    border: 2px solid #387eff;
+  }
+  
   
   .search-list li strong {
     margin : 0px 5px;
@@ -122,20 +183,62 @@
     font-size: 0.9em;
     color: #666;
   }
-  
-button {
-  font-family: 'Noto Sans KR', sans-serif;
-  letter-spacing: 1px;
-  padding: 10px 35px; /* 버튼 내부 여백 설정 */
-  background-color: #2c2c2c; /* 배경색 설정 */
-  color: white; /* 글자색 설정 */
-  border: none; /* 테두리 없앰 */
-  border-radius: 10px; /* 버튼 모서리를 둥글게 만듦 */
-  cursor: pointer; /* 커서를 포인터로 변경하여 마우스 호버 시 인터랙션을 나타냄 */
-  transition: background-color 0.2s ease; /* 배경색 변화에 대한 부드러운 전환 효과 추가 */
-}
 
-/* 버튼에 호버 효과 추가 */
-button:hover {
-  background-color: #5a5a5a; /* 호버 시 배경색 변경 */
-}
+  .location-info {
+    display: inline-block;
+    max-width: calc(100% - 100px); /* 삭제 버튼의 최대 너비까지만 표시 */
+  }
+
+  .marker-label {
+    background-color: #2c2c2c;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .delete-button {
+    background-color: transparent;
+    border-radius: 5px;
+    padding : 5px 5px;
+    color: #2c2c2c;
+    border: none; /* 테두리 없음 */
+    cursor: pointer; /* 마우스 오버 시 커서 모양 */
+    font-size: 14px; /* 폰트 크기 */
+    position: absolute; /* 절대 위치로 설정하여 부모 요소에 대한 위치 설정 */
+    top: 5px; /* 상단 여백 조정 */
+    right: 5px; /* 우측 여백 조정 */
+    width: 20px;
+    height: 20px;
+  }
+
+  .delete-button:hover {
+    background-color: rgb(200, 200, 200);
+  }
+
+  .marker-label {
+    background-color: #6e6e6e;
+    color: #ffffff;
+    font-size: 12px;
+    padding: 3px 8px;
+    border: 1px solid #515151;
+    border-radius: 5px;
+    text-align: center;
+    font-family: 'Noto Sans KR', sans-serif;
+    white-space: nowrap;
+  }
+  
+  
+  .custom-infowindow {
+    padding: 5px 10px;
+    background-color: #fff;
+    border : 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px rgba(0,0,0,0.2);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    letter-spacing: 1px;
+  }
+  
+  

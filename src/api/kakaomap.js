@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const BASE_URL = 'http://3.35.115.71:8080';
+// const BASE_URL ='http://localhost:8080'
 
 const getToken = () => {
   return sessionStorage.getItem('accessToken');
@@ -31,6 +32,26 @@ export const fetchLocations = async () => {
   }
 };
 
+//스크랩 삭제
+export const deleteScrap = async (scrapId) => {
+  try {
+    const token = getToken();
+    if (!token) {
+      console.error('로그인이 필요합니다.');
+      return;
+    }
+    const response = await axios.delete(`${BASE_URL}/storage/${scrapId}`, {
+      headers: {
+        Authorization: `Bearer ${token}` // 헤더에 토큰 추가
+      }
+    });
+    return response.data; // 서버로부터의 응답 데이터를 반환
+  } catch (error) {
+    console.error('스크랩 삭제 실패:', error);
+    throw error; // 에러를 호출자에게 다시 던짐
+  }
+};
+
 
 export const sendSelectedLocations = async (location, routeorder) => {
   try {
@@ -52,44 +73,99 @@ export const sendSelectedLocations = async (location, routeorder) => {
     console.log('보내는 데이터:', postData);
 
     // "/route" 엔드포인트에 데이터 전송
-    await axios.post(`${BASE_URL}/route`, postData, {
+    await fetch(`${BASE_URL}/route`, {
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${userToken}`,
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify(postData)
     });
 
     console.log('선택한 위치 데이터를 "/route" 엔드포인트에 서버에 전송했습니다.');
 
     // "/route/update" 엔드포인트에 데이터 전송하고 업데이트된 데이터 받기
-    const updatedResponse = await axios.post(`${BASE_URL}/route/update`, postData, {
+    await fetch(`${BASE_URL}/route/update`, {
+      method: 'POST',
       headers: {
-        Authorization: `Bearer ${userToken}`
-      }
+        Authorization: `Bearer ${userToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(postData)
     });
 
-    console.log('"/route/update" 엔드포인트에 데이터를 보내고 업데이트된 데이터를 받았습니다.', updatedResponse);
-
-    // 받은 응답에서 업데이트된 데이터 추출
-    const updatedData = updatedResponse.data;
-
-    console.log('업데이트된 데이터:', updatedData);
+    console.log('이전 데이터를 삭제하는 DELETE 요청을 "/route/chat" 엔드포인트에 보냈습니다.');
 
     // "/route" 엔드포인트에서 업데이트된 데이터 가져오기
-    const responseData = await axios.get(`${BASE_URL}/route`, {
+    const responseData = await fetch(`${BASE_URL}/route`, {
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${userToken}`
       }
     });
 
-    const routeData = responseData.data;
-
+    let routeData = await responseData.json();
     console.log('"/route" 엔드포인트에서 업데이트된 데이터를 받았습니다.', routeData);
+
+    // 받은 데이터를 route_order 값을 기준으로 정렬합니다.
+    routeData = routeData.sort((a, b) => a.route_order - b.route_order);
+
+    return routeData;
     
   } catch (error) {
     console.error('선택한 위치 데이터를 서버에 전송하거나 받아오는 중 오류가 발생했습니다:', error);
+    throw error;
   }
 };
+
+export const sendRouteDataToDatabase = async (routeData) => {
+  try {
+    const userToken = getToken();
+    if (!userToken) {
+      throw new Error('유저를 찾을 수 없습니다');
+    }
+
+    // "/route/chat" 엔드포인트에 데이터 전송
+    await fetch(`${BASE_URL}/route/chat`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(routeData)
+    });
+
+    console.log('route/chat 데이터 리셋');
+
+    // "/route/chat" 엔드포인트에 데이터 전송
+    await fetch(`${BASE_URL}/route/chat`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${userToken}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(routeData)
+    });
+
+    console.log('정렬된 데이터를 다른 데이터베이스의 "/route/chat" 엔드포인트에 서버에 전송했습니다.');
+
+    // "/route" 엔드포인트의 데이터 삭제
+    await fetch(`${BASE_URL}/route`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${userToken}`
+      }
+    });
+
+    console.log('동선 데이터를 삭제하는 DELETE 요청을 보냈습니다.');
+
+  } catch (error) {
+    console.error('데이터를 다른 데이터베이스로 전송하는 중 오류가 발생했습니다:', error);
+    throw error;
+  }
+};
+
+
 
 
 
@@ -108,7 +184,6 @@ export const searchLocations = async (query) => {
         Authorization: `KakaoAK ${API_KEY}` // API 키를 헤더에 추가
       }
     };
-
     // Axios를 사용하여 GET 요청을 보냄
     const response = await axios.get(url, config);
 

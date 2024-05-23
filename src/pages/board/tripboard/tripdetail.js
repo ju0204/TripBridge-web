@@ -8,6 +8,10 @@ const getToken = () => {
     return sessionStorage.getItem('accessToken');
 }
 
+const getLoggedInUser = () => {
+    return sessionStorage.getItem('nickname');
+  };
+
 const TripDetail = () => {
     const { postId } = useParams();
     const [post, setPost] = useState(null);
@@ -19,6 +23,7 @@ const TripDetail = () => {
     const [modalImageUrl, setModalImageUrl] = useState('');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
+    const loggedInUser = getLoggedInUser();
 
     //게시글
     useEffect(() => {
@@ -46,25 +51,25 @@ const TripDetail = () => {
     }, [postId]);
 
 
-    const handleDeletePost = async () => {
-      try {
-          const shouldDelete = window.confirm('게시글을 삭제하시면 다시 복구할 수 없습니다.\n정말 게시글을 삭제하시겠습니까?');
-          if (shouldDelete) {
-              // 해당 게시글의 댓글들을 불러와서 삭제합니다.
-              const commentsData = await getComments(postId);
-              for (const comment of commentsData) {
-                  await deleteComment(comment.id);
-              }
-              // 게시글 삭제
-              await deletePost(postId);
-              console.log('게시글과 댓글이 성공적으로 삭제되었습니다.');
-              navigate('/tripboard');
-          }
-      } catch (error) {
-          console.error('게시글 또는 댓글 삭제 중 오류 발생:', error);
-      }
-  };
-  
+const handleDeletePost = async () => {
+    try {
+        const shouldDelete = window.confirm('게시글을 삭제하시면 다시 복구할 수 없습니다.\n정말 게시글을 삭제하시겠습니까?');
+        if (shouldDelete) {
+            // 해당 게시글의 댓글들을 먼저 삭제합니다.
+            const commentsData = await getComments(postId);
+            for (const comment of commentsData) {
+                await deleteComment(comment.id);
+            }
+            // 댓글 삭제 후 게시글 삭제
+            await deletePost(postId);
+            console.log('게시글과 댓글이 성공적으로 삭제되었습니다.');
+            navigate('/tripboard');
+        }
+    } catch (error) {
+        console.error('게시글 또는 댓글 삭제 중 오류 발생:', error);
+    }
+};
+
 
     const handleChangeComment = (e) => {
         const { value } = e.target;
@@ -155,7 +160,12 @@ const TripDetail = () => {
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
-        return date.toISOString().split('T')[0];
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
     };
 
     const formatCommentDate = (dateString) => {
@@ -198,7 +208,8 @@ const TripDetail = () => {
                       <div className="info">
                         <span>{comment.user} | {formatCommentDate(comment.date)}</span>
                         <div>
-                          <button type="button" onClick={() => handleDeleteComment(comment.id)}>삭제</button>
+                        <button type="button" onClick={() => handleDeleteComment(comment.id)} style={{ display: loggedInUser === comment.user ? 'inline-block' : 'none' }}>삭제</button>
+
                           <button type="button" onClick={() => handleReply(comment.id, comment.user)}>답글</button>
                         </div>
                       </div>
@@ -241,17 +252,19 @@ const TripDetail = () => {
                 <div className="content-box">
                     <div className="trippost-content">{post && post.content}</div>
                 </div>
-                {post && (
-        <div className="action-buttons">
-          <button onClick={handleDeletePost}>삭제</button>
-        </div>
-      )}
+                {loggedInUser && post && loggedInUser === post.user && (
+            <div className="action-buttons">
+                <button onClick={handleDeletePost}>삭제</button>
+            </div>
+            )}
             </div>
             <div className="comment-header">댓글</div>
             <div className="comment-section">
                 <form onSubmit={handleSubmitComment}>
                     <textarea value={comment} onChange={handleChangeComment}></textarea>
-                    <button type="submit">댓글 작성</button>
+                    <div className="action-buttons">
+                        <button>댓글 작성</button>
+                    </div>
                 </form>
                 <div className='comment-list'>
                     <div className='comment-semiheader'>댓글 목록</div>

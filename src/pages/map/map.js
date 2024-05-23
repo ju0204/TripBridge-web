@@ -1,81 +1,55 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { fetchLocations, searchLocations, sendSelectedLocations } from '../../api/kakaomap';
-import './showmap.css'; // CSS 파일 임포트
+import React, { useEffect, useState } from 'react';
+import { fetchLocations, searchLocations, sendSelectedLocations, sendRouteDataToDatabase, deleteScrap } from '../../api/kakaomap';
+import { BsBookmarkStar } from "react-icons/bs";
+import { CgClose } from "react-icons/cg";
+import Chatbot from '../chatbot/chatbot';
+import './showmap.css';
 
 const ShowMap = () => {
   const [locations, setLocations] = useState([]);
   const [selectedLocations, setSelectedLocations] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
-  const mapRef = useRef(null);
-  const infowindow = useRef(new window.kakao.maps.InfoWindow({ zIndex: 1 }));
-  const mapInstance = useRef(null);
+  const [map, setMap] = useState(null);
+  const [selectedMarkers, setSelectedMarkers] = useState([]);
+  const [isChatbotOpen, setIsChatbotOpen] = useState(false);
+  const [routeDrawn, setRouteDrawn] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await fetchLocations();
-        console.log('스크랩데이터:', data); // 데이터를 콘솔에 출력
         setLocations(data);
       } catch (error) {
-        console.error('목록 불러오기 오류:', error);
+        console.error('위치 데이터를 가져오는 중 오류 발생:', error);
       }
     };
 
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const displayMap = () => {
-      if (mapRef.current) {
-        mapInstance.current = new window.kakao.maps.Map(mapRef.current, {
-          center: new window.kakao.maps.LatLng(37.5828482, 127.0090811),
-          level: 4 // 기본 페이지의 레벨을 7로 설정
-        });
-
-        const bounds = new window.kakao.maps.LatLngBounds();
-
-        // 선택된 위치가 있을 때에만 마커를 추가하고 경계 상자를 확장
-        selectedLocations.forEach(location => {
-          // 선택된 위치에 마커 표시
-          const marker = new window.kakao.maps.Marker({
-            position: new window.kakao.maps.LatLng(location.latitude, location.longitude),
-            map: mapInstance.current
-          });
-
-          // 경계 상자에 위치 추가
-          bounds.extend(new window.kakao.maps.LatLng(location.latitude, location.longitude));
-
-          // 마커 클릭 시 인포윈도우 표시
-          window.kakao.maps.event.addListener(marker, 'click', function () {
-            infowindow.current.setContent('<div style="padding:5px;font-size:12px;">' + location.place + '</div>');
-            infowindow.current.open(mapInstance.current, marker);
-          });
-        });
-
-        // 모든 마커를 포함하는 경계 상자에 맞게 지도 중심과 줌 레벨 조정
-        if (selectedLocations.length > 0) {
-          mapInstance.current.setBounds(bounds);
-        }
-      }
-    };
-
-    displayMap();
-  }, [selectedLocations]);
+  const handleDeleteLocation = async (location) => {
+    try {
+      await deleteScrap(location.id);
+      setLocations(prevLocations => prevLocations.filter(prevLocation => prevLocation.id !== location.id));
+      setSelectedLocations(prevLocations => prevLocations.filter(prevLocation => prevLocation.id !== location.id));
+      setSelectedMarkers(prevMarkers => prevMarkers.filter(marker => marker.id !== location.id));
+      console.log('스크랩이 삭제되었습니다.');
+    } catch (error) {
+      console.error('스크랩 삭제 중 오류 발생:', error);
+    }
+  };
 
   useEffect(() => {
-    // 검색어가 변경될 때마다 검색을 수행하고 결과를 업데이트
     const handleSearch = async () => {
       if (searchQuery.trim() !== '') {
         try {
           const searchResults = await searchLocations(searchQuery);
-          console.log('검색 결과:', searchResults);
-          setSearchResults(searchResults); // 검색 결과를 상태에 설정
+          setSearchResults(searchResults);
         } catch (error) {
-          console.error('검색 중 오류가 발생했습니다:', error);
+          console.error('위치 검색 중 오류 발생:', error);
         }
       } else {
-        // 검색어가 없는 경우 검색 결과 초기화
         setSearchResults([]);
       }
     };
@@ -83,95 +57,281 @@ const ShowMap = () => {
     handleSearch();
   }, [searchQuery]);
 
-  // 클라이언트에서 선택한 위치 클릭 시 함수 호출
-  const handleLocationClick = async (location) => {
-    if (selectedLocations.includes(location)) {
-      setSelectedLocations(prevLocations => prevLocations.filter(prevLocation => prevLocation !== location));
-    } else {
-      setSelectedLocations(prevLocations => [...prevLocations, location]);
-    }
-  };
-
-// 동선 추천 버튼 클릭 시 선택된 위치들을 서버로 보내고 동선을 그리고 해당 위치를 중심으로 지도를 보여주는 함수
-const handleRecommendRoute = async () => {
-  if (selectedLocations.length > 0) {
-    try {
-      // 선택한 위치들을 서버로 보냄
-      selectedLocations.forEach(async (location, index) => {
-        await sendSelectedLocations(location, index + 1); // index는 0부터 시작하므로 +1 해줌
+  const fitBoundsToRoutes = () => {
+    if (map && selectedMarkers.length > 0) {
+      const bounds = new window.kakao.maps.LatLngBounds();
+  
+      selectedMarkers.forEach(marker => {
+        bounds.extend(new window.kakao.maps.LatLng(marker.latitude, marker.longitude));
       });
-
-      console.log('선택한 위치들을 서버로 전송했습니다.');
-
-      // 서버에서 업데이트된 데이터를 받아옴
-      const updatedData = await sendSelectedLocations();
-      
-      // 받아온 업데이트된 데이터로 동선을 그림
-      drawRoute(updatedData);
-
-      // 선택된 위치들 중 첫 번째 위치를 기준으로 지도를 보여줌
-      const firstLocation = updatedData[0];
-      const centerPosition = new window.kakao.maps.LatLng(firstLocation.latitude, firstLocation.longitude);
-      mapInstance.current.setCenter(centerPosition); // 선택된 위치를 중심으로 지도 조정
-    } catch (error) {
-      console.error('선택한 위치들을 서버로 전송하거나 받아오는 중 오류가 발생했습니다:', error);
+  
+      // Fit the bounds to the map
+      map.setBounds(bounds);
     }
-  }
-};
-
-// 새로운 데이터로 동선을 그리는 함수
-const drawRoute = (data) => {
-  const points = selectedLocations.map(location => new window.kakao.maps.LatLng(location.latitude, location.longitude));
-  const polyline = new window.kakao.maps.Polyline({
-    path: points,
-    strokeWeight: 3,
-    strokeColor: '#FF0000',
-    strokeOpacity: 0.7,
-    strokeStyle: 'solid'
-  });
-
-  polyline.setMap(mapInstance.current);
-};
-
-
-
-  // 검색 결과를 클릭했을 때 선택된 위치로 이동하고 마커를 표시하는 함수 수정
-  const handleSearchResultClick = (location) => {
-    setSelectedLocations([location]);
-    const markerPosition = new window.kakao.maps.LatLng(location.y, location.x);
-    mapInstance.current.panTo(markerPosition);
   };
-    
+
+  
+  const handleLocationClick = async (location) => {
+    try {
+      const isAlreadySelected = selectedMarkers.some(marker => marker.id === location.id);
+      
+      if (isAlreadySelected) {
+        // 이미 선택된 위치인 경우 해당 마커를 지우고 선택된 목록에서 제거합니다.
+        const updatedMarkers = selectedMarkers.filter(marker => marker.id !== location.id);
+        setSelectedMarkers(updatedMarkers);
+  
+        const markerToRemove = selectedMarkers.find(marker => marker.id === location.id);
+        if (markerToRemove) {
+          markerToRemove.marker.setMap(null); // 마커 지우기
+        }
+  
+        setSelectedLocations(prevLocations => prevLocations.filter(prevLocation => prevLocation !== location));
+      } else {
+        // 선택되지 않은 위치인 경우 선택된 목록에 추가하고 마커를 그립니다.
+        setSelectedLocations(prevLocations => [...prevLocations, location]);
+        setSelectedMarkers(prevMarkers => [...prevMarkers, location]);
+  
+        const markerPosition = new window.kakao.maps.LatLng(location.latitude, location.longitude);
+        const marker = new window.kakao.maps.Marker({
+          position: markerPosition
+        });
+  
+        marker.setMap(map);
+        location.marker = marker; // 마커 객체를 location에 추가
+  
+        // 클릭한 마커의 위치로 지도를 이동시킵니다.
+        map.panTo(markerPosition);
+      }
+    } catch (error) {
+      console.error('장소 정보를 서버로 전송하는 중 오류가 발생했습니다:', error);
+    }
+  };
+  
+
+  const handleSearchItemClick = async (location) => {
+    try {
+      const isAlreadySelected = selectedMarkers.some(marker => marker.id === location.id);
+      
+      if (isAlreadySelected) {
+        // 이미 선택된 위치인 경우 해당 마커를 지우고 선택된 목록에서 제거합니다.
+        const updatedMarkers = selectedMarkers.filter(marker => marker.id !== location.id);
+        setSelectedMarkers(updatedMarkers);
+  
+        const updatedLocations = selectedLocations.filter(selectedLocation => selectedLocation.id !== location.id);
+        setSelectedLocations(updatedLocations);
+  
+        const markerToRemove = selectedMarkers.find(marker => marker.id === location.id);
+        if (markerToRemove) {
+          markerToRemove.marker.setMap(null); // 마커 지우기
+        }
+      } else {
+        // 선택되지 않은 위치인 경우 선택된 목록에 추가하고 마커를 그립니다.
+        const selectedLocation = {
+          id: location.id,
+          place: location.place_name,
+          address: location.address_name,
+          latitude: location.y,
+          longitude: location.x
+        };
+  
+        setSelectedLocations(prevLocations => [...prevLocations, selectedLocation]);
+        setSelectedMarkers(prevMarkers => [...prevMarkers, selectedLocation]);
+  
+        const markerPosition = new window.kakao.maps.LatLng(selectedLocation.latitude, selectedLocation.longitude);
+        const marker = new window.kakao.maps.Marker({
+          position: markerPosition
+        });
+  
+        marker.setMap(map);
+        selectedLocation.marker = marker; // 마커 객체를 selectedLocation에 추가
+
+        map.panTo(markerPosition);
+      }
+    } catch (error) {
+      console.error('장소 정보를 서버로 전송하는 중 오류가 발생했습니다:', error);
+    }
+  };
+  
+  const handleRecommendRoute = async () => {
+    if (selectedMarkers.length > 0) {
+      try {
+        const allRouteData = await Promise.all(selectedMarkers.map((marker, index) => {
+          return sendSelectedLocations(marker, index + 1);
+        }));
+  
+        drawAllRoutes(allRouteData);
+  
+        console.log('모든 동선 처리 및 그리기 완료');
+  
+        // 수정된 부분: routeData를 다른 데이터베이스로 전송
+        await sendRouteDataToDatabase(allRouteData);
+        setRouteDrawn(true); // 동선이 그려졌음을 표시
+
+        // 모든 동선 지점을 포함하는 경계를 지도에 맞춰서 보여줍니다.
+        fitBoundsToRoutes();
+      } catch (error) {
+        console.error('오류 발생:', error);
+      }
+    }
+  };
+  
+  const drawRoute = async (routeData, routeIndex) => {
+    try {
+      const path = routeData.map(point => new window.kakao.maps.LatLng(point.latitude, point.longitude));
+      const polyline = new window.kakao.maps.Polyline({
+        path,
+        strokeWeight: 5,
+        strokeOpacity: 0.7,
+        strokeColor: '#00008B',
+        strokeStyle: 'solid'
+      });
+      polyline.setMap(map);
+      
+      const markers = await Promise.all(path.map(async (position, index) => {
+        const marker = new window.kakao.maps.Marker({
+          position,
+          map: map
+        });
+  
+        // Marker label with number
+        const labelContent = `<div class="marker-label">${index + 1}</div>`;
+        const label = new window.kakao.maps.CustomOverlay({
+          content: labelContent,
+          position,
+          xAnchor: 0.5,
+          yAnchor: 0  // Adjust vertical position as needed
+        });
+        label.setMap(map);
+  
+        // Marker click event for custom infowindow
+        const infowindowContent = `<div class="custom-infowindow">${routeData[index].place}</div>`;
+        const infowindow = new window.kakao.maps.CustomOverlay({
+          content: infowindowContent,
+          position,
+          xAnchor: 0.5,
+          yAnchor: 2.2 // Adjust vertical position as needed
+        });
+  
+        let isOpen = false; // Infowindow open state
+  
+        window.kakao.maps.event.addListener(marker, 'click', function () {
+          if (isOpen) {
+            infowindow.setMap(null);
+            isOpen = false;
+          } else {
+            infowindow.setMap(map);
+            isOpen = true;
+          }
+        });
+  
+        return { marker, label };
+      }));
+  
+      console.log(`Route ${routeIndex} drawn successfully`);
+      return markers;
+    } catch (error) {
+      console.error(`Error drawing Route ${routeIndex}:`, error);
+      throw error;
+    }
+  };
+  
+  
+  const drawAllRoutes = async (allRouteData) => {
+    try {
+      const routes = await Promise.all(allRouteData.map((routeData, index) => drawRoute(routeData, index + 1)));
+  
+      // Display numbers on each marker of each route
+      routes.forEach((route, routeIndex) => {
+        route.forEach((item, index) => {
+          const { label } = item; // Remove 'marker' from destructuring
+  
+          // Set marker label (number)
+          label.setContent(`<div class="marker-label">${index + 1}</div>`);
+          label.setMap(map);
+        });
+      });
+    } catch (error) {
+      console.error('Error drawing routes:', error);
+    }
+  };
+  
+  
+
+
+  //다시하기
+  const handleReset = () => {
+    setRouteDrawn(false); // 동선 그리기 상태 초기화
+    setSelectedLocations([]); // 선택된 위치 초기화
+    setSelectedMarkers([]); // 선택된 마커 초기화
+  
+    // 지도를 초기 상태로 되돌리기 위해 페이지 새로고침
+    window.location.reload();
+  };
+  
+
+  //기본맵
+  const initializeMap = () => {
+    const mapContainer = document.getElementById('kakao-map');
+    const options = {
+      center: new window.kakao.maps.LatLng(37.5828482, 127.0090811),
+      level: 4
+    };
+    const newMap = new window.kakao.maps.Map(mapContainer, options);
+    setMap(newMap);
+  };
+
+  useEffect(() => {
+    initializeMap();
+  }, []);
 
   return (
     <div className="show-map-container">
       <div className="search-container">
-        <input type="text" placeholder = "검색하고 싶은 장소를 입력해주세요" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+        <input type="text" placeholder="검색하고 싶은 장소를 입력해주세요." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
         <ul className="search-list">
-          {searchResults.map((location, index) => (
-            <li key={index} onClick={() => handleSearchResultClick(location)} className="search-result-item">
-              <strong>{location.place_name}</strong>
-              <p>{location.address_name}</p>
-            </li>
-          ))}
+        {searchResults.map((location, index) => (
+  <li key={index} className={`search-result-item ${selectedLocations.some(selectedLocation => selectedLocation.place === location.place_name) ? 'selected' : ''}`} onClick={() => handleSearchItemClick(location)}>
+    <strong>{location.place_name}</strong>
+    <p>{location.address_name}</p>
+  </li>
+))}
+
         </ul>
       </div>
       <div className="map-container">
-        <div ref={mapRef} style={{ width: '100%', height: '100%', position: 'relative', overflow: 'hidden' }}></div>
+        <div id="kakao-map"></div>
+        <div className={`chatbot-container ${isChatbotOpen ? 'open' : ''}`}>
+          {isChatbotOpen && <Chatbot />}
+        </div>
       </div>
       <div className="scrap-container">
-        <div className="scrap-title">🔖스크랩 목록</div>
+        <div className="scrap-title"><BsBookmarkStar />&nbsp;스크랩 목록</div>
+        <p/>
+        <b>처음 방문할 장소를 첫번째로 선택해주세요.</b>
         <ul className="scrap-list">
           {locations.map((location, index) => (
             <li key={index} onClick={() => handleLocationClick(location)} className={selectedLocations.includes(location) ? 'selected' : ''}>
               <strong>{location.place}</strong>
               <p>{location.address}</p>
+              <CgClose
+                className="delete-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeleteLocation(location);
+                }}
+              />
             </li>
           ))}
         </ul>
-        <button onClick={handleRecommendRoute}>동선 추천</button>
+        <div className="scrap-buttons">
+        {/* 동선 추천과 챗봇 열고 닫기 버튼 */}
+        <button onClick={routeDrawn ? handleReset : handleRecommendRoute}>
+          {routeDrawn ? '다시 하기' : '동선 추천'}
+        </button>
+        <button onClick={() => setIsChatbotOpen(!isChatbotOpen)}>챗봇 {isChatbotOpen ? '닫기' : '열기'}</button>
       </div>
     </div>
+  </div>
   );
 };
 

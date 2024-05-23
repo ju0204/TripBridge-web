@@ -1,8 +1,7 @@
 import axios from 'axios';
 
-
-// const BASE_URL = 'http://52.79.232.68:8080';
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'http://3.35.115.71:8080';
+// const BASE_URL = 'http://localhost:8080';
 
 export const sendRequest = async (selectedAreas, selectedTourType, selectedCategory, selectedCategoryMiddle,selectedCategoryThird) => {
   try {
@@ -31,11 +30,8 @@ export const sendRequest = async (selectedAreas, selectedTourType, selectedCateg
       // 응답 데이터 확인
       const responseData = response.data;
 
-      
       console.log('Success_send:', responseData);
       
-
-
       // 응답데이터 추출 
       const places = responseData.response.body.items.item;
       const processedData = places.map(place => ({
@@ -44,6 +40,8 @@ export const sendRequest = async (selectedAreas, selectedTourType, selectedCateg
         image: place.firstimage,
         longitude: place.mapx,
         latitude: place.mapy,
+        contentTypeId : place.contenttypeid,
+        contentId: place.contentid
         //필요한 데이터 추가
       }));
 
@@ -66,6 +64,8 @@ const getToken = () => {
   return sessionStorage.getItem('accessToken');
 };
 
+
+
 //스크랩 요청 보내기
 export const sendScrap = async (scrapData) => {
   try {
@@ -80,6 +80,7 @@ export const sendScrap = async (scrapData) => {
         Authorization: `Bearer ${token}` // 헤더에 토큰 추가
       }
     });
+    console.log('요청 보내고 받은 데이터',response);
     return response.data; // 서버로부터의 응답 데이터를 반환
   } catch (error) {
     console.error('스크랩 요청 실패:', error);
@@ -105,8 +106,11 @@ export const fetchScrap = async () => {
       place: location.place,
       address: location.address,
       latitude: location.latitude,
-      longitude: location.longitude
+      longitude: location.longitude,
+      contentTypeId : location.contenttypeid,
+      contentId: location.contentid
     }));
+    
 
     console.log('가져온 스크랩 데이터:', scrapData); // 스크랩 데이터 콘솔 출력
 
@@ -138,3 +142,33 @@ export const deleteScrap = async (scrapId) => {
   }
 };
 
+//상세설명 나오게 하는 코드
+const parseXmlString = (xmlString) => {
+  const parser = new DOMParser();
+  const xmlDoc = parser.parseFromString(xmlString, 'text/xml');
+  const overviewNode = xmlDoc.querySelector('overview');
+  if (overviewNode) {
+    return overviewNode.textContent.trim();
+  } else {
+    return null;
+  }
+};
+
+export const fetchEx = async (exData) => {
+  try {
+    const { contentTypeId, contentId } = exData;
+    console.log("내가 보낼 것 : ", contentTypeId, contentId)
+    const response = await axios.get(`${BASE_URL}/place?contentTypeId=${contentTypeId}&contentId=${contentId}`, {
+      
+    });
+    console.log('응답 받아온 설명 데이터:', response);
+    const xmlString = response.data;
+    const overview = parseXmlString(xmlString);
+    console.log('overview:', overview);
+
+    return overview;
+  } catch (error) {
+    console.error('설명 데이터를 불러오는데 오류가 발생했습니다 :', error);
+    return []; // 오류 발생 시 빈 배열 반환
+  }
+};

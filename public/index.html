@@ -31,7 +31,7 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+    <title>Trip Brdige</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
@@ -40,6 +40,16 @@
     type="text/javascript"
     src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=14bbab48dfd61bb79fd886254516a0e3&libraries=services"
   ></script>
+  <!-- <script>
+    // 카카오맵 API를 사용하여 지도를 생성하는 코드
+    const mapContainer = document.getElementById('kakao-map'); // 지도를 표시할 div
+    const options = {
+      center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도 중심 좌표 (서울)
+      level: 5 // 지도 확대 레벨
+    };
+    const map = new kakao.maps.Map(mapContainer, options); // 지도 생성
+  </script> -->
+  
   </body>
 </html>
 

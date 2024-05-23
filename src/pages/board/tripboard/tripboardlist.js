@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './tripboardlist.css';
 import { Link } from 'react-router-dom';
 import { showTripPost } from '../../../api/tripboard';
+import { LuPencil } from "react-icons/lu";
 
 const TripPostList = () => {
   const [posts, setPosts] = useState([]);
@@ -39,8 +40,10 @@ const TripPostList = () => {
 
   return (
     <div>
-      <div className='trip-board-banner'>/배너/</div>
-      <div className="trip-board-main">여행 게시판</div>
+      <div class='trip-board-banner'>
+          <img src='/board/trip.jpg' alt=''/>
+          <div className="trip-board-main">여행 게시판</div>
+      </div>
       <div className="trip-board-container">
         <div className="post-header">
           <div className="post-header-item">번호</div>
@@ -52,7 +55,7 @@ const TripPostList = () => {
           {currentPosts.map((post, index) => (
             <div className={`post-item ${index === currentPosts.length - 1 ? 'last-item' : ''}`} key={post.id}>
               <div className="post-content">
-                <div className="post-data">{indexOfFirstPost + index + 1}</div>
+                <div className="post-data">{posts.length - indexOfFirstPost - index}</div>
                 <div className="post-data">
                   <Link to={`/tripboard/${post.id}`} className="post-title">{post.title}</Link>
                 </div>
@@ -64,13 +67,22 @@ const TripPostList = () => {
         </div>
         {/* 페이지 네이션 */}
         <div className="pagination">
-          {Array.from({ length: Math.ceil(posts.length / postsPerPage) }, (_, i) => (
-            <button key={i + 1} onClick={() => paginate(i + 1)}>
-              {i + 1}
-            </button>
-          ))}
+          {Array.from({ length: Math.ceil(posts.length / postsPerPage) }, (_, i) => {
+            return (
+              <button 
+                key={i + 1} 
+                onClick={() => paginate(i + 1)} 
+                className={currentPage === i + 1 ? 'active' : ''}
+              >
+                {i + 1}
+              </button>
+            );
+          })}
         </div>
-        <Link to="/trip" className="write-post-button">✏️글쓰기</Link>
+        <Link to="/trip" className="write-post-button"><LuPencil />&nbsp;글쓰기</Link>
+      </div>
+      <div className="footer">
+      <div className="footer-text">ⓒ TripBridge. All Rights Reserved.</div>
       </div>
     </div>
   );

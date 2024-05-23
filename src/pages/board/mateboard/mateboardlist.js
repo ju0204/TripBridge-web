@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './mateboardlist.css';
 import { Link } from 'react-router-dom';
 import { showMatePost } from '../../../api/mateboard';
+import { LuPencil } from "react-icons/lu";
 
 const MatePostList = () => {
   const [posts, setPosts] = useState([]);
@@ -40,8 +41,10 @@ const MatePostList = () => {
 
   return (
     <div>
-      <div className='mate-board-banner'>/배너/</div>
-      <div className="mate-board-main">여행 메이트 구하기</div>
+      <div class='mate-board-banner'>
+          <img src='/board/mate.jpg' alt=''/>
+          <div className="mate-board-main">메이트 게시판</div>
+      </div>
       <div className="mate-board-container">
         <div className="post-header">
           <div className="post-header-item">번호</div>
@@ -50,28 +53,41 @@ const MatePostList = () => {
           <div className="post-header-item">작성일</div>
         </div>
         <div className="post-list">
-          {currentPosts.map((post, index) => (
-            <div className={`post-item ${index === currentPosts.length - 1 ? 'last-item' : ''}`} key={post.id}>
-              <div className="post-content">
-                <div className="post-data">{indexOfFirstPost + index + 1}</div>
-                <div className="post-data">
-                  <Link to={`/mateboard/${post.id}`} className="post-title">{post.title}</Link>
+          {currentPosts.map((post, index) => {
+            const reversedIndex = posts.length - indexOfFirstPost - index;
+            return (
+              <div className={`post-item ${index === currentPosts.length - 1 ? 'last-item' : ''}`} key={post.id}>
+                <div className="post-content">
+                  <div className="post-data">{reversedIndex}</div>
+                  <div className="post-data">
+                    <Link to={`/mateboard/${post.id}`} className="post-title">{post.title}</Link>
+                  </div>
+                  <div className="post-data">{post.user}</div>
+                  <div className="post-data">{formatDate(post.date)}</div>
                 </div>
-                <div className="post-data">{post.user}</div>
-                <div className="post-data">{formatDate(post.date)}</div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
+
         {/* 페이지 네이션 */}
         <div className="pagination">
-          {Array.from({ length: Math.ceil(posts.length / postsPerPage) }, (_, i) => (
-            <button key={i + 1} onClick={() => paginate(i + 1)}>
-              {i + 1}
-            </button>
-          ))}
+          {Array.from({ length: Math.ceil(posts.length / postsPerPage) }, (_, i) => {
+            return (
+              <button 
+                key={i + 1} 
+                onClick={() => paginate(i + 1)} 
+                className={currentPage === i + 1 ? 'active' : ''}
+              >
+                {i + 1}
+              </button>
+            );
+          })}
         </div>
-        <Link to="/mate" className="write-post-button">✏️글쓰기</Link>
+        <Link to="/mate" className="write-post-button"><LuPencil className='pencil'/>&nbsp;글쓰기</Link>
+      </div>
+      <div className="footer">
+      <div className="footer-text">ⓒ TripBridge. All Rights Reserved.</div>
       </div>
     </div>
   );

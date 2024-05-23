@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { motion } from "framer-motion";
 import { Link } from 'react-router-dom';
-import map from '../filter-img/map.png'
+import { FaPlayCircle } from 'react-icons/fa'; // react-icons에서 FaPlayCircle 아이콘을 불러옵니다.
 
 
 import './filter-main.css'; // 분리한 CSS 파일을 불러옵니다.
@@ -23,37 +22,33 @@ const Filter = ({ isLoggedIn, nickname }) => {
 
   return (
     <div className="filtermain-container">
-      <motion.div className="container-box" animate={{ y: -100 }}>
+      <div className="container-box">
         <div className="filter-text">
-          <p className="text-main">여행지 추천</p>
-          {!isLoggedIn && (
+        {!isLoggedIn && (
             <>
-              <p className="text-user"> 환영합니다! </p>
+              <div className="text-user"> 환영합니다! </div>
             </>
           )}
           {isLoggedIn && (
             <>
-              <p className="text-user"> {nickname}님 환영합니다! </p>
+              <div className="text-user"> {nickname}님 환영합니다! </div>
             </>
           )}
-          <p className="text-ex">원하는 여행지를 찾기 어려우신가요?<br />
-            취향에 맞는 여행을 선택하고 추천받아보세요!
-          </p>
+          <div className="text-main">여행지 추천</div>
+
+          <div className="text-ex">원하는 여행지를 찾기 어려우신가요?<br />
+            취향에 맞는 여행을 선택하고 추천 받아보세요!
+          </div>
         </div>
-        <motion.div className="filter-box">
-          <div className="img">
-            <img className="map" src={map} alt="map" />
-          </div>
-          <div className="glassButton">
-            {/* onClick 이벤트 핸들러에 링크 이동 전에 handleStartClick 함수 실행 */}
-            <Link className="button-start" to='/section' onClick={handleStartClick}>start</Link>
-          </div>
-        </motion.div>
-      </motion.div>
+          <Link className="button-start" to='/section' onClick={handleStartClick}>
+              <FaPlayCircle className="start-icon" />
+              시작하기
+            </Link>
+      </div>
       {showPopup && (
         <div className="popup">
           <div className="popup-content">
-            <p>로그인을 해야 합니다!</p>
+            <p>로그인 후 이용이 가능합니다!</p>
             <button onClick={handleClosePopup}>닫기</button>
           </div>
         </div>

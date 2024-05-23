@@ -15,6 +15,7 @@ import Filter from './pages/filter/filter-main/filter-main';
 import Section from './pages/filter/section/section';
 import Section2 from './pages/filter/section/section2';
 import Result from './pages/filter/section/result';
+import Chatbot from './pages/chatbot/chatbot';
 import { useNavigate } from 'react-router-dom';
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -24,6 +25,7 @@ const App = () => {
   const handleLogout = () => {
     sessionStorage.removeItem('accessToken');
     sessionStorage.removeItem('nickname');
+    sessionStorage.removeItem('scrapedPosts');
     setIsLoggedIn(false);
     setNickname('');
     navigate('/');
@@ -61,7 +63,7 @@ const App = () => {
         <Route path="/" element={<Main />} />
         <Route path="/login" element={<LogIn setIsLoggedIn={setIsLoggedIn} setNickname={setNickname} />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/contact" element={<MapPage />}/>
+        <Route path="/map" element={<MapPage />}/>
         <Route path="/mateboard" element={<MateBoard />} />
         <Route path="/mateboard/:postId" element={<MateDetail />} />
         <Route path="/mate" element={<AddMatePost />} />
@@ -72,6 +74,8 @@ const App = () => {
         <Route path="/section" element={<Section />} />
         <Route path="/section2" element={<Section2 />} />
         <Route path="/result" element={<Result/>} />
+        <Route path="/chatbot" element={<Chatbot/>} />
+
       </Routes>
     </div>
   );
