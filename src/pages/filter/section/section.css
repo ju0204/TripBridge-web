@@ -15,7 +15,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: center; 
   height: 100%; /* 혹은 다른 값을 설정하여 레이아웃을 조정 */
   background-image: url('/public/filter/filtermain.jpg');
   background-size: 100%; 
