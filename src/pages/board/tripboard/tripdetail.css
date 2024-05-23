@@ -44,11 +44,13 @@
   font-size: 30px;
   letter-spacing: 2px;
   font-weight: bold;
+  margin-left:5px;
   font-family: 'Noto Sans KR', sans-serif;
 }
 
 .trippost-info {
   margin-bottom: 5px;
+  margin-left : 10px;
   font-family: 'Noto Sans KR', sans-serif;
 }
 
@@ -56,8 +58,7 @@
   border: 1px solid #cecece;
   background-color: rgb(255, 255, 255);
   border-radius: 15px;
-  margin-top: 15px;
-  padding: 15px; /* 내용 상자의 패딩을 증가시킵니다 */
+  padding : 15px 15px;
   overflow-y: auto; /* 내용이 상자를 벗어날 경우 스크롤바를 표시합니다 */
   font-family: 'Noto Sans KR', sans-serif;
 }
@@ -75,8 +76,6 @@
 .not-found {
   color: gray;
 }
-
-
 
 .content-box {
   margin-top: 0px;

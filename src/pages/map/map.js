@@ -15,8 +15,6 @@ const ShowMap = () => {
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
   const [routeDrawn, setRouteDrawn] = useState(false);
 
-  const infowindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -71,6 +69,7 @@ const ShowMap = () => {
       map.setBounds(bounds);
     }
   };
+
   
   const handleLocationClick = async (location) => {
     try {
@@ -95,11 +94,6 @@ const ShowMap = () => {
         const markerPosition = new window.kakao.maps.LatLng(location.latitude, location.longitude);
         const marker = new window.kakao.maps.Marker({
           position: markerPosition
-        });
-  
-        window.kakao.maps.event.addListener(marker, 'click', function () {
-          infowindow.setContent('<div style="padding:5px;font-size:12px;">' + location.place + '</div>');
-          infowindow.open(map, marker);
         });
   
         marker.setMap(map);
@@ -148,11 +142,6 @@ const ShowMap = () => {
           position: markerPosition
         });
   
-        window.kakao.maps.event.addListener(marker, 'click', function () {
-          infowindow.setContent('<div style="padding:5px;font-size:12px;">' + selectedLocation.place + '</div>');
-          infowindow.open(map, marker);
-        });
-  
         marker.setMap(map);
         selectedLocation.marker = marker; // 마커 객체를 selectedLocation에 추가
 
@@ -186,26 +175,6 @@ const ShowMap = () => {
     }
   };
   
-  const drawAllRoutes = async (allRouteData) => {   
-    try {
-      const routes = await Promise.all(allRouteData.map((routeData, index) => drawRoute(routeData, index + 1)));
-      // 각 동선의 마커에 번호를 표시합니다.
-      routes.forEach(route => {
-        route.forEach((marker, index) => {
-          const label = new window.kakao.maps.CustomOverlay({
-            position: marker.getPosition(),
-            content: `<div style="padding: 3px; background-color: blue; color: white; border-radius: 50%; text-align: center; width: 20px; height: 20px; line-height: 20px;">${index + 1}</div>`,
-            xAnchor: 0.5,
-            yAnchor: 1.5
-          });
-          label.setMap(map);
-        });
-      });
-    } catch (error) {
-      console.error('오류 발생:', error);
-    }
-  };
-  
   const drawRoute = async (routeData, routeIndex) => {
     try {
       const path = routeData.map(point => new window.kakao.maps.LatLng(point.latitude, point.longitude));
@@ -213,27 +182,81 @@ const ShowMap = () => {
         path,
         strokeWeight: 5,
         strokeOpacity: 0.7,
+        strokeColor: '#00008B',
         strokeStyle: 'solid'
       });
       polyline.setMap(map);
       
-      // 경로의 각 지점에 마커를 생성합니다.
       const markers = await Promise.all(path.map(async (position, index) => {
         const marker = new window.kakao.maps.Marker({
           position,
           map: map
         });
-        return marker;
+  
+        // Marker label with number
+        const labelContent = `<div class="marker-label">${index + 1}</div>`;
+        const label = new window.kakao.maps.CustomOverlay({
+          content: labelContent,
+          position,
+          xAnchor: 0.5,
+          yAnchor: -0.5  // Adjust vertical position as needed
+        });
+        label.setMap(map);
+  
+        // Marker click event for custom infowindow
+        const infowindowContent = `<div class="custom-infowindow">${routeData[index].place}</div>`;
+        const infowindow = new window.kakao.maps.CustomOverlay({
+          content: infowindowContent,
+          position,
+          xAnchor: 0.5,
+          yAnchor: 2.2 // Adjust vertical position as needed
+        });
+  
+        let isOpen = false; // Infowindow open state
+  
+        window.kakao.maps.event.addListener(marker, 'click', function () {
+          if (isOpen) {
+            infowindow.setMap(null);
+            isOpen = false;
+          } else {
+            infowindow.setMap(map);
+            isOpen = true;
+          }
+        });
+  
+        return { marker, label };
       }));
   
-      console.log(`동선 ${routeIndex} 그리기 완료`);
+      console.log(`Route ${routeIndex} drawn successfully`);
       return markers;
     } catch (error) {
-      console.error(`동선 ${routeIndex} 그리는 중 오류 발생:`, error);
+      console.error(`Error drawing Route ${routeIndex}:`, error);
       throw error;
     }
   };
   
+  
+  const drawAllRoutes = async (allRouteData) => {
+    try {
+      const routes = await Promise.all(allRouteData.map((routeData, index) => drawRoute(routeData, index + 1)));
+  
+      // Display numbers on each marker of each route
+      routes.forEach((route, routeIndex) => {
+        route.forEach((item, index) => {
+          const { label } = item; // Remove 'marker' from destructuring
+  
+          // Set marker label (number)
+          label.setContent(`<div class="marker-label">${index + 1}</div>`);
+          label.setMap(map);
+        });
+      });
+    } catch (error) {
+      console.error('Error drawing routes:', error);
+    }
+  };
+  
+  
+
 
   //다시하기
   const handleReset = () => {
