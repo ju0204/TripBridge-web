@@ -199,7 +199,7 @@ const ShowMap = () => {
           content: labelContent,
           position,
           xAnchor: 0.5,
-          yAnchor: -0.5  // Adjust vertical position as needed
+          yAnchor: 0  // Adjust vertical position as needed
         });
         label.setMap(map);
   

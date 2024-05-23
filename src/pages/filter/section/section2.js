@@ -249,7 +249,7 @@ return (
     {showPopupresult && (
       <div className="popup">
         <div className="popup-content">
-          <p>해당 결과가 0개 이므로 다시 선택해주세요.</p>
+          <p>검색 결과가 없습니다.<br/> 다시 선택해주세요.</p>
           <button onClick={() => setShowPopupResult(false)}>닫기</button>
         </div>
       </div>

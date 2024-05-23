@@ -218,14 +218,11 @@
   }
 
   .marker-label {
-    position: absolute;
-    top: 0px; /* 원하는 만큼 상단으로 이동 */
-    left: 0px; /* 원하는 만큼 좌측으로 이동 */
-    background-color: #fff;
-    color: #000;
+    background-color: #6e6e6e;
+    color: #ffffff;
     font-size: 12px;
     padding: 3px 8px;
-    border: 1px solid #ccc;
+    border: 1px solid #515151;
     border-radius: 5px;
     text-align: center;
     font-family: 'Noto Sans KR', sans-serif;
