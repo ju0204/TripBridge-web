@@ -1,8 +1,7 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import './main.css'
-import { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import './main.css';
 import { GrFormNext, GrFormPrevious } from "react-icons/gr";
 import { TbCircleArrowRight } from "react-icons/tb";
 
@@ -15,10 +14,16 @@ const Container = styled.div`
   display: flex;
 `;
 
+const getToken = () => {
+  return sessionStorage.getItem('accessToken');
+};
+
 const Main = () => {
   const [currentSlide, setCurrentSlide] = useState(1);
+  const [showPopup, setShowPopup] = useState(false);
   const slideInterval = useRef(null);
   const isTransitioning = useRef(false);
+  const navigate = useNavigate();
 
   const startSlideShow = () => {
     slideInterval.current = setInterval(() => {
@@ -46,6 +51,15 @@ const Main = () => {
       isTransitioning.current = false;
       startSlideShow();
     }, 500);
+  };
+
+  const handleLinkClick = (path) => {
+    const token = getToken();
+    if (!token) {
+      setShowPopup(true);
+    } else {
+      navigate(path);
+    }
   };
 
   useEffect(() => {
@@ -115,9 +129,9 @@ const Main = () => {
         </div>
         <div className="func2">동선 추천
           <div className="detail">여행의 시작은 계획에서부터!<br /> 편리한 동선 설계로 여행 준비를 도와드립니다.</div>
-          <Link to="/map" className="moveto">
+          <div className="moveto" onClick={() => handleLinkClick('/map')}>
             <TbCircleArrowRight />
-          </Link>
+          </div>
         </div>
         <div className="func3">여행 게시판
           <div className="detail">모두 함께 만드는 여행 커뮤니티!<br /> 여행 정보를 나누고 서로에게 영감을 주는 공간입니다.</div>
@@ -135,6 +149,16 @@ const Main = () => {
       <div className="footer">
         <div className="footer-text">ⓒ TripBridge. All Rights Reserved.</div>
       </div>
+
+      {showPopup && (
+        <div className="login-modal">
+          <div className="login-modal-content">
+            <p>동선 추천은 로그인 후 이용이 가능합니다. <br/> 로그인하시겠습니까?</p>
+            <button onClick={() => { setShowPopup(false); navigate('/login'); }}>로그인</button>
+            <button onClick={() => setShowPopup(false)}>취소</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

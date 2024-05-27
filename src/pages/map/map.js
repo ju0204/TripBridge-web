@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import Modal from 'react-modal';
 import { fetchLocations, searchLocations, sendSelectedLocations, sendRouteDataToDatabase, deleteScrap } from '../../api/kakaomap';
 import { BsBookmarkStar } from "react-icons/bs";
 import { CgClose } from "react-icons/cg";
+import { IoCloseOutline } from "react-icons/io5";
 import Chatbot from '../chatbot/chatbot';
 import './showmap.css';
+
 
 const ShowMap = () => {
   const [locations, setLocations] = useState([]);
@@ -14,6 +17,48 @@ const ShowMap = () => {
   const [selectedMarkers, setSelectedMarkers] = useState([]);
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
   const [routeDrawn, setRouteDrawn] = useState(false);
+  const [showGuide, setShowGuide] = useState(true); // 기본적으로 모달 열림 상태로 설정
+  const [nickname, setNickname] = useState('');
+  const [doNotShowGuide, setDoNotShowGuide] = useState(false); // 사용자가 가이드를 다시 보지 않기로 선택한 상태
+
+
+  // 로그인 시에 sessionStorage에서 닉네임을 가져와 설정합니다.
+  useEffect(() => {
+    const storedNickname = sessionStorage.getItem('nickname');
+    if (storedNickname) {
+      setNickname(storedNickname);
+    }
+  }, []);
+
+  useEffect(() => {
+    // sessionStorage에서 닉네임을 가져와 사용자 식별자로 사용합니다.
+    const userId = sessionStorage.getItem('nickname') || ''; // 닉네임을 사용자 식별자로 사용
+
+    // sessionStorage에서 사용자 설정 가져오기
+    const sessionStorageValue = sessionStorage.getItem(`doNotShowGuide_${userId}`);
+    if (sessionStorageValue === 'true') {
+      setShowGuide(false); // 이미 설정된 경우 모달을 닫습니다.
+    }
+  }, []);
+
+  const handleDoNotShowGuideAgain = () => {
+    // sessionStorage에서 닉네임을 가져와 사용자 식별자로 사용합니다.
+    const userId = sessionStorage.getItem('nickname') || ''; // 닉네임을 사용자 식별자로 사용
+
+    // 모달을 다시 보지 않기로 설정하고 sessionStorage에 저장합니다.
+    sessionStorage.setItem(`doNotShowGuide_${userId}`, 'true');
+    setDoNotShowGuide(true); // 상태를 업데이트합니다.
+    setShowGuide(false); // 모달을 닫습니다.
+  };
+
+  const closeGuideModal = () => {
+    setShowGuide(false); // 닫기 버튼 클릭 시 모달을 닫습니다.
+  };
+
+  const openGuideModal = () => {
+    setShowGuide(true); // 이용 가이드를 엽니다.
+  };
+  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -255,8 +300,6 @@ const ShowMap = () => {
     }
   };
   
-  
-
 
   //다시하기
   const handleReset = () => {
@@ -284,18 +327,48 @@ const ShowMap = () => {
     initializeMap();
   }, []);
 
+
+  
+
   return (
     <div className="show-map-container">
+      <Modal
+        isOpen={showGuide}
+        onRequestClose={closeGuideModal}
+        className="guide-modal"
+        overlayClassName="guide-modal-overlay"
+      >
+        <div className="guide">
+          <IoCloseOutline className="close-icon" onClick={closeGuideModal} />
+          <div className="guideTitle">동선 추천 이용 가이드</div>
+          <p>
+            1. 검색창 혹은 스크랩 목록에서 출발하고자 하는 장소를 가장 먼저 선택합니다.<br/>
+            2. 검색창 혹은 스크랩 목록에서 가고싶은 여러 여행지들을 선택합니다.<br/>
+            3. 그 후, 동선 추천 버튼을 누르면 출발지를 중심으로 선택한 여행지들을 최단 경로로 안내해줍니다. <br/>
+            4. 화면에 표시된 동선에서 마커를 클릭하면, 각 장소가 어디인지 알 수 있습니다. <br/>
+            5. 스크랩 목록을 삭제하고 싶은 경우, 각 목록의 'X'를 클릭하면 삭제할 수 있습니다. <br/>
+            6. 챗봇은 여러분들이 선택한 스크랩, 혹은 동선에 대한 정보를 추가적으로 얻을 수 있습니다.
+          </p>
+          <label>
+            <input
+              type="checkbox"
+              checked={doNotShowGuide}
+              onChange={handleDoNotShowGuideAgain}
+            />
+            다시 보지 않기
+          </label>
+        </div>
+      </Modal>
+
       <div className="search-container">
         <input type="text" placeholder="검색하고 싶은 장소를 입력해주세요." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
         <ul className="search-list">
         {searchResults.map((location, index) => (
-  <li key={index} className={`search-result-item ${selectedLocations.some(selectedLocation => selectedLocation.place === location.place_name) ? 'selected' : ''}`} onClick={() => handleSearchItemClick(location)}>
-    <strong>{location.place_name}</strong>
-    <p>{location.address_name}</p>
-  </li>
-))}
-
+            <li key={index} className={`search-result-item ${selectedLocations.some(selectedLocation => selectedLocation.place === location.place_name) ? 'selected' : ''}`} onClick={() => handleSearchItemClick(location)}>
+              <strong>{location.place_name}</strong>
+              <p>{location.address_name}</p>
+            </li>
+          ))}
         </ul>
       </div>
       <div className="map-container">
@@ -306,8 +379,7 @@ const ShowMap = () => {
       </div>
       <div className="scrap-container">
         <div className="scrap-title"><BsBookmarkStar />&nbsp;스크랩 목록</div>
-        <p/>
-        <b>처음 방문할 장소를 첫번째로 선택해주세요.</b>
+        <div className="openguide" onClick={openGuideModal}>이용가이드</div>
         <ul className="scrap-list">
           {locations.map((location, index) => (
             <li key={index} onClick={() => handleLocationClick(location)} className={selectedLocations.includes(location) ? 'selected' : ''}>

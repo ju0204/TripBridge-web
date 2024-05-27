@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import './mateboardlist.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { showMatePost } from '../../../api/mateboard';
 import { LuPencil } from "react-icons/lu";
+
+const getToken = () => {
+  return sessionStorage.getItem('accessToken');
+};
 
 const MatePostList = () => {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 15;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const showpost = async () => {
@@ -35,15 +40,27 @@ const MatePostList = () => {
     return `${year}-${month}-${day}`;
   };
 
-
   // 페이지네이션 클릭
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  // 글쓰기 버튼 클릭
+  const handleWritePostClick = () => {
+    const token = getToken();
+    if (!token) {
+      const shouldLogin = window.confirm('로그인이 필요합니다. 로그인 하시겠습니까?');
+      if (shouldLogin) {
+        navigate('/login');
+      }
+      return;
+    }
+    navigate('/mate');
+  };
+
   return (
     <div>
-      <div class='mate-board-banner'>
-          <img src='/board/mate.jpg' alt=''/>
-          <div className="mate-board-main">메이트 게시판</div>
+      <div className='mate-board-banner'>
+        <img src='/board/mate.jpg' alt='' />
+        <div className="mate-board-main">메이트 게시판</div>
       </div>
       <div className="mate-board-container">
         <div className="post-header">
@@ -84,10 +101,12 @@ const MatePostList = () => {
             );
           })}
         </div>
-        <Link to="/mate" className="write-post-button"><LuPencil className='pencil'/>&nbsp;글쓰기</Link>
+        <button onClick={handleWritePostClick} className="write-post-button">
+          <LuPencil className='pencil' />&nbsp;글쓰기
+        </button>
       </div>
       <div className="footer">
-      <div className="footer-text">ⓒ TripBridge. All Rights Reserved.</div>
+        <div className="footer-text">ⓒ TripBridge. All Rights Reserved.</div>
       </div>
     </div>
   );

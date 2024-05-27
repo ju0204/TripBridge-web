@@ -109,7 +109,10 @@ const MateDetail = () => {
     try {
       const token = getToken();
       if (!token) {
-        console.error('로그인이 필요합니다.');
+        const shouldLogin = window.confirm('로그인이 필요합니다. 로그인 하시겠습니까?');
+        if (shouldLogin) {
+          navigate('/login');
+        }
         return;
       }
       const commentData = {
@@ -146,7 +149,10 @@ const MateDetail = () => {
     try {
       const token = getToken();
       if (!token) {
-        console.error('로그인이 필요합니다.');
+        const shouldLogin = window.confirm('로그인이 필요합니다. 로그인 하시겠습니까?');
+        if (shouldLogin) {
+          navigate('/login');
+        }
         return;
       }
       const commentData = {
@@ -221,9 +227,9 @@ const MateDetail = () => {
                 <div className="info">
                   <span>{comment.user} | {formatCommentDate(comment.date)}</span>
                   <div>
-                  {loggedInUser && comment.user === loggedInUser && (
-                        <button type="button" onClick={() => handleDeleteComment(comment.id)}>삭제</button>
-                      )}
+                    {loggedInUser && comment.user === loggedInUser && (
+                      <button type="button" onClick={() => handleDeleteComment(comment.id)}>삭제</button>
+                    )}
                     <button type="button" onClick={() => handleReply(comment.id, comment.user)}>답글</button>
                   </div>
                 </div>

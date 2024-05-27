@@ -80,28 +80,32 @@ const handleDeletePost = async () => {
     const handleSubmitComment = async (e) => {
         e.preventDefault();
         if (!comment.trim()) {
-            console.error('댓글을 입력해주세요.');
-            return;
+          console.error('댓글을 입력해주세요.');
+          return;
         }
         try {
-            const token = getToken();
-            if (!token) {
-                console.error('로그인이 필요합니다.');
-                return;
+          const token = getToken();
+          if (!token) {
+            const shouldLogin = window.confirm('로그인이 필요합니다. 로그인 하시겠습니까?');
+            if (shouldLogin) {
+              navigate('/login');
             }
-            const commentData = {
-                tripPost_id: postId,
-                content: comment,
-            };
-            await saveComment(commentData, { headers: { Authorization: `Bearer ${token}` } });
-            console.log('댓글이 성공적으로 작성되었습니다.');
-            const updatedComments = await getComments(postId);
-            setCommentList(updatedComments);
-            setComment('');
+            return;
+          }
+          const commentData = {
+            tripPost_id: postId,
+            content: comment,
+          };
+          await saveComment(commentData, { headers: { Authorization: `Bearer ${token}` } });
+          console.log('댓글이 성공적으로 작성되었습니다.');
+          const updatedComments = await getComments(postId);
+          setCommentList(updatedComments);
+          setComment('');
         } catch (error) {
-            console.error('댓글 작성 중 오류 발생:', error);
+          console.error('댓글 작성 중 오류 발생:', error);
         }
-    };
+      };
+      
 
     const handleReply = (commentId, user) => {
         setReplyingToId(commentId);
@@ -117,32 +121,35 @@ const handleDeletePost = async () => {
     const handleSubmitReply = async (e, parentId) => {
         e.preventDefault();
         if (!replyingToContent.trim()) {
-            console.error('답글을 입력해주세요.');
-            return;
+          console.error('답글을 입력해주세요.');
+          return;
         }
         try {
-            const token = getToken();
-            if (!token) {
-                console.error('로그인이 필요합니다.');
-                return;
+          const token = getToken();
+          if (!token) {
+            const shouldLogin = window.confirm('로그인이 필요합니다. 로그인 하시겠습니까?');
+            if (shouldLogin) {
+              navigate('/login');
             }
-            const commentData = {
-                tripPost_id: postId,
-                content: replyingToContent,
-                parent_comment_id: parentId,
-            };
-            await saveComment(commentData, { headers: { Authorization: `Bearer ${token}` } });
-            console.log('대댓글 작성 성공');
-            const updatedComments = await getComments(postId);
-            setCommentList(updatedComments);
-            setReplyingToContent('');
-            setReplyingToId(null);
-            setReplyingToUser('');
+            return;
+          }
+          const commentData = {
+            tripPost_id: postId,
+            content: replyingToContent,
+            parent_comment_id: parentId,
+          };
+          await saveComment(commentData, { headers: { Authorization: `Bearer ${token}` } });
+          console.log('대댓글 작성 성공');
+          const updatedComments = await getComments(postId);
+          setCommentList(updatedComments);
+          setReplyingToContent('');
+          setReplyingToId(null);
+          setReplyingToUser('');
         } catch (error) {
-            console.error('대댓글 작성 중 오류 발생:', error);
+          console.error('대댓글 작성 중 오류 발생:', error);
         }
-    };
-
+      };
+      
     
   const handleDeleteComment = async (commentId) => {
     try {
