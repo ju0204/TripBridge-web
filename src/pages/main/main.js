@@ -7,16 +7,12 @@ import { TbCircleArrowRight } from "react-icons/tb";
 
 const Container = styled.div`
   width: ${(props) => props.totalSlides * 100}vw;
-  height: 800px;
+  height: 88vh; /* Make the container full height */
   transition: transform 0.5s ease-in-out;
   transform: translateX(-${(props) => (props.currentSlide - 1) * 100}vw);
   overflow: hidden;
   display: flex;
 `;
-
-const getToken = () => {
-  return sessionStorage.getItem('accessToken');
-};
 
 const Main = () => {
   const [currentSlide, setCurrentSlide] = useState(1);
@@ -24,6 +20,10 @@ const Main = () => {
   const slideInterval = useRef(null);
   const isTransitioning = useRef(false);
   const navigate = useNavigate();
+
+  const getToken = () => {
+    return sessionStorage.getItem('accessToken');
+  };
 
   const startSlideShow = () => {
     slideInterval.current = setInterval(() => {
@@ -76,7 +76,7 @@ const Main = () => {
           <div className="inner">
             <div className="banner-container">
               <img src="./main/seoul.jpg" alt="배너1" className="Img" />
-              <div className="main-text">서울| 도심의 야경</div>
+              <div className="main-text">서울| 광화문</div>
             </div>
           </div>
           <div className="inner">
@@ -99,13 +99,13 @@ const Main = () => {
           </div>
           <div className="inner">
             <div className="banner-container">
-              <img src="./main/busan2.jpg" alt="배너5" className="Img" />
+              <img src="./main/busan.jpg" alt="배너5" className="Img" />
               <div className="main-text">부산| 광안대교</div>
             </div>
           </div>
           <div className="inner">
             <div className="banner-container">
-              <img src="./main/gyeongju.jpg" alt="배너6" className="Img" />
+              <img src="./main/gj.jpg" alt="배너6" className="Img" />
               <div className="main-text">경주| 안압지</div>
             </div>
           </div>

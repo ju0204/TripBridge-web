@@ -11,6 +11,7 @@ const getToken = () => {
 const MatePostList = () => {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [showPopup, setShowPopup] = useState(false); // 모달 표시 상태 추가
   const postsPerPage = 15;
   const navigate = useNavigate();
 
@@ -47,13 +48,15 @@ const MatePostList = () => {
   const handleWritePostClick = () => {
     const token = getToken();
     if (!token) {
-      const shouldLogin = window.confirm('로그인이 필요합니다. 로그인 하시겠습니까?');
-      if (shouldLogin) {
-        navigate('/login');
-      }
-      return;
+      setShowPopup(true); // 모달 열기
+    } else {
+      navigate('/mate');
     }
-    navigate('/mate');
+  };
+
+  // 모달 닫기 함수
+  const closeModal = () => {
+    setShowPopup(false);
   };
 
   return (
@@ -104,6 +107,18 @@ const MatePostList = () => {
         <button onClick={handleWritePostClick} className="write-post-button">
           <LuPencil className='pencil' />&nbsp;글쓰기
         </button>
+
+        {/* 모달 */}
+        {showPopup && (
+          <div className="login-modal">
+            <div className="login-modal-content">
+              <p>로그인이 필요합니다. 로그인 하시겠습니까?</p>
+              <button onClick={() => { closeModal(); navigate('/login'); }}>로그인</button>
+              <button onClick={closeModal}>취소</button>
+            </div>
+          </div>
+        )}
+
       </div>
       <div className="footer">
         <div className="footer-text">ⓒ TripBridge. All Rights Reserved.</div>
