@@ -7,7 +7,7 @@ import { TbCircleArrowRight } from "react-icons/tb";
 
 const Container = styled.div`
   width: ${(props) => props.totalSlides * 100}vw;
-  height: 480px;
+  height: 800px;
   transition: transform 0.5s ease-in-out;
   transform: translateX(-${(props) => (props.currentSlide - 1) * 100}vw);
   overflow: hidden;

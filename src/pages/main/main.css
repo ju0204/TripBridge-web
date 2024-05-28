@@ -23,7 +23,7 @@
 .inner {
   position: relative;
   width: 100%; /* Adjust as necessary */
-  height: 480px; /* Ensure this matches your banner height */
+  height: 800px; /* Ensure this matches your banner height */
 }
 
 .inner .banner-container {
