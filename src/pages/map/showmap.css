@@ -47,6 +47,7 @@
     overflow-y: scroll;
     padding: 20px;
     position: relative;
+    border-left: 2px solid #ccc; /* 왼쪽에 구분선 추가 */
   }
 
   .scrap-buttons {
@@ -151,6 +152,7 @@
     padding:20px;
     display: flex;
     flex-direction: column; /* 검색창과 검색결과를 세로로 배치 */
+    border-right: 2px solid #ccc; /* 왼쪽에 구분선 추가 */
   }
   
   .search-container input[type="text"] {

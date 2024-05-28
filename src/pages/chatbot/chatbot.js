@@ -296,7 +296,8 @@ const Chatbot = () => {
               className="custom-chatbot"
               headerTitle="Trip Bot"
               botAvatar="/chatbot/bot.png"
-              userAvatar="/chatbot/user.png"
+              hideUserAvatar
+              placeholder="Join your Trip Bot"
               style={{
                 width: '500px', // 원하는 너비로 지정
                 height: 'auto', // 원하는 높이로 지정
