@@ -128,10 +128,7 @@ const TripDetail = () => {
         try {
           const token = getToken();
           if (!token) {
-            const shouldLogin = window.confirm('로그인이 필요합니다. 로그인 하시겠습니까?');
-            if (shouldLogin) {
-              navigate('/login');
-            }
+            setShowPopup(true);
             return;
           }
           const commentData = {
@@ -197,6 +194,7 @@ const TripDetail = () => {
 
   // 모달 닫기 함수
   const closeModal = () => {
+    setShowPopup(false);  
     setShowDeletePostModal(false);
     setShowDeleteCommentModal(false);
     setCommentToDelete(null);
