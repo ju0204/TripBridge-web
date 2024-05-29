@@ -11,6 +11,7 @@ const getToken = () => {
 const TripPostList = () => {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [showModal, setShowModal] = useState(false); // 모달 표시 상태 추가
   const postsPerPage = 15;
   const navigate = useNavigate();
 
@@ -47,13 +48,15 @@ const TripPostList = () => {
   const handleWritePostClick = () => {
     const token = getToken();
     if (!token) {
-      const shouldLogin = window.confirm('로그인이 필요합니다. 로그인 하시겠습니까?');
-      if (shouldLogin) {
-        navigate('/login');
-      }
-      return;
+      setShowModal(true); // 모달 열기
+    } else {
+      navigate('/trip');
     }
-    navigate('/trip');
+  };
+
+  // 모달 닫기 함수
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -85,21 +88,31 @@ const TripPostList = () => {
         </div>
         {/* 페이지 네이션 */}
         <div className="pagination">
-          {Array.from({ length: Math.ceil(posts.length / postsPerPage) }, (_, i) => {
-            return (
-              <button 
-                key={i + 1} 
-                onClick={() => paginate(i + 1)} 
-                className={currentPage === i + 1 ? 'active' : ''}
-              >
-                {i + 1}
-              </button>
-            );
-          })}
+          {Array.from({ length: Math.ceil(posts.length / postsPerPage) }, (_, i) => (
+            <button
+              key={i + 1}
+              onClick={() => paginate(i + 1)}
+              className={currentPage === i + 1 ? 'active' : ''}
+            >
+              {i + 1}
+            </button>
+          ))}
         </div>
         <button onClick={handleWritePostClick} className="write-post-button">
           <LuPencil />&nbsp;글쓰기
         </button>
+
+        {/* 로그인 확인 모달 */}
+        {showModal && (
+          <div className="login-modal">
+          <div className="login-modal-content">
+            <p>로그인이 필요합니다. 로그인 하시겠습니까?</p>
+            <button onClick={() => { closeModal(); navigate('/login'); }}>로그인</button>
+            <button onClick={closeModal}>취소</button>
+          </div>
+        </div>
+        )}
+
       </div>
       <div className="footer">
         <div className="footer-text">ⓒ TripBridge. All Rights Reserved.</div>

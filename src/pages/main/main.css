@@ -20,54 +20,66 @@
   font-style: normal;
 }
 
-.inner {
+
+@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300..900&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+.banner-container {
   position: relative;
-  width: 100%; /* Adjust as necessary */
-  height: 800px; /* Ensure this matches your banner height */
+  width: 100vw;
+  height: 88vh; /* Full screen height */
 }
 
-.inner .banner-container {
-  position: relative;
-}
-
-.inner .Img {
+.Img {
   width: 100%;
-  height: auto;
-  display: block;
+  height: 88vh; /* 뷰포트 높이만큼 이미지 높이를 설정 */
+  object-fit: cover; /* 이미지 비율을 유지하면서 전체를 덮도록 설정 *
+  position: relative; /* 오버레이를 이 이미지 위에 배치하기 위해 설정 */
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3); /* 검정색 오버레이, 80% 불투명도 */
+  pointer-events: none; /* 오버레이가 클릭 이벤트를 차단하지 않도록 설정 */
 }
 
 .main-text {
   font-family: 'Noto Sans KR', sans-serif; 
   position: absolute;
+  padding: 10px;
   bottom: 20px;
   right: 60px;
   color: rgba(255, 255, 255, 0.823);
   font-size: 14px;
   font-weight: 400;
   letter-spacing: 1px;
-  z-index: 10;
+  z-index: 2; /* 이미지 위에 텍스트가 보이도록 설정 */
 }
-
 
 .banner-text {
   position: absolute;
-  top: 250px;
-  left: 180px;
-  z-index: 1; /* 이미지 위에 텍스트가 보이도록 설정 */
+  top: 51%;
+  transform: translateY(-50%);
+  left: 10%;
+  z-index: 3; /* 이미지 위에 텍스트가 보이도록 설정 */
   color: white;
-  font-size: 58px;
+  font-size: 55px;
   font-weight: 600;
   letter-spacing: 2px;
-  /* font-family: "Montserrat", sans-serif; */
   font-family: 'TmonMonsori';
+  /* font-family: "Kanit", sans-serif; */
   text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.5); /* 그림자 효과 추가 */
-  }
+}
 
-.banner-text2{
+.banner-text2 {
   position: absolute;
-  top: 330px;
-  left: 180px;
-  z-index: 1; /* 이미지 위에 텍스트가 보이도록 설정 */
+  top: 57%;
+  transform: translateY(-50%);
+  left: 10.5%;
+  z-index: 3; /* 이미지 위에 텍스트가 보이도록 설정 */
   color: rgba(255, 255, 255, 0.941);
   font-size: 23px;
   font-weight: 500;
@@ -75,41 +87,104 @@
   letter-spacing: 2px;
 }
 
-.left-icon {
+.left-icon, .right-icon {
   position: absolute;
-  top: 320px;
-  left: 1%;
+  top: 53%;
   transform: translateY(-50%);
-  color : white;
+  cursor: pointer;
+  z-index: 3;
+  color: white;
   background-color: #3a3a3a84;
   border-radius: 5px;
 }
 
-.right-icon {
-  position: absolute;
-  top: 320px;
-  right: 1%;
-  transform: translateY(-50%);
-  color : white;
-  background-color: #3a3a3a5c;
-  border-radius: 5px;
+.left-icon {
+  left: 10px;
 }
 
+.right-icon {
+  right: 10px;
+}
 
 .func-container {
   display: flex;
-  justify-content: space-between;
-  width: 1300px;
-  margin: 40px auto 0 auto;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+  position: absolute;
+  top: 73%;
+  right: 8%;
+  transform: translateY(-50%);
+  z-index: 4;
   font-family: 'Noto Sans KR', sans-serif;
-  text-decoration: none;
-  position: relative;
 }
 
 .func1, .func2, .func3, .func4 {
+  padding: 23px;
+  font-size: 24px;
+  color: #ffffff;
+  border-radius: 8px;
+  font-family: 'JalnanGothic';
+  transition: transform 0.2s ease;
+  position: relative;
+  width: 360px;
+}
+
+.moveto {
+  position: absolute;
+  bottom: 13px;
+  right: 0px;
+  font-size: 38px;
+  color: #ffffff;
+  transition: transform 0.2s ease;
+  text-decoration: none;
+}
+
+
+@keyframes moveArrow {
+  0% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.func1:hover .moveto,
+.func2:hover .moveto,
+.func3:hover .moveto,
+.func4:hover .moveto {
+  animation: moveArrow 0.7s linear infinite;
+}
+
+
+.func1:hover,
+.func2:hover,
+.func3:hover,
+.func4:hover {
+  transform: translateX(10px);
+}
+
+/* .func-container {
+  display: flex;
+  justify-content: space-between;
+  width: 1500px;
+  position: absolute;
+  top: 67%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  font-family: 'Noto Sans KR', sans-serif;
+  text-decoration: none;
+} */
+
+/* .func1, .func2, .func3, .func4 {
   background-color: #ffffff;
-  width: 250px;
-  height: 200px;
+  width: 280px;
+  height: 160px;
   padding: 25px;
   font-size: 25px;
   color: #191919;
@@ -119,80 +194,64 @@
   font-family: 'JalnanGothic';
   transition: transform 0.2s ease;
   position: relative;
-}
+} */
 
-.moveto {
+/* .moveto {
   position: absolute;
-  bottom: 10px;
-  right: 25px;
+  bottom: 0px;
+  right: 20px;
   font-size: 45px;
   color: #191919;
   transition: transform 0.2s ease;
   text-decoration: none;
-}
+} */
 
-@keyframes moveArrow {
+/* @keyframes moveArrow {
   0% {
     transform: translateX(0);
   }
   50% {
-    transform: translateX(5px); /* Adjust the amount of movement as desired */
+    transform: translateX(5px);
   }
   100% {
     transform: translateX(0);
   }
-}
+} */
 
-.moveto svg {
-  transition: transform 0.2s ease; /* Ensure smooth transition for transform */
-}
+/* .moveto svg {
+  transition: transform 0.2s ease;
+} */
 
-.func1:hover .moveto svg,
+/* .func1:hover .moveto svg,
 .func2:hover .moveto svg,
 .func3:hover .moveto svg,
 .func4:hover .moveto svg {
-  animation: moveArrow 0.7s linear infinite; /* Apply moveArrow animation on .moveto svg within .func1 hover */
-}
+  animation: moveArrow 0.7s linear infinite;
+} */
 
-.func1:hover .moveto,
+/* .func1:hover .moveto,
 .func2:hover .moveto,
 .func3:hover .moveto,
 .func4:hover .moveto {
   color: #2395ff;
-}
+} */
 
-.func1:hover,
+/* .func1:hover,
 .func2:hover,
 .func3:hover,
 .func4:hover {
-  transform: translateY(-10px); /* Example transform on .func1, .func2, .func3, .func4 hover */
+  transform: translateY(-10px);
   color: #0084ff;
-}
-
+} */
 
 
 .detail {
-  margin-top: 15px;
-  font-size: 16px;
+  margin-top: 10px;
+  font-size: 15px;
   font-weight: 400;
-  color: #7e7e7e;
+  color: #ffffff;
   font-family: 'Noto Sans KR', sans-serif;
-}
-
-
-@keyframes slideAnimation {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-.Img {
-  animation: slideAnimation 0.7s ease-in-out;
-  width: 100%;
-  height: auto;
+  width: auto;
 }
 
 .footer {
@@ -200,14 +259,12 @@
   height: 60px;
   bottom: 0;
   width: 100%;
-  margin-top: 100px;
   border-top: 1px solid #e1e1e1;
   display: flex;
   align-items: center;
 }
 
-
-.footer-text{
+.footer-text {
   font-size: 12px;
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: 600;
