@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FaPlayCircle } from 'react-icons/fa'; // react-icons에서 FaPlayCircle 아이콘을 불러옵니다.
 
 
@@ -7,6 +7,7 @@ import './filter-main.css'; // 분리한 CSS 파일을 불러옵니다.
 
 const Filter = ({ isLoggedIn, nickname }) => {
   const [showPopup, setShowPopup] = useState(false);
+  const navigate = useNavigate();
 
   const handleStartClick = (event) => {
     if (!isLoggedIn) {
@@ -16,7 +17,8 @@ const Filter = ({ isLoggedIn, nickname }) => {
     }
   };
 
-  const handleClosePopup = () => {
+  // 모달 닫기 함수
+  const closeModal = () => {
     setShowPopup(false);
   };
 
@@ -45,14 +47,15 @@ const Filter = ({ isLoggedIn, nickname }) => {
               시작하기
             </Link>
       </div>
-      {showPopup && (
-        <div className="popup">
-          <div className="popup-content">
-            <p>로그인 후 이용이 가능합니다!</p>
-            <button onClick={handleClosePopup}>닫기</button>
+       {showPopup && (
+          <div className="login-modal">
+            <div className="login-modal-content">
+              <p>로그인이 필요합니다. 로그인 하시겠습니까?</p>
+              <button onClick={() => { closeModal(); navigate('/login'); }}>로그인</button>
+              <button onClick={closeModal}>취소</button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 };
