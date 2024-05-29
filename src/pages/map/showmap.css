@@ -87,14 +87,16 @@
     border-radius: 8px;
     padding: 5px 10px;
     cursor: pointer;
-    color: #007BFF;
+    color: #000000;
     font-size: 18px;
     margin-top: 10px; /* 상단 여백 조정 */
     display: inline-block; /* 텍스트 길이에 맞춰 자동으로 너비 설정 */
+    
   }  
   
   .openguide:hover {
-    text-decoration: underline;
+    /* text-decoration: underline; */
+    font-weight:600;
   }
 
   .scrap-list {
@@ -304,6 +306,7 @@
   font-family: 'JalnanGothic';
   font-size: 24px;
   margin: 15px 0 30px 5px;
+  
 }
 
 .guide p {
