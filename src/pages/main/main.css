@@ -13,6 +13,16 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'TmonMonsori';
+  src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/TmonMonsori.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300..900&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 .banner-container {
   position: relative;
   width: 100vw;
@@ -22,7 +32,18 @@
 .Img {
   width: 100%;
   height: 88vh; /* 뷰포트 높이만큼 이미지 높이를 설정 */
-  object-fit: cover; /* 이미지 비율을 유지하면서 전체를 덮도록 설정 */
+  object-fit: cover; /* 이미지 비율을 유지하면서 전체를 덮도록 설정 *
+  position: relative; /* 오버레이를 이 이미지 위에 배치하기 위해 설정 */
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3); /* 검정색 오버레이, 80% 불투명도 */
+  pointer-events: none; /* 오버레이가 클릭 이벤트를 차단하지 않도록 설정 */
 }
 
 .main-text {
@@ -40,21 +61,22 @@
 
 .banner-text {
   position: absolute;
-  top: 47%;
+  top: 51%;
   transform: translateY(-50%);
   left: 10%;
   z-index: 3; /* 이미지 위에 텍스트가 보이도록 설정 */
   color: white;
-  font-size: 58px;
+  font-size: 55px;
   font-weight: 600;
   letter-spacing: 2px;
   font-family: 'TmonMonsori';
+  /* font-family: "Kanit", sans-serif; */
   text-shadow: 2px 4px 6px rgba(0, 0, 0, 0.5); /* 그림자 효과 추가 */
 }
 
 .banner-text2 {
   position: absolute;
-  top: 53%;
+  top: 57%;
   transform: translateY(-50%);
   left: 10.5%;
   z-index: 3; /* 이미지 위에 텍스트가 보이도록 설정 */
@@ -67,7 +89,7 @@
 
 .left-icon, .right-icon {
   position: absolute;
-  top: 50%;
+  top: 53%;
   transform: translateY(-50%);
   cursor: pointer;
   z-index: 3;
@@ -90,34 +112,30 @@
   justify-content: flex-start;
   align-items: flex-end;
   position: absolute;
-  top: 56%;
-  right: 10%;
+  top: 73%;
+  right: 8%;
   transform: translateY(-50%);
   z-index: 4;
   font-family: 'Noto Sans KR', sans-serif;
 }
 
 .func1, .func2, .func3, .func4 {
-  background-color: #ffffff;
-  padding: 30px;
-  font-size: 25px;
-  color: #191919;
-  border: 1px solid #d9d9d9;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 23px;
+  font-size: 24px;
+  color: #ffffff;
   border-radius: 8px;
   font-family: 'JalnanGothic';
-  margin-bottom: 20px;
   transition: transform 0.2s ease;
   position: relative;
-  width: 400px;
+  width: 360px;
 }
 
 .moveto {
   position: absolute;
-  bottom: 8px;
-  right: 20px;
-  font-size: 45px;
-  color: #191919;
+  bottom: 13px;
+  right: 0px;
+  font-size: 38px;
+  color: #ffffff;
   transition: transform 0.2s ease;
   text-decoration: none;
 }
@@ -135,30 +153,19 @@
   }
 }
 
-.moveto svg {
-  transition: transform 0.2s ease;
-}
-
-.func1:hover .moveto svg,
-.func2:hover .moveto svg,
-.func3:hover .moveto svg,
-.func4:hover .moveto svg {
-  animation: moveArrow 0.7s linear infinite;
-}
-
 .func1:hover .moveto,
 .func2:hover .moveto,
 .func3:hover .moveto,
 .func4:hover .moveto {
-  color: #2395ff;
+  animation: moveArrow 0.7s linear infinite;
 }
+
 
 .func1:hover,
 .func2:hover,
 .func3:hover,
 .func4:hover {
   transform: translateX(10px);
-  color: #0084ff;
 }
 
 /* .func-container {
@@ -239,11 +246,12 @@
 
 
 .detail {
-  margin-top: 15px;
-  font-size: 16px;
+  margin-top: 10px;
+  font-size: 15px;
   font-weight: 400;
-  color: #7e7e7e;
+  color: #ffffff;
   font-family: 'Noto Sans KR', sans-serif;
+  width: auto;
 }
 
 .footer {
