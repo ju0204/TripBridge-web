@@ -24,6 +24,18 @@ const MateDetail = () => {
   const [editedContent, setEditedContent] = useState('');
   const navigate = useNavigate();
   const loggedInUser = getLoggedInUser();
+  const [showLoginPopup, setShowLoginPopup] = useState(false); // 모달 표시 상태 추가
+  const [showDeletePostModal, setShowDeletePostModal] = useState(false);
+  const [showDeleteCommentModal, setShowDeleteCommentModal] = useState(false);
+  const [commentToDelete, setCommentToDelete] = useState(null);
+
+  // 모달 닫기 함수
+  const closeModal = () => {
+    setShowLoginPopup(false);
+    setShowDeletePostModal(false);
+    setShowDeleteCommentModal(false);
+    setCommentToDelete(null);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -40,17 +52,18 @@ const MateDetail = () => {
   }, [postId]);
 
   const handleDeletePost = async () => {
+    setShowDeletePostModal(true);
+  };
+
+  const confirmDeletePost = async () => {
     try {
-      const shouldDelete = window.confirm('게시글을 삭제하시면 다시 복구할 수 없습니다.\n정말 게시글을 삭제하시겠습니까?');
-      if (shouldDelete) {
-        const commentsData = await getComments(postId);
-        for (const comment of commentsData) {
-          await deleteComment(comment.id);
-        }
-        await deletePost(postId);
-        console.log('게시글과 댓글이 성공적으로 삭제되었습니다.');
-        navigate('/mateboard');
+      const commentsData = await getComments(postId);
+      for (const comment of commentsData) {
+        await deleteComment(comment.id);
       }
+      await deletePost(postId);
+      console.log('게시글과 댓글이 성공적으로 삭제되었습니다.');
+      navigate('/mateboard');
     } catch (error) {
       console.error('게시글 또는 댓글 삭제 중 오류 발생:', error);
     }
@@ -109,7 +122,7 @@ const MateDetail = () => {
     try {
       const token = getToken();
       if (!token) {
-        console.error('로그인이 필요합니다.');
+        setShowLoginPopup(true);
         return;
       }
       const commentData = {
@@ -146,7 +159,7 @@ const MateDetail = () => {
     try {
       const token = getToken();
       if (!token) {
-        console.error('로그인이 필요합니다.');
+        setShowLoginPopup(true);
         return;
       }
       const commentData = {
@@ -167,14 +180,17 @@ const MateDetail = () => {
   };
 
   const handleDeleteComment = async (commentId) => {
+    setCommentToDelete(commentId);
+    setShowDeleteCommentModal(true);
+  };
+
+  const confirmDeleteComment = async () => {
     try {
-      const shouldDelete = window.confirm('정말로 이 댓글을 삭제하시겠습니까?');
-      if (shouldDelete) {
-        await deleteComment(commentId);
-        console.log('댓글이 성공적으로 삭제되었습니다.');
-        const updatedComments = await getComments(postId);
-        setCommentList(updatedComments);
-      }
+      await deleteComment(commentToDelete);
+      console.log('댓글이 성공적으로 삭제되었습니다.');
+      const updatedComments = await getComments(postId);
+      setCommentList(updatedComments);
+      closeModal();
     } catch (error) {
       console.error('댓글 삭제 중 오류 발생:', error);
     }
@@ -221,9 +237,9 @@ const MateDetail = () => {
                 <div className="info">
                   <span>{comment.user} | {formatCommentDate(comment.date)}</span>
                   <div>
-                  {loggedInUser && comment.user === loggedInUser && (
-                        <button type="button" onClick={() => handleDeleteComment(comment.id)}>삭제</button>
-                      )}
+                    {loggedInUser && comment.user === loggedInUser && (
+                      <button type="button" onClick={() => handleDeleteComment(comment.id)}>삭제</button>
+                    )}
                     <button type="button" onClick={() => handleReply(comment.id, comment.user)}>답글</button>
                   </div>
                 </div>
@@ -297,6 +313,34 @@ const MateDetail = () => {
           {renderComments(commentList, true)}
         </div>
       </div>
+              {/* 모달 */}
+              {showLoginPopup && (
+          <div className="login-modal">
+            <div className="login-modal-content">
+              <p>로그인이 필요합니다. 로그인 하시겠습니까?</p>
+              <button onClick={() => { closeModal(); navigate('/login'); }}>로그인</button>
+              <button onClick={closeModal}>취소</button>
+            </div>
+          </div>
+        )}
+        {showDeletePostModal && (
+          <div className="delete-modal">
+            <div className="delete-modal-content">
+              <p>게시글을 삭제하시면 다시 복구할 수 없습니다. <br/>정말 게시글을 삭제하시겠습니까?</p>
+              <button onClick={() => { confirmDeletePost(); closeModal(); }}>확인</button>
+              <button onClick={closeModal}>취소</button>
+            </div>
+          </div>
+        )}
+        {showDeleteCommentModal && (
+          <div className="delete-modal">
+            <div className="delete-modal-content">
+              <p>정말로 이 댓글을 삭제하시겠습니까?</p>
+              <button onClick={() => { confirmDeleteComment(); closeModal(); }}>확인</button>
+              <button onClick={closeModal}>취소</button>
+            </div>
+          </div>
+        )}
     </div>
   );
 };

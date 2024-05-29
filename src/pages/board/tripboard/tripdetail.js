@@ -24,6 +24,12 @@ const TripDetail = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const navigate = useNavigate();
     const loggedInUser = getLoggedInUser();
+    const [showPopup, setShowPopup] = useState(false); // 모달 표시 상태 추가
+    const [showDeletePostModal, setShowDeletePostModal] = useState(false);
+    const [showDeleteCommentModal, setShowDeleteCommentModal] = useState(false);
+    const [commentToDelete, setCommentToDelete] = useState(null);
+
+
 
     //게시글
     useEffect(() => {
@@ -50,25 +56,23 @@ const TripDetail = () => {
         fetchComments();
     }, [postId]);
 
-
-const handleDeletePost = async () => {
-    try {
-        const shouldDelete = window.confirm('게시글을 삭제하시면 다시 복구할 수 없습니다.\n정말 게시글을 삭제하시겠습니까?');
-        if (shouldDelete) {
-            // 해당 게시글의 댓글들을 먼저 삭제합니다.
-            const commentsData = await getComments(postId);
-            for (const comment of commentsData) {
-                await deleteComment(comment.id);
-            }
-            // 댓글 삭제 후 게시글 삭제
-            await deletePost(postId);
-            console.log('게시글과 댓글이 성공적으로 삭제되었습니다.');
-            navigate('/tripboard');
+    const handleDeletePost = async () => {
+      setShowDeletePostModal(true);
+    };
+  
+    const confirmDeletePost = async () => {
+      try {
+        const commentsData = await getComments(postId);
+        for (const comment of commentsData) {
+          await deleteComment(comment.id);
         }
-    } catch (error) {
+        await deletePost(postId);
+        console.log('게시글과 댓글이 성공적으로 삭제되었습니다.');
+        navigate('/mateboard');
+      } catch (error) {
         console.error('게시글 또는 댓글 삭제 중 오류 발생:', error);
-    }
-};
+      }
+    };
 
 
     const handleChangeComment = (e) => {
@@ -80,28 +84,29 @@ const handleDeletePost = async () => {
     const handleSubmitComment = async (e) => {
         e.preventDefault();
         if (!comment.trim()) {
-            console.error('댓글을 입력해주세요.');
-            return;
+          console.error('댓글을 입력해주세요.');
+          return;
         }
         try {
-            const token = getToken();
-            if (!token) {
-                console.error('로그인이 필요합니다.');
-                return;
-            }
-            const commentData = {
-                tripPost_id: postId,
-                content: comment,
-            };
-            await saveComment(commentData, { headers: { Authorization: `Bearer ${token}` } });
-            console.log('댓글이 성공적으로 작성되었습니다.');
-            const updatedComments = await getComments(postId);
-            setCommentList(updatedComments);
-            setComment('');
+          const token = getToken();
+          if (!token) {
+            setShowPopup(true);
+            return;
+          }
+          const commentData = {
+            tripPost_id: postId,
+            content: comment,
+          };
+          await saveComment(commentData, { headers: { Authorization: `Bearer ${token}` } });
+          console.log('댓글이 성공적으로 작성되었습니다.');
+          const updatedComments = await getComments(postId);
+          setCommentList(updatedComments);
+          setComment('');
         } catch (error) {
-            console.error('댓글 작성 중 오류 발생:', error);
+          console.error('댓글 작성 중 오류 발생:', error);
         }
-    };
+      };
+      
 
     const handleReply = (commentId, user) => {
         setReplyingToId(commentId);
@@ -117,46 +122,49 @@ const handleDeletePost = async () => {
     const handleSubmitReply = async (e, parentId) => {
         e.preventDefault();
         if (!replyingToContent.trim()) {
-            console.error('답글을 입력해주세요.');
-            return;
+          console.error('답글을 입력해주세요.');
+          return;
         }
         try {
-            const token = getToken();
-            if (!token) {
-                console.error('로그인이 필요합니다.');
-                return;
-            }
-            const commentData = {
-                tripPost_id: postId,
-                content: replyingToContent,
-                parent_comment_id: parentId,
-            };
-            await saveComment(commentData, { headers: { Authorization: `Bearer ${token}` } });
-            console.log('대댓글 작성 성공');
-            const updatedComments = await getComments(postId);
-            setCommentList(updatedComments);
-            setReplyingToContent('');
-            setReplyingToId(null);
-            setReplyingToUser('');
+          const token = getToken();
+          if (!token) {
+            setShowPopup(true);
+            return;
+          }
+          const commentData = {
+            tripPost_id: postId,
+            content: replyingToContent,
+            parent_comment_id: parentId,
+          };
+          await saveComment(commentData, { headers: { Authorization: `Bearer ${token}` } });
+          console.log('대댓글 작성 성공');
+          const updatedComments = await getComments(postId);
+          setCommentList(updatedComments);
+          setReplyingToContent('');
+          setReplyingToId(null);
+          setReplyingToUser('');
         } catch (error) {
-            console.error('대댓글 작성 중 오류 발생:', error);
+          console.error('대댓글 작성 중 오류 발생:', error);
         }
-    };
-
+      };
+      
     
-  const handleDeleteComment = async (commentId) => {
-    try {
-      const shouldDelete = window.confirm('정말로 이 댓글을 삭제하시겠습니까?');
-      if (shouldDelete) {
-        await deleteComment(commentId);
-        console.log('댓글이 성공적으로 삭제되었습니다.');
-        const updatedComments = await getComments(postId);
-        setCommentList(updatedComments);
-      }
-    } catch (error) {
-      console.error('댓글 삭제 중 오류 발생:', error);
-    }
-  };
+      const handleDeleteComment = async (commentId) => {
+        setCommentToDelete(commentId);
+        setShowDeleteCommentModal(true);
+      };
+    
+      const confirmDeleteComment = async () => {
+        try {
+          await deleteComment(commentToDelete);
+          console.log('댓글이 성공적으로 삭제되었습니다.');
+          const updatedComments = await getComments(postId);
+          setCommentList(updatedComments);
+          closeModal();
+        } catch (error) {
+          console.error('댓글 삭제 중 오류 발생:', error);
+        }
+      };
 
     const formatDate = (dateString) => {
         const date = new Date(dateString);
@@ -184,9 +192,13 @@ const handleDeletePost = async () => {
         setIsModalOpen(true);
     };
 
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
+  // 모달 닫기 함수
+  const closeModal = () => {
+    setShowPopup(false);  
+    setShowDeletePostModal(false);
+    setShowDeleteCommentModal(false);
+    setCommentToDelete(null);
+  };
 
     const renderComments = (comments, isNewComment = false) => {
         let commentGroups = {};
@@ -272,6 +284,34 @@ const handleDeletePost = async () => {
                 </div>
             </div>
             {isModalOpen && <ImageModal imageUrl={modalImageUrl} onClose={closeModal} />}
+                          {/* 모달 */}
+                          {showPopup && (
+          <div className="login-modal">
+            <div className="login-modal-content">
+              <p>로그인이 필요합니다. 로그인 하시겠습니까?</p>
+              <button onClick={() => { closeModal(); navigate('/login'); }}>로그인</button>
+              <button onClick={closeModal}>취소</button>
+            </div>
+          </div>
+        )}
+        {showDeletePostModal && (
+          <div className="delete-modal">
+            <div className="delete-modal-content">
+              <p>게시글을 삭제하시면 다시 복구할 수 없습니다. <br/>정말 게시글을 삭제하시겠습니까?</p>
+              <button onClick={() => { confirmDeletePost(); closeModal(); }}>확인</button>
+              <button onClick={closeModal}>취소</button>
+            </div>
+          </div>
+        )}
+        {showDeleteCommentModal && (
+          <div className="delete-modal">
+            <div className="delete-modal-content">
+              <p>정말로 이 댓글을 삭제하시겠습니까?</p>
+              <button onClick={() => { confirmDeleteComment(); closeModal(); }}>확인</button>
+              <button onClick={closeModal}>취소</button>
+            </div>
+          </div>
+        )}
         </div>
     );
 };

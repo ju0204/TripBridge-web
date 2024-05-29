@@ -136,9 +136,6 @@
   padding: 10px;
   font-size: 30px;
 }
-.scrapbutton:hover {
-  background: transparent;
-}
 
 
 .pagination1 {
@@ -251,23 +248,23 @@
 }
 
 .Ex-popup-inner1 button {
-  padding: 10px 20px;
+  padding: 7px 20px;
   background-color: #2d2d2d;
+  margin-bottom: 10px;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 10px;
   font-family: 'Noto Sans KR', sans-serif;
+  transition: background-color 0.3s ease;
 }
 
 .Ex-popup-inner1 button:hover {
-  background-color: #424242;
+  background-color: #5a5a5a;
 }
 
 .ex-containter {
-  /* border-top: 1px solid; */
   padding-left:10px;
   padding-right: 10px;
-  padding-bottom: 15px; 
+  padding-bottom: 15px;
 }

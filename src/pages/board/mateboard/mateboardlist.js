@@ -1,13 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import './mateboardlist.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { showMatePost } from '../../../api/mateboard';
 import { LuPencil } from "react-icons/lu";
+
+const getToken = () => {
+  return sessionStorage.getItem('accessToken');
+};
 
 const MatePostList = () => {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [showPopup, setShowPopup] = useState(false); // 모달 표시 상태 추가
   const postsPerPage = 15;
+  const navigate = useNavigate();
 
   useEffect(() => {
     const showpost = async () => {
@@ -35,15 +41,29 @@ const MatePostList = () => {
     return `${year}-${month}-${day}`;
   };
 
-
   // 페이지네이션 클릭
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  // 글쓰기 버튼 클릭
+  const handleWritePostClick = () => {
+    const token = getToken();
+    if (!token) {
+      setShowPopup(true); // 모달 열기
+    } else {
+      navigate('/mate');
+    }
+  };
+
+  // 모달 닫기 함수
+  const closeModal = () => {
+    setShowPopup(false);
+  };
+
   return (
     <div>
-      <div class='mate-board-banner'>
-          <img src='/board/mate.jpg' alt=''/>
-          <div className="mate-board-main">메이트 게시판</div>
+      <div className='mate-board-banner'>
+        <img src='/board/mate.jpg' alt='' />
+        <div className="mate-board-main">메이트 게시판</div>
       </div>
       <div className="mate-board-container">
         <div className="post-header">
@@ -84,10 +104,24 @@ const MatePostList = () => {
             );
           })}
         </div>
-        <Link to="/mate" className="write-post-button"><LuPencil className='pencil'/>&nbsp;글쓰기</Link>
+        <button onClick={handleWritePostClick} className="write-post-button">
+          <LuPencil className='pencil' />&nbsp;글쓰기
+        </button>
+
+        {/* 모달 */}
+        {showPopup && (
+          <div className="login-modal">
+            <div className="login-modal-content">
+              <p>로그인이 필요합니다. 로그인 하시겠습니까?</p>
+              <button onClick={() => { closeModal(); navigate('/login'); }}>로그인</button>
+              <button onClick={closeModal}>취소</button>
+            </div>
+          </div>
+        )}
+
       </div>
       <div className="footer">
-      <div className="footer-text">ⓒ TripBridge. All Rights Reserved.</div>
+        <div className="footer-text">ⓒ TripBridge. All Rights Reserved.</div>
       </div>
     </div>
   );

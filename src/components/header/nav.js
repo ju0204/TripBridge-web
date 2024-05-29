@@ -1,10 +1,10 @@
-// Nav.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './nav.css';
 
 const Nav = ({ isLoggedIn, nickname, onLogout }) => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [showModal, setShowModal] = useState(false); // 모달 상태 추가
 
   const handleMouseEnter = () => {
     setShowDropdown(true);
@@ -22,13 +22,21 @@ const Nav = ({ isLoggedIn, nickname, onLogout }) => {
     setShowDropdown(false);
   };
 
+  const handleLinkClick = (path) => {
+    if (!isLoggedIn) {
+      setShowModal(true); // 로그인 상태가 아니면 모달 열기
+    }
+  };
+
   return (
     <nav className="navbar">
       <div className="nav-container">
         <ul className="nav-list-1">
           <li className="nav-item"><Link className="styled-trip" to="/">Trip-Bridge</Link></li>
           <li className="nav-item"><Link className="styled-link" to="/filter">여행지 추천</Link></li>
-          <li className="nav-item"><Link className="styled-link" to="/map">동선 추천</Link></li>
+          <li className="nav-item">
+            <Link className="styled-link" to="/map" onClick={() => handleLinkClick('/map')}>동선 추천</Link>
+          </li>
           <li className="nav-item" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <div className="styled-link" onMouseEnter={handleDropdownMouseEnter} onMouseLeave={handleDropdownMouseLeave}>
               게시판
@@ -45,7 +53,7 @@ const Nav = ({ isLoggedIn, nickname, onLogout }) => {
           {!isLoggedIn && ( // Render login and signup links only if not logged in
             <>
               <li className="auth-item"><Link className="styled-link-login" to="/login">LOGIN</Link></li>
-              <li className="auth-item"><Link className="styled-link-siginup" to="/signup">SIGN UP</Link></li>
+              <li className="auth-item"><Link className="styled-link-signup" to="/signup">SIGN UP</Link></li>
             </>
           )}
           {isLoggedIn && (
@@ -58,6 +66,16 @@ const Nav = ({ isLoggedIn, nickname, onLogout }) => {
           )}
         </ul>
       </div>
+
+      {showModal && ( // 모달 표시
+        <div className="login-modal">
+          <div className="login-modal-content">
+            <p>동선 추천은 로그인 후 이용이 가능합니다. <br/> 로그인하시겠습니까?</p>
+            <button onClick={() => { setShowModal(false); window.location.href = '/login'; }}>로그인</button>
+            <button onClick={() => setShowModal(false)}>취소</button>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };
