@@ -290,7 +290,7 @@ const MateDetail = () => {
           <>
             <div className="matepost-title">{post && post.title}</div>
             <div className="matepost-info">{post && post.user}&nbsp;|&nbsp;{post && formatDate(post.date)}</div>
-            <div className="content-box">
+            <div className="content-box pre-wrap">
               <div className="matepost-content">{post && post.content}</div>
             </div>
             {loggedInUser && post && loggedInUser === post.user && (

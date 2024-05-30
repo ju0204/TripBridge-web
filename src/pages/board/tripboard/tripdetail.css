@@ -39,7 +39,6 @@
     cursor: pointer; /* 마우스 커서를 포인터로 변경하여 사용자에게 클릭 가능함을 알림 */
 }
 
-
 .trippost-title {
   font-size: 30px;
   letter-spacing: 2px;
@@ -62,6 +61,11 @@
   overflow-y: auto; /* 내용이 상자를 벗어날 경우 스크롤바를 표시합니다 */
   font-family: 'Noto Sans KR', sans-serif;
 }
+
+.pre-wrap {
+  white-space: pre-wrap;
+}
+
 
 .trippost-content {
   font-size: 15px;

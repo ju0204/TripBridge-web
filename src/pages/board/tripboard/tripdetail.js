@@ -68,7 +68,7 @@ const TripDetail = () => {
         }
         await deletePost(postId);
         console.log('게시글과 댓글이 성공적으로 삭제되었습니다.');
-        navigate('/mateboard');
+        navigate('/tripboard');
       } catch (error) {
         console.error('게시글 또는 댓글 삭제 중 오류 발생:', error);
       }
@@ -194,6 +194,7 @@ const TripDetail = () => {
 
   // 모달 닫기 함수
   const closeModal = () => {
+    setIsModalOpen(false);
     setShowPopup(false);  
     setShowDeletePostModal(false);
     setShowDeleteCommentModal(false);
@@ -261,7 +262,7 @@ const TripDetail = () => {
                         />
                     ))}
                 </div>
-                <div className="content-box">
+                <div className="content-box pre-wrap">
                     <div className="trippost-content">{post && post.content}</div>
                 </div>
                 {loggedInUser && post && loggedInUser === post.user && (
