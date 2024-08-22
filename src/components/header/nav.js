@@ -37,6 +37,7 @@ const Nav = ({ isLoggedIn, nickname, onLogout }) => {
           <li className="nav-item">
             <Link className="styled-link" to="/map" onClick={() => handleLinkClick('/map')}>동선 추천</Link>
           </li>
+          <li className="nav-item"><Link className="styled-link" to="/route">트레킹 코스</Link></li>
           <li className="nav-item" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <div className="styled-link" onMouseEnter={handleDropdownMouseEnter} onMouseLeave={handleDropdownMouseLeave}>
               게시판
