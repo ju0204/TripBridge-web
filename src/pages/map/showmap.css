@@ -156,7 +156,29 @@
     flex-direction: column; /* 검색창과 검색결과를 세로로 배치 */
     border-right: 2px solid #ccc; /* 왼쪽에 구분선 추가 */
   }
-  
+
+  .save-button {
+    font-family: 'Noto Sans KR', sans-serif;
+    position: absolute; /* 절대 위치 설정 */
+    bottom: 5px; /* 상단 여백 */
+    right: 5px; /* 우측 여백 */
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #d1d1d1; /* 버튼 배경색 */
+    border-radius: 5px;
+    font-weight: 400;
+    color: #000000; /* 글자 색상 */
+    border: none; /* 테두리 없음 */
+    font-size: 14px; /* 글자 크기 */
+    cursor: pointer; /* 마우스 커서 모양 */
+    transition: all 0.2s ease; /* 배경색 변화에 애니메이션 효과 */
+  }
+
+    /* scrap-button 클래스 호버 스타일 */
+  .save-button:hover {
+    background-color: #3c3c3c;
+    color: #ffffff;
+  }
+
   .search-container input[type="text"] {
     padding: 8px 15px;
     border: 1px solid #ccc;
@@ -183,6 +205,17 @@
   .search-list li:hover {
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.2);
     background-color: rgb(243, 243, 243);
+  }
+
+  .search-result-item {
+    position: relative; /* 버튼의 절대 위치 기준 */
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #a7a7a7;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
   }
 
   .search-result-item.selected {
