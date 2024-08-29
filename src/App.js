@@ -12,13 +12,11 @@ import TripDetail from './pages/board/tripboard/tripdetail';
 import AddTripPost from './pages/board/tripboard/addtrippost';
 import Main from './pages/main/main';
 import Filter from './pages/filter/filter-main/filter-main';
-import RouteFilter from './pages/route/routeFilter';
 import Section from './pages/filter/section/section';
 import Section2 from './pages/filter/section/section2';
 import Result from './pages/filter/section/result';
 import Chatbot from './pages/chatbot/chatbot';
 import { useNavigate } from 'react-router-dom';
-import RouteFilterResult from './pages/route/routeResult';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -74,8 +72,6 @@ const App = () => {
         <Route path="/tripboard/:postId" element={<TripDetail />} />
         <Route path="/trip" element={<AddTripPost />} />
         <Route path="/filter" element={<Filter isLoggedIn={isLoggedIn} nickname={nickname} />} />
-        <Route path="/route" element={<RouteFilter isLoggedIn={isLoggedIn} nickname={nickname} />} />
-        <Route path="/route/result" element={<RouteFilterResult />} />
         <Route path="/section" element={<Section />} />
         <Route path="/section2" element={<Section2 />} />
         <Route path="/result" element={<Result/>} />

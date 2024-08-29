@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
+import { sendScrap } from '../../api/filter';
 import { fetchLocations, searchLocations, sendSelectedLocations, sendRouteDataToDatabase, deleteScrap } from '../../api/kakaomap';
 import { BsBookmarkStar } from "react-icons/bs";
 import { CgClose } from "react-icons/cg";
@@ -308,6 +309,36 @@ const ShowMap = () => {
     setMap(newMap);
   };
 
+  const handleScrap = async (place, address, longitude, latitude) => {
+    try {
+      const scrapData = {
+        place,
+        address,
+        longitude,
+        latitude
+      };
+  
+      console.log('스크랩 요청 데이터:', scrapData);
+  
+      // 이미 스크랩된 장소인지 확인합니다.
+      if (locations.some(location => location.place === place && location.address === address)) {
+        console.log('이미 스크랩된 장소입니다.');
+        return;
+      }
+  
+      // 스크랩 요청을 서버로 보냅니다.
+      await sendScrap(scrapData);
+      console.log('스크랩 완료');
+  
+      // 스크랩이 성공적으로 완료되면 장소를 스크랩 목록에 추가합니다.
+      setLocations(prevLocations => [...prevLocations, scrapData]);
+  
+    } catch (error) {
+      console.error('스크랩 요청 오류:', error);
+    }
+  };
+  
+
   useEffect(() => {
     initializeMap();
   }, []);
@@ -349,6 +380,12 @@ const ShowMap = () => {
             <li key={index} className={`search-result-item ${selectedLocations.some(selectedLocation => selectedLocation.place === location.place_name) ? 'selected' : ''}`} onClick={() => handleSearchItemClick(location)}>
               <strong>{location.place_name}</strong>
               <p>{location.address_name}</p>
+              <button
+                className="save-button"
+                onClick={() => handleScrap(location.place_name, location.address_name, location.x, location.y)}
+              >
+                스크랩
+              </button>
             </li>
           ))}
         </ul>
