@@ -47,6 +47,6 @@
 /* 콘텐츠 영역 스타일 */
 .content {
   flex: 1;
-  padding: 20px;
+  /* padding: 20px; */
   overflow-y: auto;
 }
