@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import { sendScrap } from '../../api/filter';
-import { fetchLocations, searchLocations, sendSelectedLocations, sendRouteDataToDatabase, deleteScrap } from '../../api/kakaomap';
+import { fetchLocations, searchLocations, sendSelectedLocations, sendRouteDataToDatabase, deleteScrap, saveRoute } from '../../api/kakaomap';
 import { BsBookmarkStar } from "react-icons/bs";
 import { CgClose } from "react-icons/cg";
 import { IoCloseOutline } from "react-icons/io5";
@@ -17,6 +17,7 @@ const ShowMap = () => {
   const [selectedMarkers, setSelectedMarkers] = useState([]);
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
   const [routeDrawn, setRouteDrawn] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [showGuide, setShowGuide] = useState(false); // 기본적으로 모달 닫힌 상태로 설정
   const [nickname, setNickname] = useState('');
   const [doNotShowGuide, setDoNotShowGuide] = useState(false); // 사용자가 가이드를 다시 보지 않기로 선택한 상태
@@ -343,6 +344,22 @@ const ShowMap = () => {
     initializeMap();
   }, []);
 
+// UI에서 동선을 저장하는 함수
+const handleSaveRoute = async () => {
+  setIsSaving(true);
+
+  try {
+    const response = await saveRoute();  // API 함수 호출
+    console.log('Server response:', response);  // 서버 응답 콘솔 출력
+    alert('동선이 성공적으로 저장되었습니다!');
+  } catch (error) {
+    console.error('Error saving route:', error);  // 에러 콘솔 출력
+    alert('동선 저장에 실패했습니다. 다시 시도해주세요.');
+  } finally {
+    setIsSaving(false);
+  }
+};
+  
   return (
     <div className="show-map-container">
       <Modal
@@ -372,7 +389,7 @@ const ShowMap = () => {
           </label>
         </div>
       </Modal>
-
+  
       <div className="search-container">
         <input type="text" placeholder="검색하고 싶은 장소를 입력해주세요." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
         <ul className="search-list">
@@ -419,11 +436,16 @@ const ShowMap = () => {
           <button onClick={routeDrawn ? handleReset : handleRecommendRoute}>
             {routeDrawn ? '다시 하기' : '동선 추천'}
           </button>
+          {routeDrawn && (
+              <button onClick={handleSaveRoute} disabled={isSaving}>
+                {isSaving ? '저장 중...' : '동선 저장'}
+              </button>
+            )}
           <button onClick={() => setIsChatbotOpen(!isChatbotOpen)}>챗봇 {isChatbotOpen ? '닫기' : '열기'}</button>
         </div>
       </div>
     </div>
-  );
+  ); 
 };
 
 export default ShowMap;
