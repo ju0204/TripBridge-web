@@ -157,79 +157,83 @@ function Review() {
         </div>
       </div>
       <div className="right-panel">
-        {selectedRoute ? (
-          <div className="route-content">
-            <div className="route-title">
-              {editMode ? (
-                <input
-                  type="text"
-                  name="name"
-                  value={formValues.name}
-                  onChange={handleInputChange}
-                  className="route-input"
-                />
-              ) : (
-                selectedRoute.name
-              )}
-            </div>
-            <div className="places-section">
-              <div className="places-list">
-                <div className = "places">
-                {selectedRoute.myPlaces.length > 0 ? (
-                  selectedRoute.myPlaces.map((place, index) => (
-                    <div key={place.id} className="place-item">
-                      <span className="place-number">{index + 1}</span>
-                      <div className="place-content">{place.place}</div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="place-item">장소가 없습니다.</div>
-                )}
-              </div>
-              </div>
-              <div className="route-review">
-                {editMode ? (
-                  <>
-                    <div className="rating">
-                      <label htmlFor="rate" className="rating-label">평점</label>
-                      {renderStars(formValues.rate)}
-                    </div>
-                    <div className="memo">
-                      <label htmlFor="comment" className="memo-label">메모</label>
-                      <textarea
-                        id="comment"
-                        name="comment"
-                        value={formValues.comment}
-                        onChange={handleInputChange}
-                        className="route-input memo-textarea"
-                      />
-                    </div>
-                    <button className="comment-button" onClick={updateRoute}>저장</button>
-                  </>
-                ) : (
-                  <>
-                    <div className="rating">
-                      <div className="rating-label">평점</div>
-                      <div className="rating-value">
-                        {selectedRoute.rate ? renderStars(selectedRoute.rate) : <div className="star-placeholder">★★★★★</div>}
-                      </div>
-                    </div>
-                    <div className="memo">
-                      <div className="memo-label">메모</div>
-                      <div className="memo-content">
-                        {selectedRoute.comment || <div className="memo-placeholder">코멘트를 입력해주세요.</div>}
-                      </div>
-                    </div>
-                    <button className="comment-button" onClick={() => setEditMode(true)}>수정</button>
-                  </>
-                )}
-              </div>
-            </div>
-          </div>
+  {selectedRoute ? (
+    <div className="route-content">
+      <div className="route-title">
+        {editMode ? (
+          <input
+            type="text"
+            name="name"
+            value={formValues.name}
+            onChange={handleInputChange}
+            className="route-input"
+          />
         ) : (
-          <div className="no-selection">동선을 선택해주세요.</div>
+          selectedRoute.name
         )}
       </div>
+      <div className="places-section">
+        <div className="places-list">
+          <div className="places">
+            {selectedRoute.myPlaces.length > 0 ? (
+              selectedRoute.myPlaces.map((place, index) => (
+                <div key={place.id} className="place-item">
+                  <span className="place-number">{index + 1}</span>
+                  <div className="place-content">{place.place}</div>
+                </div>
+              ))
+            ) : (
+              <div className="place-item">장소가 없습니다.</div>
+            )}
+          </div>
+        </div>
+        <div className="route-review">
+          {editMode ? (
+            <>
+              <div className="rating">
+                <label htmlFor="rate" className="rating-label">평점</label>
+                {renderStars(formValues.rate)}
+              </div>
+              <div className="memo">
+                <label htmlFor="comment" className="memo-label">메모</label>
+                <textarea
+                  id="comment"
+                  name="comment"
+                  value={formValues.comment}
+                  onChange={handleInputChange}
+                  className="route-input2 memo-textarea"
+                />
+              </div>
+              <button className="comment-button" onClick={updateRoute}>저장</button>
+            </>
+          ) : (
+            <>
+              <div className="rating">
+                <div className="rating-label">평점</div>
+                <div className="rating-value">
+                  {selectedRoute.rate ? renderStars(selectedRoute.rate) : <div className="star-placeholder">★★★★★</div>}
+                </div>
+              </div>
+              <div className="memo">
+                <div className="memo-label">메모</div>
+                <div className="memo-content">
+                  {selectedRoute.comment || <div className="memo-placeholder">코멘트를 입력해주세요.</div>}
+                </div>
+              </div>
+            </>
+          )}
+          {/* Add the "수정" button here, outside the memo and rating sections */}
+          {!editMode && (
+            <button className="comment-button" onClick={() => setEditMode(true)}>수정</button>
+          )}
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div className="no-selection">동선을 선택해주세요.</div>
+  )}
+</div>
+
     </div>
   );
 }

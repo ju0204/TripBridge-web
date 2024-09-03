@@ -398,7 +398,7 @@ const handleSaveRoute = async () => {
               <strong>{location.place_name}</strong>
               <p>{location.address_name}</p>
               <button
-                className="save-button"
+                className="search-scrap-button"
                 onClick={() => handleScrap(location.place_name, location.address_name, location.x, location.y)}
               >
                 스크랩
@@ -409,6 +409,11 @@ const handleSaveRoute = async () => {
       </div>
       <div className="map-container">
         <div id="kakao-map"></div>
+        {routeDrawn && (
+              <button className='route-save-button' onClick={handleSaveRoute} disabled={isSaving}>
+                {isSaving ? '저장 중...' : '동선 저장'}
+              </button>
+            )}
         <div className={`chatbot-container ${isChatbotOpen ? 'open' : ''}`}>
           {isChatbotOpen && <Chatbot />}
         </div>
@@ -436,11 +441,6 @@ const handleSaveRoute = async () => {
           <button onClick={routeDrawn ? handleReset : handleRecommendRoute}>
             {routeDrawn ? '다시 하기' : '동선 추천'}
           </button>
-          {routeDrawn && (
-              <button onClick={handleSaveRoute} disabled={isSaving}>
-                {isSaving ? '저장 중...' : '동선 저장'}
-              </button>
-            )}
           <button onClick={() => setIsChatbotOpen(!isChatbotOpen)}>챗봇 {isChatbotOpen ? '닫기' : '열기'}</button>
         </div>
       </div>

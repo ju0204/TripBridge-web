@@ -45,6 +45,5 @@
 /* 콘텐츠 영역 스타일 */
 .content {
     flex: 1; /* 사이드바를 제외한 나머지 공간을 채움 */
-    padding: 5px;
-    overflow-y: auto;
+    max-height: 85vh;
 }
