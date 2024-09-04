@@ -1,5 +1,7 @@
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
 .moreplace-container {
-    font-family: Arial, sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
     height: 89vh; /* 뷰포트 높이에 맞춤 */
     display: flex;
     overflow: hidden; /* 세로 스크롤 제거 */
@@ -34,22 +36,29 @@
     width: 100%;
     height: 100%; /* You can adjust the height as needed */
     border-radius: 5px;
+    z-index: 1;
 }
 
-/*스크랩*/
-.more-scrap-container {
+  /*스크랩*/
+  .more-scrap-container {
     width: 85%;
-    overflow-y: scroll;
+    overflow-y: auto; /* 스크롤을 컨테이너에 적용 */
     padding: 20px;
     position: relative;
-    border-left: 2px solid #ccc; /* 왼쪽에 구분선 추가 */
-  }
+    border-left: 2px solid #ccc;
+    height: 100%; /* 컨테이너가 전체 높이를 차지하도록 설정 */
+    max-height: 100%; /* 컨테이너 높이를 고정 */
+    padding-bottom: 40px; /* 하단에 공간 추가 */
+}
 
-  .more-scrap-buttons {
-    position: fixed; /* 버튼을 고정합니다. */
-    bottom: 15px; /* 하단에 배치합니다. */
-    z-index: 1; /* 다른 요소 위에 올라가도록 설정합니다. */
-  }
+.more-scrap-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    overflow-y: hidden; /* 리스트 내부에는 스크롤을 숨김 */
+    margin-bottom: 40px; /* 하단에 공간 추가 */
+}
+
 
     
   .more-scrap-buttons button {
@@ -74,6 +83,8 @@
   .more-scrap-title {
     font-size: 25px;
     font-weight: 700;
+    font-family: 'Noto Sans KR', sans-serif;
+    margin-bottom: 25px;
   }
 
   .more-scrap-list {
@@ -134,3 +145,45 @@
   .more-delete-button:hover {
     background-color: rgb(200, 200, 200);
   }
+
+  /*팝업*/
+  .more-popup-result {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color:white;
+    border: 1px solid #b5b5b5;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 10000; /* z-index를 높게 설정 */
+  }
+
+  .more-popup-inner1,
+.more-popup-inner2 {
+  background-color: transparent;
+  padding: 20px;
+  text-align: center;
+}
+
+.more-popup-inner1 p,
+.more-popup-inner2 p {
+  font-size: 1.1rem;
+  margin-bottom: 20px;
+}
+
+.more-popup-inner1 button,
+.more-popup-inner2 button {
+  padding: 5px 15px;
+  background-color: #2f2f2f;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  align-items: center;
+}
+
+.more-popup-inner1 button:hover,
+.more-popup-inner2 button:hover {
+  background-color: #5b5b5b;
+}
