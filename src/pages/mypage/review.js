@@ -59,6 +59,13 @@ function Review() {
 
   const updateRoute = async () => {
     if (!selectedRoute) return;
+    
+    // 빈 값일 때 기본값 설정
+    const updatedValues = {
+      ...formValues,
+      comment: formValues.comment || '코멘트를 입력해주세요.', // 빈 값일 때 placeholder로 설정
+    };
+  
     try {
       const token = getToken();
       const response = await fetch(`http://3.35.115.71:8080/myroute/${selectedRoute.id}`, {
@@ -67,7 +74,7 @@ function Review() {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/x-www-form-urlencoded'
         },
-        body: new URLSearchParams(formValues)
+        body: new URLSearchParams(updatedValues) // updatedValues 사용
       });
       if (!response.ok) {
         throw new Error('네트워크 응답이 올바르지 않습니다.');
@@ -75,10 +82,13 @@ function Review() {
       const updatedRoute = await response.json();
       setSelectedRoute(updatedRoute);
       setEditMode(false);
+      await fetchRoutes(); // 동선 목록을 새로 가져오기
     } catch (error) {
       console.error('동선 정보를 업데이트하는 중 오류 발생:', error);
     }
   };
+  
+  
 
   const deleteRoute = async (routeId) => {
     if (!routeId) return;
@@ -121,7 +131,7 @@ function Review() {
     fetchRoutes();
   }, []);
 
-  const renderStars = (rating) => {
+  const renderStars = (rating, isEditMode) => {
     const stars = [1, 2, 3, 4, 5];
     return (
       <div className="stars-container">
@@ -129,7 +139,7 @@ function Review() {
           <span
             key={star}
             className={`star ${rating >= star ? 'filled' : ''}`}
-            onClick={() => handleStarClick(star)}
+            onClick={() => isEditMode && handleStarClick(star)} // 수정 모드일 때만 클릭 가능
           >
             &#9733;
           </span>
@@ -137,6 +147,7 @@ function Review() {
       </div>
     );
   };
+  
 
   return (
     <div className="review-container">
@@ -174,59 +185,58 @@ function Review() {
       </div>
       <div className="places-section">
         <div className="places-list">
-          <div className="places">
-            {selectedRoute.myPlaces.length > 0 ? (
-              selectedRoute.myPlaces.map((place, index) => (
-                <div key={place.id} className="place-item">
-                  <span className="place-number">{index + 1}</span>
-                  <div className="place-content">{place.place}</div>
-                </div>
-              ))
-            ) : (
-              <div className="place-item">장소가 없습니다.</div>
-            )}
-          </div>
+        <div className="places">
+          {selectedRoute.myPlaces
+            .sort((a, b) => a.route_order - b.route_order)  // route_order로 정렬
+            .map((place) => (
+              <div key={place.id} className="place-item">
+                <div className="place-number">{place.route_order}</div>
+                <div className="place-content">{place.place}</div>
+              </div>
+            ))}
+        </div>
         </div>
         <div className="route-review">
-          {editMode ? (
-            <>
-              <div className="rating">
-                <label htmlFor="rate" className="rating-label">평점</label>
-                {renderStars(formValues.rate)}
-              </div>
-              <div className="memo">
-                <label htmlFor="comment" className="memo-label">메모</label>
-                <textarea
-                  id="comment"
-                  name="comment"
-                  value={formValues.comment}
-                  onChange={handleInputChange}
-                  className="route-input2 memo-textarea"
-                />
-              </div>
-              <button className="comment-button" onClick={updateRoute}>저장</button>
-            </>
-          ) : (
-            <>
-              <div className="rating">
-                <div className="rating-label">평점</div>
-                <div className="rating-value">
-                  {selectedRoute.rate ? renderStars(selectedRoute.rate) : <div className="star-placeholder">★★★★★</div>}
-                </div>
-              </div>
-              <div className="memo">
-                <div className="memo-label">메모</div>
-                <div className="memo-content">
-                  {selectedRoute.comment || <div className="memo-placeholder">코멘트를 입력해주세요.</div>}
-                </div>
-              </div>
-            </>
-          )}
-          {/* Add the "수정" button here, outside the memo and rating sections */}
-          {!editMode && (
-            <button className="comment-button" onClick={() => setEditMode(true)}>수정</button>
-          )}
+  {editMode ? (
+    <>
+      <div className="rating">
+        <label htmlFor="rate" className="rating-label">평점</label>
+        {renderStars(formValues.rate, editMode)}
+      </div>
+      <div className="memo">
+        <label htmlFor="comment" className="memo-label">메모</label>
+        <textarea
+          id="comment"
+          name="comment"
+          value={formValues.comment}
+          onChange={handleInputChange}
+          className="route-input2 memo-textarea"
+          placeholder="코멘트를 입력해주세요." // placeholder 추가
+        />
+      </div>
+      <button className="comment-button" onClick={updateRoute}>저장</button>
+    </>
+  ) : (
+    <>
+      <div className="rating">
+        <div className="rating-label">평점</div>
+        <div className="rating-value">
+          {selectedRoute.rate ? renderStars(selectedRoute.rate) : <div className="star-placeholder">★★★★★</div>}
         </div>
+      </div>
+      <div className="memo">
+        <div className="memo-label">메모</div>
+        <div className="memo-content">
+          {selectedRoute.comment || <div className="memo-placeholder">코멘트를 입력해주세요.</div>}
+        </div>
+      </div>
+    </>
+  )}
+  {!editMode && (
+    <button className="comment-button" onClick={() => setEditMode(true)}>수정</button>
+  )}
+</div>
+
       </div>
     </div>
   ) : (

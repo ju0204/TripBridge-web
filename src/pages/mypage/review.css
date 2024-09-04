@@ -163,7 +163,7 @@
   margin-bottom: 5px;
 }
 
-.memo-content, .memo-textarea, .memo-placeholder {
+.memo-content, .memo-textarea {
   font-family: 'Noto Sans KR', sans-serif;
   border: 1px solid #ddd;
   padding: 10px;
