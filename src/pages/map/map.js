@@ -65,17 +65,6 @@ const ShowMap = () => {
     fetchData();
   }, []);
 
-  const handleDeleteLocation = async (location) => {
-    try {
-      await deleteScrap(location.id);
-      setLocations(prevLocations => prevLocations.filter(prevLocation => prevLocation.id !== location.id));
-      setSelectedLocations(prevLocations => prevLocations.filter(prevLocation => prevLocation.id !== location.id));
-      setSelectedMarkers(prevMarkers => prevMarkers.filter(marker => marker.id !== location.id));
-      console.log('스크랩이 삭제되었습니다.');
-    } catch (error) {
-      console.error('스크랩 삭제 중 오류 발생:', error);
-    }
-  };
 
   useEffect(() => {
     const handleSearch = async () => {
@@ -310,35 +299,7 @@ const ShowMap = () => {
     setMap(newMap);
   };
 
-  const handleScrap = async (place, address, longitude, latitude) => {
-    try {
-      const scrapData = {
-        place,
-        address,
-        longitude,
-        latitude
-      };
-  
-      console.log('스크랩 요청 데이터:', scrapData);
-  
-      // 이미 스크랩된 장소인지 확인합니다.
-      if (locations.some(location => location.place === place && location.address === address)) {
-        console.log('이미 스크랩된 장소입니다.');
-        return;
-      }
-  
-      // 스크랩 요청을 서버로 보냅니다.
-      await sendScrap(scrapData);
-      console.log('스크랩 완료');
-  
-      // 스크랩이 성공적으로 완료되면 장소를 스크랩 목록에 추가합니다.
-      setLocations(prevLocations => [...prevLocations, scrapData]);
-  
-    } catch (error) {
-      console.error('스크랩 요청 오류:', error);
-    }
-  };
-  
+
 
   useEffect(() => {
     initializeMap();
@@ -351,7 +312,7 @@ const handleSaveRoute = async () => {
   try {
     const response = await saveRoute();  // API 함수 호출
     console.log('Server response:', response);  // 서버 응답 콘솔 출력
-    alert('동선이 성공적으로 저장되었습니다!');
+    alert('동선이 성공적으로 저장되었습니다!\n마이페이지에서 저장된 동선을 확인해보세요!');
   } catch (error) {
     console.error('Error saving route:', error);  // 에러 콘솔 출력
     alert('동선 저장에 실패했습니다. 다시 시도해주세요.');
@@ -359,93 +320,136 @@ const handleSaveRoute = async () => {
     setIsSaving(false);
   }
 };
-  
-  return (
-    <div className="show-map-container">
-      <Modal
-        isOpen={showGuide}
-        onRequestClose={closeGuideModal}
-        className="guide-modal"
-        overlayClassName="guide-modal-overlay"
-      >
-        <div className="guide">
-          <IoCloseOutline className="close-icon" onClick={closeGuideModal} />
-          <div className="guideTitle">동선 추천 이용 가이드</div>
-          <p>
-            1. 검색창 혹은 스크랩 목록에서 출발하고자 하는 장소를 처음으로 선택합니다.<br />
-            2. 검색창 혹은 스크랩 목록에서 가고싶은 여행지들을 출발지를 포함하여 2개 이상 선택합니다.<br />
-            3. 그 후, 동선 추천 버튼을 눌러 처음 선택한 장소를 시작으로 선택한 여행지들의 최단 경로를 확인합니다. <br />
-            4. 화면에 표시된 동선에서 각 장소가 궁금한 경우, 마커를 클릭하여 확인할 수 있습니다. <br />
-            5. 스크랩 목록을 삭제하고 싶은 경우, 각 목록의 'X'를 클릭하여 삭제할 수 있습니다. <br />
-            6. 챗봇은 여러분들이 선택한 스크랩과 동선에 대한 정보를 추가적으로 얻을 수 있습니다.
-          </p>
-          <label>
-            <input
-              type="checkbox"
-              checked={doNotShowGuide}
-              onChange={handleDoNotShowGuideAgain}
-            />
-            다시 보지 않기
-          </label>
-        </div>
-      </Modal>
-  
-      <div className="search-container">
-        <input type="text" placeholder="검색하고 싶은 장소를 입력해주세요." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
-        <ul className="search-list">
-          {searchResults.map((location, index) => (
-            <li key={index} className={`search-result-item ${selectedLocations.some(selectedLocation => selectedLocation.place === location.place_name) ? 'selected' : ''}`} onClick={() => handleSearchItemClick(location)}>
-              <strong>{location.place_name}</strong>
-              <p>{location.address_name}</p>
-              <button
-                className="search-scrap-button"
-                onClick={() => handleScrap(location.place_name, location.address_name, location.x, location.y)}
-              >
-                스크랩
-              </button>
-            </li>
-          ))}
-        </ul>
+
+const handleScrap = async (e, place, address, longitude, latitude) => {
+  e.stopPropagation(); // 이벤트 전파 중지
+
+  try {
+    const scrapData = {
+      place,
+      address,
+      longitude,
+      latitude
+    };
+
+    console.log('스크랩 요청 데이터:', scrapData);
+
+    // 이미 스크랩된 장소인지 확인합니다.
+    if (locations.some(location => location.place === place && location.address === address)) {
+      console.log('이미 스크랩된 장소입니다.');
+      return;
+    }
+
+    // 스크랩 요청을 서버로 보냅니다.
+    await sendScrap(scrapData);
+    console.log('스크랩 완료');
+
+    // 스크랩이 성공적으로 완료되면 장소를 스크랩 목록에 추가합니다.
+    setLocations(prevLocations => [...prevLocations, scrapData]);
+
+  } catch (error) {
+    console.error('스크랩 요청 오류:', error);
+  }
+};
+
+const handleDeleteLocation = async (e, location) => {
+  e.stopPropagation(); // 이벤트 전파 중지
+
+  try {
+    await deleteScrap(location.id);
+    setLocations(prevLocations => prevLocations.filter(prevLocation => prevLocation.id !== location.id));
+    setSelectedLocations(prevLocations => prevLocations.filter(prevLocation => prevLocation.id !== location.id));
+    setSelectedMarkers(prevMarkers => prevMarkers.filter(marker => marker.id !== location.id));
+    console.log('스크랩이 삭제되었습니다.');
+  } catch (error) {
+    console.error('스크랩 삭제 중 오류 발생:', error);
+  }
+};
+
+return (
+  <div className="show-map-container">
+    <Modal
+      isOpen={showGuide}
+      onRequestClose={closeGuideModal}
+      className="guide-modal"
+      overlayClassName="guide-modal-overlay"
+    >
+      <div className="guide">
+        <IoCloseOutline className="close-icon" onClick={closeGuideModal} />
+        <div className="guideTitle">동선 추천 이용 가이드</div>
+        <p>
+          1. 검색창 혹은 스크랩 목록에서 출발하고자 하는 장소를 처음으로 선택합니다.<br />
+          2. 검색창 혹은 스크랩 목록에서 가고싶은 여행지들을 출발지를 포함하여 2개 이상 선택합니다.<br />
+          3. 그 후, 동선 추천 버튼을 눌러 처음 선택한 장소를 시작으로 선택한 여행지들의 최단 경로를 확인합니다. <br />
+          4. 화면에 표시된 동선에서 각 장소가 궁금한 경우, 마커를 클릭하여 확인할 수 있습니다. <br />
+          5. 스크랩 목록을 삭제하고 싶은 경우, 각 목록의 'X'를 클릭하여 삭제할 수 있습니다. <br />
+          6. 챗봇은 여러분들이 선택한 스크랩과 동선에 대한 정보를 추가적으로 얻을 수 있습니다.
+        </p>
+        <label>
+          <input
+            type="checkbox"
+            checked={doNotShowGuide}
+            onChange={handleDoNotShowGuideAgain}
+          />
+          다시 보지 않기
+        </label>
       </div>
-      <div className="map-container">
-        <div id="kakao-map"></div>
-        {routeDrawn && (
-              <button className='route-save-button' onClick={handleSaveRoute} disabled={isSaving}>
-                {isSaving ? '저장 중...' : '동선 저장'}
-              </button>
-            )}
-        <div className={`chatbot-container ${isChatbotOpen ? 'open' : ''}`}>
-          {isChatbotOpen && <Chatbot />}
-        </div>
-      </div>
-      <div className="scrap-container">
-        <div className="scrap-title"><BsBookmarkStar />&nbsp;스크랩 목록</div>
-        <div className="openguide" onClick={openGuideModal}>이용가이드</div>
-        <ul className="scrap-list">
-          {locations.map((location, index) => (
-            <li key={index} onClick={() => handleLocationClick(location)} className={selectedLocations.includes(location) ? 'selected' : ''}>
-              <strong>{location.place}</strong>
-              <p>{location.address}</p>
-              <CgClose
-                className="delete-button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleDeleteLocation(location);
-                }}
-              />
-            </li>
-          ))}
-        </ul>
-        <div className="scrap-buttons">
-          {/* 동선 추천과 챗봇 열고 닫기 버튼 */}
-          <button onClick={routeDrawn ? handleReset : handleRecommendRoute}>
-            {routeDrawn ? '다시 하기' : '동선 추천'}
-          </button>
-          <button onClick={() => setIsChatbotOpen(!isChatbotOpen)}>챗봇 {isChatbotOpen ? '닫기' : '열기'}</button>
-        </div>
+    </Modal>
+
+    <div className="search-container">
+      <input type="text" placeholder="검색하고 싶은 장소를 입력해주세요." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+      <ul className="search-list">
+        {searchResults.map((location, index) => (
+          <li key={index} className={`search-result-item ${selectedLocations.some(selectedLocation => selectedLocation.place === location.place_name) ? 'selected' : ''}`} onClick={() => handleSearchItemClick(location)}>
+            <strong>{location.place_name}</strong>
+            <p>{location.address_name}</p>
+            <button
+              className="search-scrap-button"
+              onClick={(e) => handleScrap(e, location.place_name, location.address_name, location.x, location.y)}
+            >
+              스크랩
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div className="map-container">
+      <div id="kakao-map"></div>
+      {routeDrawn && (
+        <button className='route-save-button' onClick={handleSaveRoute} disabled={isSaving}>
+          {isSaving ? '저장 중...' : '동선 저장'}
+        </button>
+      )}
+      <div className={`chatbot-container ${isChatbotOpen ? 'open' : ''}`}>
+        {isChatbotOpen && <Chatbot />}
       </div>
     </div>
-  ); 
+    <div className="scrap-container">
+      <div className="scrap-title"><BsBookmarkStar />&nbsp;스크랩 목록</div>
+      <div className="openguide" onClick={openGuideModal}>이용가이드</div>
+      <ul className="scrap-list">
+        {locations.map((location, index) => (
+          <li key={index} onClick={() => handleLocationClick(location)} className={selectedLocations.includes(location) ? 'selected' : ''}>
+            <strong>{location.place}</strong>
+            <p>{location.address}</p>
+            <CgClose
+              className="delete-button"
+              onClick={(e) => handleDeleteLocation(e, location)}
+            />
+          </li>
+        ))}
+      </ul>
+      <div className="scrap-buttons">
+        {/* 동선 추천과 챗봇 열고 닫기 버튼 */}
+        <button onClick={routeDrawn ? handleReset : handleRecommendRoute}>
+          {routeDrawn ? '다시 하기' : '동선 추천'}
+        </button>
+        <button onClick={() => setIsChatbotOpen(!isChatbotOpen)}>챗봇 {isChatbotOpen ? '닫기' : '열기'}</button>
+      </div>
+    </div>
+  </div>
+);
+
 };
 
 export default ShowMap;
