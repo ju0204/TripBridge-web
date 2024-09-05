@@ -174,35 +174,42 @@ const infowindow = new window.kakao.maps.InfoWindow({
 
   
   
-  const handleDeleteLocation = async (location) => {
-    console.log('Deleting location:', location);
-  
-    if (!location || !location.id) {
-      console.error('유효하지 않은 위치입니다.', location);
-      return;
-    }
-  
-    try {
-      await deleteScrap(location.id);
-  
-      setLocations(prevLocations => 
-        prevLocations.filter(prevLocation => prevLocation.id !== location.id)
-      );
-  
-      setSelectedLocations(prevLocations => 
-        prevLocations.filter(prevLocation => prevLocation.id !== location.id)
-      );
-  
-      setPlaceMarkers(prevMarkers => {
-        prevMarkers.forEach(marker => marker.setMap(null));
-        return prevMarkers.filter(marker => marker.id !== location.id);
-      });
-  
-      console.log('스크랩이 삭제되었습니다.');
-    } catch (error) {
-      console.error('스크랩 삭제 중 오류 발생:', error);
-    }
-  };
+const handleDeleteLocation = async (location) => {
+  console.log('Deleting location:', location);
+
+  if (!location || !location.id) {
+    console.error('유효하지 않은 위치입니다.', location);
+    return;
+  }
+
+  try {
+    await deleteScrap(location.id);
+
+    // 스크랩 목록에서 해당 위치 삭제
+    setLocations(prevLocations =>
+      prevLocations.filter(prevLocation => prevLocation.id !== location.id)
+    );
+
+    // 선택된 위치 목록에서도 해당 위치 삭제
+    setSelectedLocations(prevLocations =>
+      prevLocations.filter(prevLocation => prevLocation.id !== location.id)
+    );
+
+    // 지도에서 해당 위치의 마커만 삭제
+    setPlaceMarkers(prevMarkers => {
+      const markerToDelete = prevMarkers.find(marker => marker.id === location.id);
+      if (markerToDelete) {
+        markerToDelete.setMap(null); // 해당 마커만 지도에서 제거
+      }
+      return prevMarkers.filter(marker => marker.id !== location.id); // 해당 마커만 리스트에서 제거
+    });
+
+    console.log('스크랩이 삭제되었습니다.');
+  } catch (error) {
+    console.error('스크랩 삭제 중 오류 발생:', error);
+  }
+};
+
   
   
   

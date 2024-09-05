@@ -23,6 +23,7 @@
     flex: 3.5; /*가로길이 조절*/
     position: relative;
     height: 100%; /* 전체 화면 높이에 맞춤 */
+    margin-left: 10px;
 }
   
 .place2-box {
