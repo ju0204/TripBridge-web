@@ -135,46 +135,38 @@ const ShowMap = () => {
   const handleSearchItemClick = async (location) => {
     try {
       const isAlreadySelected = selectedMarkers.some(marker => marker.id === location.id);
-
+  
       if (isAlreadySelected) {
-        // 이미 선택된 위치인 경우 해당 마커를 지우고 선택된 목록에서 제거합니다.
-        const updatedMarkers = selectedMarkers.filter(marker => marker.id !== location.id);
-        setSelectedMarkers(updatedMarkers);
-
-        const updatedLocations = selectedLocations.filter(selectedLocation => selectedLocation.id !== location.id);
-        setSelectedLocations(updatedLocations);
-
-        const markerToRemove = selectedMarkers.find(marker => marker.id === location.id);
-        if (markerToRemove) {
-          markerToRemove.marker.setMap(null); // 마커 지우기
-        }
-      } else {
-        // 선택되지 않은 위치인 경우 선택된 목록에 추가하고 마커를 그립니다.
-        const selectedLocation = {
-          id: location.id,
-          place: location.place_name,
-          address: location.address_name,
-          latitude: location.y,
-          longitude: location.x
-        };
-
-        setSelectedLocations(prevLocations => [...prevLocations, selectedLocation]);
-        setSelectedMarkers(prevMarkers => [...prevMarkers, selectedLocation]);
-
-        const markerPosition = new window.kakao.maps.LatLng(selectedLocation.latitude, selectedLocation.longitude);
-        const marker = new window.kakao.maps.Marker({
-          position: markerPosition
-        });
-
-        marker.setMap(map);
-        selectedLocation.marker = marker; // 마커 객체를 selectedLocation에 추가
-
-        map.panTo(markerPosition);
+        alert('이미 선택된 장소입니다.'); // 알림 표시
+        return;
       }
+  
+      // 선택되지 않은 위치인 경우 선택된 목록에 추가하고 마커를 그립니다.
+      const selectedLocation = {
+        id: location.id,
+        place: location.place_name,
+        address: location.address_name,
+        latitude: location.y,
+        longitude: location.x
+      };
+  
+      setSelectedLocations(prevLocations => [...prevLocations, selectedLocation]);
+      setSelectedMarkers(prevMarkers => [...prevMarkers, selectedLocation]);
+  
+      const markerPosition = new window.kakao.maps.LatLng(selectedLocation.latitude, selectedLocation.longitude);
+      const marker = new window.kakao.maps.Marker({
+        position: markerPosition
+      });
+  
+      marker.setMap(map);
+      selectedLocation.marker = marker; // 마커 객체를 selectedLocation에 추가
+  
+      map.panTo(markerPosition);
     } catch (error) {
       console.error('장소 정보를 서버로 전송하는 중 오류가 발생했습니다:', error);
     }
   };
+  
 
   const handleRecommendRoute = async () => {
     if (selectedMarkers.length > 0) {
@@ -336,7 +328,7 @@ const handleScrap = async (e, place, address, longitude, latitude) => {
 
     // 이미 스크랩된 장소인지 확인합니다.
     if (locations.some(location => location.place === place && location.address === address)) {
-      console.log('이미 스크랩된 장소입니다.');
+      alert('이미 추가된 장소입니다.'); // 알림 표시
       return;
     }
 
@@ -352,6 +344,7 @@ const handleScrap = async (e, place, address, longitude, latitude) => {
     console.error('스크랩 요청 오류:', error);
   }
 };
+
 
 
 const handleDeleteLocation = async (e, location) => {
