@@ -220,8 +220,8 @@
   cursor: pointer;
   transition: background-color 0.3s;
   position: absolute; /* Position absolutely to the container */
-  bottom: 0px;
-  right: 0px; /* Position 20px from the right */
+  top: 15px;
+  right: 15px; /* Position 20px from the right */
 }
 
 .comment-button:hover {
