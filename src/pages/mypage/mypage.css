@@ -1,52 +1,50 @@
 @import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 
-/* .notosanskr * { 
- font-family: 'Noto Sans KR', sans-serif;
-} */
-
-/* 전체 페이지 스타일 */
 /* 전체 페이지 스타일 */
 .mypage {
     display: flex;
     font-family: 'Noto Sans KR', sans-serif;
     margin-left: 25px;
-  }
+}
 
 /* 사이드바 스타일 */
 .sidebar {
-  width: 250px;
-  margin-top: 20px; /* 사이드바 상단 여백 */
-  display: flex;
-  flex-direction: column;
+    width: 250px; /* 사이드바 너비 고정 */
+    margin-top: 20px; /* 사이드바 상단 여백 */
+    display: flex;
+    flex-direction: column;
 }
 
+/* 사이드바 제목 스타일 */
 .sidebar-title {
-  padding: 0 8px;
-  font-size: 22px;  
-  margin-bottom: 30px;
-  font-weight: 700;
+    padding: 0 8px;
+    font-size: 22px;  
+    margin-bottom: 30px;
+    font-weight: 700;
 }
 
+/* 사이드바 링크 스타일 */
 .sidebar-header {
-  color: #333;
-  text-decoration: none;
-  padding: 10px 8px;
-  font-weight: 400;
-  margin-bottom: 5px;
-  display: block;
-  border-radius: 8px;
-  transition: background-color 0.2s, color 0.2s;
+    color: #333;
+    text-decoration: none;
+    padding: 10px 8px;
+    font-weight: 400;
+    margin-bottom: 5px;
+    display: block;
+    border-radius: 8px;
+    transition: background-color 0.2s, color 0.2s;
 }
 
+/* 활성화된 사이드바 링크 스타일 */
 .sidebar-header.active {
-  background-color: #e0e0e0;
-  color: #000;
-  font-weight: 700;
+    background-color: #e0e0e0;
+    color: #000;
+    font-weight: 700;
 }
 
 /* 콘텐츠 영역 스타일 */
 .content {
-  flex: 1;
-  /* padding: 20px; */
-  overflow-y: auto;
+    flex: 1; /* 사이드바를 제외한 나머지 공간을 채움 */
+    max-height: 85vh;
 }
+

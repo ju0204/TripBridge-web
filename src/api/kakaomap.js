@@ -166,8 +166,27 @@ export const sendRouteDataToDatabase = async (routeData) => {
 };
 
 
+// 저장된 동선을 백엔드로 전송하는 함수
+export const saveRoute = async () => {
+  try {
+    const token = getToken();  // 토큰 가져오기
+    const response = await fetch(`${BASE_URL}/myroute`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,  // 토큰을 인증 헤더에 포함
+      },
+    });
 
+    if (!response.ok) {
+      throw new Error('Failed to save route');
+    }
 
+    return await response.text();  // 성공 시 서버의 응답을 텍스트로 반환
+  } catch (error) {
+    console.error('Error saving route:', error);
+    throw error;  // 에러를 상위 호출로 던짐
+  }
+};
 
 // Kakao Maps API 키
 const API_KEY = '41269fe83b2600b01b0dc41c4d81616e';
