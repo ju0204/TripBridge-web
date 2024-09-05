@@ -3,6 +3,7 @@ import { fetchLocations } from '../../api/kakaomap';
 import { BsBookmarkStar } from "react-icons/bs";
 import { CgClose } from "react-icons/cg";
 import { sendScrap, deleteScrap } from '../../api/filter';
+import blackMarkerImageSrc from './img/marker.png';
 
 import './moreplace.css';
 
@@ -71,106 +72,149 @@ function MorePlace() {
   }, []);
 
   const handleLocationClick = async (location) => {
-  try {
-    if (!map || !placesService) {
-      console.error("Map or PlacesService is not initialized yet.");
-      return;
-    }
+    try {
+      if (!map || !placesService) {
+        console.error("Map or PlacesService is not initialized yet.");
+        return;
+      }
+  
+      // Clear existing place markers
+      placeMarkers.forEach(marker => marker.setMap(null));
+      setPlaceMarkers([]);
+  
+      // Create a custom marker icon for the clicked location (black marker)
+      const blackMarkerImage = new window.kakao.maps.MarkerImage(
+        blackMarkerImageSrc, // import한 이미지 사용
+        new window.kakao.maps.Size(35, 35), // 이미지 크기 (40x40 픽셀)
+        { offset: new window.kakao.maps.Point(20, 40) } // 마커 위치 오프셋
+      );
+  
+      // Create a marker for the clicked location
+      const clickedLocationMarker = new window.kakao.maps.Marker({
+        position: new window.kakao.maps.LatLng(location.latitude, location.longitude),
+        map: map,
+        image: blackMarkerImage,
+      });
+  
+      // Create CustomOverlay for the clicked location
+      // 커스텀 오버레이 생성
+const overlayContent = `
+<div style="
+  padding: 5px; 
+  font-size: 16px; /* 글꼴 크기 설정 */
+  font-weight: weight; /* 굵은 글씨 */
+  background-color: white; 
+  border: 1px solid black; 
+  border-radius: 5px; 
+  white-space: nowrap;
+  text-align: center;">
+  ${location.place}
+</div>
+`;
 
-    // Clear existing place markers
-    placeMarkers.forEach(marker => marker.setMap(null));
-    setPlaceMarkers([]);
-
-    // Use location address to search for places
-    const keyword = `${location.address} 관광지`;
-    placesService.keywordSearch(keyword, async (result, status) => {
-      if (status === window.kakao.maps.services.Status.OK) {
-        const newMarkers = result.map(place => {
-          const markerPosition = new window.kakao.maps.LatLng(place.y, place.x);
-          const marker = new window.kakao.maps.Marker({
-            position: markerPosition,
-          });
-          marker.setMap(map);
-
-          // Create an info window with custom styling
-const infowindow = new window.kakao.maps.InfoWindow({
-  content: `
-    <div style="padding:5px; white-space:nowrap; display: flex; align-items: center;">
-      <div style="flex-grow: 1;">
-        <i class="fa-regular fa-bookmark" style="margin-right:5px; cursor: pointer;" data-place-id="${place.id}"></i> ${place.place_name}
-      </div>
-      <div style="margin-left: 20px;"></div>
-    </div>
-  `,
-  removable: true
+const customOverlay = new window.kakao.maps.CustomOverlay({
+position: new window.kakao.maps.LatLng(location.latitude, location.longitude), // 위치 설정
+content: overlayContent, // 오버레이에 표시할 HTML 내용
+yAnchor: 2.2,  // 마커 위에 표시되도록 조정 (값을 높이면 더 위로 올라갑니다)
+xAnchor: 0.5,  // 중앙 맞춤
+map: map // 오버레이를 표시할 지도 객체
 });
 
-          
-
-          // Add click event to show info window
-          window.kakao.maps.event.addListener(marker, 'click', () => {
-            infowindow.open(map, marker);
-
-            // Add event listener to the icon within the info window
-            setTimeout(() => {
-              const icon = document.querySelector(`i[data-place-id="${place.id}"]`);
-              if (icon) {
-                icon.addEventListener('click', async () => {
-                  console.log('Icon clicked for place:', place.place_name);
-                  
-                  const scrapData = {
-                    place: place.place_name,
-                    address: place.address_name,
-                    longitude: place.x,
-                    latitude: place.y,
-                  };
-
-                  try {
-                    const response = await sendScrap(scrapData);
-                    console.log('Scrap response from server:', response);
-
-                    if (response.result) {
-                      // 서버에서 반환된 ID를 새로 스크랩된 위치에 추가
-                      const updatedScrapData = {
-                        ...scrapData,
-                        id: response.data.id // 서버에서 반환된 ID
-                      };
-
-                      // Scrapping is successful, now update the locations state
-                      setLocations(prevLocations => [...prevLocations, updatedScrapData]);
-                      setShowScrapedPopup(true); // 성공 팝업 표시
-                    } else {
-                      throw new Error('Failed to scrap place');
+  
+      // Use location address to search for places (recommendations)
+      const keyword = `${location.address} 관광지`;
+      placesService.keywordSearch(keyword, async (result, status) => {
+        if (status === window.kakao.maps.services.Status.OK) {
+          const newMarkers = result.map(place => {
+            const markerPosition = new window.kakao.maps.LatLng(place.y, place.x);
+            const marker = new window.kakao.maps.Marker({
+              position: markerPosition,
+            });
+            marker.setMap(map);
+  
+            // Create an info window with custom styling for recommended places
+            const infowindow = new window.kakao.maps.InfoWindow({
+              content: `
+                <div style="padding:5px; white-space:nowrap; display: flex; align-items: center;">
+                  <div style="flex-grow: 1;">
+                    <i class="fa-regular fa-bookmark" style="margin-right:5px; cursor: pointer;" data-place-id="${place.id}"></i> ${place.place_name}
+                  </div>
+                  <div style="margin-left: 20px;"></div>
+                </div>
+              `,
+              removable: true
+            });
+  
+            // Add click event to show info window on recommendation markers
+            window.kakao.maps.event.addListener(marker, 'click', () => {
+              infowindow.open(map, marker);
+  
+              // Add event listener to the icon within the info window
+              setTimeout(() => {
+                const icon = document.querySelector(`i[data-place-id="${place.id}"]`);
+                if (icon) {
+                  icon.addEventListener('click', async () => {
+                    console.log('Icon clicked for place:', place.place_name);
+  
+                    const scrapData = {
+                      place: place.place_name,
+                      address: place.address_name,
+                      longitude: place.x,
+                      latitude: place.y,
+                    };
+  
+                    try {
+                      const response = await sendScrap(scrapData);
+                      console.log('Scrap response from server:', response);
+  
+                      if (response.result) {
+                        // 서버에서 반환된 ID를 새로 스크랩된 위치에 추가
+                        const updatedScrapData = {
+                          ...scrapData,
+                          id: response.data.id // 서버에서 반환된 ID
+                        };
+  
+                        // Scrapping is successful, now update the locations state
+                        setLocations(prevLocations => [...prevLocations, updatedScrapData]);
+                        setShowScrapedPopup(true); // 성공 팝업 표시
+                      } else {
+                        throw new Error('Failed to scrap place');
+                      }
+                    } catch (error) {
+                      console.error('에러Error sending scrap data:', error);
+                      setshowAlreadyScrapedPopup(true); // 에러 팝업 표시
                     }
-                  } catch (error) {
-                    console.error('에러Error sending scrap data:', error);
-                    setshowAlreadyScrapedPopup(true); // 에러 팝업 표시
-                  }
-                });
-              }
-            }, 0);
+                  });
+                }
+              }, 0);
+            });
+  
+            return marker;
           });
-
-          return marker;
-        });
-
-        setPlaceMarkers(newMarkers);
-
-        if (newMarkers.length > 0) {
-          const bounds = new window.kakao.maps.LatLngBounds();
-          newMarkers.forEach(marker => bounds.extend(marker.getPosition()));
-          map.setBounds(bounds);
+  
+          // Add both clicked location marker and new recommendation markers to the state
+          setPlaceMarkers(prevMarkers => [...prevMarkers, clickedLocationMarker, ...newMarkers]);
+  
+          if (newMarkers.length > 0) {
+            const bounds = new window.kakao.maps.LatLngBounds();
+            newMarkers.forEach(marker => bounds.extend(marker.getPosition()));
+            bounds.extend(clickedLocationMarker.getPosition()); // Include the clicked marker
+            map.setBounds(bounds);
+          }
+        } else {
+          console.error('Places search failed:', status);
         }
-      } else {
-        console.error('Places search failed:', status);
-      }
-    });
-
-    setSelectedLocations([location]);
-  } catch (error) {
-    console.error('An error occurred while processing the location click:', error);
-  }
+      });
+  
+      setSelectedLocations([location]);
+    } catch (error) {
+      console.error('An error occurred while processing the location click:', error);
+    }
 };
+
+  
+  
+  
 
   
   
