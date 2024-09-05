@@ -344,13 +344,15 @@ const handleScrap = async (e, place, address, longitude, latitude) => {
     await sendScrap(scrapData);
     console.log('스크랩 완료');
 
-    // 스크랩이 성공적으로 완료되면 장소를 스크랩 목록에 추가합니다.
-    setLocations(prevLocations => [...prevLocations, scrapData]);
+    // 스크랩 후 최신 위치 데이터를 다시 가져옵니다.
+    const updatedLocations = await fetchLocations();
+    setLocations(updatedLocations);
 
   } catch (error) {
     console.error('스크랩 요청 오류:', error);
   }
 };
+
 
 const handleDeleteLocation = async (e, location) => {
   e.stopPropagation(); // 이벤트 전파 중지
