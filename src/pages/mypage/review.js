@@ -52,10 +52,12 @@ function Review() {
         rate: data.rate,
         comment: data.comment
       });
+      setEditMode(false);  // 새로운 동선 선택 시 편집 모드 해제
     } catch (error) {
       console.error('동선 세부 정보를 가져오는 중 오류 발생:', error);
     }
   };
+  
 
   const updateRoute = async () => {
     if (!selectedRoute) return;
@@ -168,6 +170,14 @@ function Review() {
         </div>
       </div>
       <div className="right-panel">
+      {selectedRoute && ( // selectedRoute가 존재할 때만 버튼들이 보이도록 설정
+    <>
+      <button className="comment-button" onClick={updateRoute}>저장</button>
+      {!editMode && (
+        <button className="comment-button" onClick={() => setEditMode(true)}>수정</button>
+      )}
+    </>
+  )}
   {selectedRoute ? (
     <div className="route-content">
       <div className="route-title">
@@ -214,7 +224,7 @@ function Review() {
           placeholder="코멘트를 입력해주세요." // placeholder 추가
         />
       </div>
-      <button className="comment-button" onClick={updateRoute}>저장</button>
+
     </>
   ) : (
     <>
@@ -232,9 +242,7 @@ function Review() {
       </div>
     </>
   )}
-  {!editMode && (
-    <button className="comment-button" onClick={() => setEditMode(true)}>수정</button>
-  )}
+
 </div>
 
       </div>
@@ -249,3 +257,4 @@ function Review() {
 }
 
 export default Review;
+ 
