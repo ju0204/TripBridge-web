@@ -100,14 +100,14 @@ function MorePlace() {
       // 커스텀 오버레이 생성
 const overlayContent = `
 <div style="
-  padding: 5px; 
-  font-size: 16px; /* 글꼴 크기 설정 */
-  font-weight: weight; /* 굵은 글씨 */
-  background-color: white; 
-  border: 1px solid black; 
-  border-radius: 5px; 
-  white-space: nowrap;
-  text-align: center;">
+    padding: 5px 10px;
+    background-color: #fff;
+    border : 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0px 2px 10px rgba(0,0,0,0.2);
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 14px;
+    letter-spacing: 1px;">
   ${location.place}
 </div>
 `;

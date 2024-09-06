@@ -65,8 +65,8 @@ export const sendSelectedLocations = async (location, routeorder) => {
       id: location.id,  
       place: location.place,
       address: location.address,
-      latitude: location.latitude,
-      longitude: location.longitude,
+      latitude: parseFloat(location.latitude).toFixed(6),  // 위도 소수점 6자리로 변환
+      longitude: parseFloat(location.longitude).toFixed(6), // 경도 소수점 6자리로 변환
       route_order: routeorder > 1 ? null : routeorder // route_order가 1 초과일 경우에는 null로 설정
     };
 

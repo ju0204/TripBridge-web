@@ -326,11 +326,15 @@ const handleScrap = async (e, place, address, longitude, latitude) => {
 
     console.log('스크랩 요청 데이터:', scrapData);
 
-    // 이미 스크랩된 장소인지 확인합니다.
-    if (locations.some(location => location.place === place && location.address === address)) {
+    
+    if (locations.some(location =>
+      (location.place === place) ||
+      (location.address === address) ||
+      (location.longitude === longitude && location.latitude === latitude))) {
       alert('이미 추가된 장소입니다.'); // 알림 표시
       return;
     }
+    
 
     // 스크랩 요청을 서버로 보냅니다.
     await sendScrap(scrapData);
@@ -344,6 +348,7 @@ const handleScrap = async (e, place, address, longitude, latitude) => {
     console.error('스크랩 요청 오류:', error);
   }
 };
+
 
 
 
