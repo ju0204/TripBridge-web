@@ -98,7 +98,7 @@ function MorePlace() {
   
       // Create CustomOverlay for the clicked location
       // 커스텀 오버레이 생성
-const overlayContent = `
+const overlayContentAuto = `
 <div style="
     padding: 5px 10px;
     background-color: #fff;
@@ -114,7 +114,7 @@ const overlayContent = `
 
 const customOverlay = new window.kakao.maps.CustomOverlay({
 position: new window.kakao.maps.LatLng(location.latitude, location.longitude), // 위치 설정
-content: overlayContent, // 오버레이에 표시할 HTML 내용
+content: overlayContentAuto, // 오버레이에 표시할 HTML 내용
 yAnchor: 2.2,  // 마커 위에 표시되도록 조정 (값을 높이면 더 위로 올라갑니다)
 xAnchor: 0.5,  // 중앙 맞춤
 map: map // 오버레이를 표시할 지도 객체
@@ -129,80 +129,107 @@ map: map // 오버레이를 표시할 지도 객체
             const markerPosition = new window.kakao.maps.LatLng(place.y, place.x);
             const marker = new window.kakao.maps.Marker({
               position: markerPosition,
+              map: map,
             });
-            marker.setMap(map);
-  
-            // Create an info window with custom styling for recommended places
-            const infowindow = new window.kakao.maps.InfoWindow({
-              content: `
-                <div style="padding:5px; white-space:nowrap; display: flex; align-items: center;">
-                  <div style="flex-grow: 1;">
-                    <i class="fa-regular fa-bookmark" style="margin-right:5px; cursor: pointer;" data-place-id="${place.id}"></i> ${place.place_name}
-                  </div>
-                  <div style="margin-left: 20px;"></div>
-                </div>
-              `,
-              removable: true
-            });
-  
-            // Add click event to show info window on recommendation markers
+      
+            let isOverlayVisible = false;  // 오버레이가 보이는지 여부를 저장하는 변수
+            let customOverlay = null;      // 현재 오버레이를 저장할 변수
+      
+            // 마커 클릭 이벤트 등록
             window.kakao.maps.event.addListener(marker, 'click', () => {
-              infowindow.open(map, marker);
-  
-              // Add event listener to the icon within the info window
-              setTimeout(() => {
-                const icon = document.querySelector(`i[data-place-id="${place.id}"]`);
-                if (icon) {
-                  icon.addEventListener('click', async () => {
-                    console.log('Icon clicked for place:', place.place_name);
-  
-                    const scrapData = {
-                      place: place.place_name,
-                      address: place.address_name,
-                      longitude: place.x,
-                      latitude: place.y,
-                    };
-  
-                    try {
-                      const response = await sendScrap(scrapData);
-                      console.log('Scrap response from server:', response);
-  
-                      if (response.result) {
-                        // 서버에서 반환된 ID를 새로 스크랩된 위치에 추가
-                        const updatedScrapData = {
-                          ...scrapData,
-                          id: response.data.id // 서버에서 반환된 ID
-                        };
-  
-                        // Scrapping is successful, now update the locations state
-                        setLocations(prevLocations => [...prevLocations, updatedScrapData]);
-                        setShowScrapedPopup(true); // 성공 팝업 표시
-                      } else {
-                        throw new Error('Failed to scrap place');
-                      }
-                    } catch (error) {
-                      console.error('에러Error sending scrap data:', error);
-                      setshowAlreadyScrapedPopup(true); // 에러 팝업 표시
-                    }
-                  });
+              if (isOverlayVisible && customOverlay) {
+                // 오버레이가 보일 때는 숨기기
+                customOverlay.setMap(null);
+                isOverlayVisible = false;
+              } else {
+                // 기존에 띄워진 CustomOverlay 제거
+                if (window.currentOverlay) {
+                  window.currentOverlay.setMap(null);
                 }
-              }, 0);
+      
+                // CustomOverlay용 HTML content 생성 (스크랩 버튼 포함)
+                const overlayContent = `
+                  <div style="
+                    padding: 5px 10px;
+                    background-color: #fff;
+                    border : 2px solid #ccc;
+                    border-radius: 10px;
+                    box-shadow: 0px 2px 10px rgba(0,0,0,0.2);
+                    font-family: 'Noto Sans KR', sans-serif;
+                    font-size: 14px;
+                    letter-spacing: 1px;">
+                    <i class="fa-regular fa-bookmark" style="margin-right:5px; cursor: pointer;" data-place-id="${place.id}"></i>
+                    ${place.place_name}
+                    
+                  </div>
+                `;
+      
+                // CustomOverlay 생성 (마커 클릭 시에만 나타나게 설정)
+                customOverlay = new window.kakao.maps.CustomOverlay({
+                  position: markerPosition,
+                  content: overlayContent,
+                  yAnchor: 2.2, // 위치 조정
+                  xAnchor: 0.5,
+                  map: map,
+                });
+      
+                // 현재 표시된 CustomOverlay 저장하여 클릭 시 다른 오버레이 제거 가능
+                window.currentOverlay = customOverlay;
+      
+                isOverlayVisible = true;  // 오버레이가 표시되었음을 기록
+      
+                // 스크랩 아이콘 클릭 이벤트 추가
+                setTimeout(() => {
+                  const icon = document.querySelector(`i[data-place-id="${place.id}"]`);
+                  if (icon) {
+                    icon.addEventListener('click', async () => {
+                      console.log('스크랩 아이콘 클릭됨:', place.place_name);
+      
+                      const scrapData = {
+                        place: place.place_name,
+                        address: place.address_name,
+                        longitude: place.x,
+                        latitude: place.y,
+                      };
+      
+                      try {
+                        const response = await sendScrap(scrapData);
+                        console.log('스크랩 성공:', response);
+      
+                        if (response.result) {
+                          // 스크랩 성공 시 로직 처리
+                          const updatedScrapData = {
+                            ...scrapData,
+                            id: response.data.id,
+                          };
+                          setLocations(prevLocations => [...prevLocations, updatedScrapData]);
+                          setShowScrapedPopup(true);
+                        } else {
+                          throw new Error('스크랩 실패');
+                        }
+                      } catch (error) {
+                        console.error('스크랩 에러:', error);
+                        setshowAlreadyScrapedPopup(true);
+                      }
+                    });
+                  }
+                }, 0);
+              }
             });
-  
+      
             return marker;
           });
-  
-          // Add both clicked location marker and new recommendation markers to the state
-          setPlaceMarkers(prevMarkers => [...prevMarkers, clickedLocationMarker, ...newMarkers]);
-  
+      
+          // 마커 및 오버레이 표시 관련 처리
+          setPlaceMarkers(prevMarkers => [...prevMarkers, ...newMarkers]);
+      
           if (newMarkers.length > 0) {
             const bounds = new window.kakao.maps.LatLngBounds();
             newMarkers.forEach(marker => bounds.extend(marker.getPosition()));
-            bounds.extend(clickedLocationMarker.getPosition()); // Include the clicked marker
             map.setBounds(bounds);
           }
         } else {
-          console.error('Places search failed:', status);
+          console.error('장소 검색 실패:', status);
         }
       });
   
