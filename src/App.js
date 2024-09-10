@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import SignUp from './pages/user/signup/signup';
 import Nav from './components/header/nav';
 import LogIn from './pages/user/login/login';
@@ -16,7 +16,11 @@ import Section from './pages/filter/section/section';
 import Section2 from './pages/filter/section/section2';
 import Result from './pages/filter/section/result';
 import Chatbot from './pages/chatbot/chatbot';
+import MyPage from './pages/mypage/mypage';
+import Review from './pages/mypage/review';
+import MorePlace from './pages/mypage/moreplace';
 import { useNavigate } from 'react-router-dom';
+
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [nickname, setNickname] = useState('');
@@ -75,7 +79,11 @@ const App = () => {
         <Route path="/section2" element={<Section2 />} />
         <Route path="/result" element={<Result/>} />
         <Route path="/chatbot" element={<Chatbot/>} />
-
+        <Route path="/mypage" element={<MyPage />}>
+            <Route index element={<Navigate to="review" />} />
+            <Route path="review" element={<Review />} />
+            <Route path="moreplace" element={<MorePlace />} />
+          </Route>
       </Routes>
     </div>
   );

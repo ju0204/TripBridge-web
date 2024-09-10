@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://3.35.115.71:8080';
+const BASE_URL = 'https://api.tripbridge.co.kr';
 // const BASE_URL = 'http://localhost:8080';
 
 export const sendRequest = async (selectedAreas, selectedTourType, selectedCategory, selectedCategoryMiddle,selectedCategoryThird) => {
@@ -126,17 +126,22 @@ export const deleteScrap = async (scrapId) => {
       return;
     }
 
+    console.log(`토큰 확인: ${token}`); // 토큰 값 출력
+
     const response = await axios.delete(`${BASE_URL}/storage/${scrapId}`, {
       headers: {
         Authorization: `Bearer ${token}` // 헤더에 토큰 추가
       }
     });
+
+    console.log('삭제 요청 응답:', response); // 서버 응답 출력
     return response.data; // 서버로부터의 응답 데이터를 반환
   } catch (error) {
     console.error('스크랩 삭제 실패:', error);
     throw error; // 에러를 호출자에게 다시 던짐
   }
 };
+
 
 //상세설명 나오게 하는 코드
 const parseXmlString = (xmlString) => {

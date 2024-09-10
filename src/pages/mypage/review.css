@@ -1,0 +1,251 @@
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+.review-container {
+  font-family: 'Noto Sans KR', sans-serif;
+  display: flex;
+  height: 85vh;
+  margin: 10px 50px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 왼쪽 패널 스타일링 */
+.left-panel {
+  font-family: 'Noto Sans KR', sans-serif;
+  width: 25%;
+  border-right: 1px solid #e0e0e0;
+  padding: 15px;
+  background-color: #fafafa;
+  overflow-y: auto;
+  border-radius: 8px;
+}
+
+.route-header {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+  position: sticky;
+  top: 0; /* Sticky header stays on top */
+}
+
+.route-list {
+  list-style: none;
+  padding: 0;
+}
+
+.route-item-container {
+  font-family: 'Noto Sans KR', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.route-item {
+  padding: 10px;
+  font-size: 16px;
+  color: #333;
+}
+
+.route-delete-button {
+  font-family: 'Noto Sans KR', sans-serif;
+  background-color: #ff6f6f;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 14px;
+  cursor: pointer;
+  margin-right: 10px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.route-delete-button:hover {
+  background-color: #ff4c4c;
+  transform: scale(1.02);
+}
+
+/* 오른쪽 패널 스타일링 */
+.right-panel {
+  width: 75%;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  position: relative; /* To position the absolute button */
+}
+
+.route-title {
+  font-size: 26px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #b9b9b9;
+  padding-bottom: 5px;
+}
+
+.route-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.places-section {
+  display: flex;
+  flex: 1;
+}
+
+.places-list {
+  width: 60%;
+  margin-right: 30px;
+  overflow-y: auto;
+}
+
+.places {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.place-item {
+  padding: 5px;
+  margin: 10px 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.place-number {
+  font-family: 'Noto Sans KR', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background-color: #ddd;
+  color: #000;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 5px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.place-content {
+  margin-left: 50px;
+}
+
+.route-review {
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  position: relative; /* For absolute positioning of button */
+}
+
+.rating, .memo {
+  margin-bottom: 10px;
+}
+
+.rating-label, .memo-label {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.memo-content, .memo-textarea {
+  font-family: 'Noto Sans KR', sans-serif;
+  border: 1px solid #ddd;
+  padding: 10px;
+  width: 100%;
+  min-height: 420px; /* Minimum height for the comment area */
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+  color: #666;
+  overflow: hidden; /* Prevent overflow */
+  display: flex;
+}
+
+.memo-placeholder {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 16px;
+  color: #999;
+}
+
+.memo-textarea {
+  font-family: 'Noto Sans KR', sans-serif;
+  resize: none; /* Prevent resizing */
+  overflow: auto; /* Show scrollbars if needed */
+}
+
+.route-input {
+  font-family: 'Noto Sans KR', sans-serif;
+  width: 50%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 20px;
+  height: 20px; /* Fixed height */
+  margin-bottom: 5px;
+}
+
+.route-input2 {
+  font-family: 'Noto Sans KR', sans-serif;
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font-size: 16px;
+}
+
+.comment-button {
+  font-family: 'Noto Sans KR', sans-serif;
+  padding: 8px 20px; /* Smaller button size */
+  font-size: 14px; /* Smaller font size */
+  color: #fff;
+  background-color: #000000;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  position: absolute; /* Position absolutely to the container */
+  top: 15px;
+  right: 15px; /* Position 20px from the right */
+}
+
+.comment-button:hover {
+  background-color: #242424;
+}
+
+.no-selection {
+  font-size: 18px;
+  color: #999;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.star {
+  font-size: 24px;
+  cursor: pointer;
+  color: #ddd;
+}
+
+.star.filled {
+  color: gold;
+}
+
+.star-placeholder {
+  font-size: 24px;
+  color: #ddd;
+}
