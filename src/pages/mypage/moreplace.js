@@ -77,6 +77,7 @@ function MorePlace() {
 
   const handleLocationClick = async (location) => {
     try {
+      setShowNoRecommendationsPopup(false);
       if (!map || !placesService) {
         console.error("Map or PlacesService is not initialized yet.");
         return;
