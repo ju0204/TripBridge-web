@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-const BASE_URL = 'http://3.35.115.71:8080';
+const BASE_URL = 'https://api.tripbridge.co.kr';
 
 
 

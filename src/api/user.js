@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://3.35.115.71:8080'; // 서버의 주소로 대체해야 합니다.
+const BASE_URL = 'https://api.tripbridge.co.kr'; // 서버의 주소로 대체해야 합니다.
 
 
 // 회원가입 요청을 보내는 함수
