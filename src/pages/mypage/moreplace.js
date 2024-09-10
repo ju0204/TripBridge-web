@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { fetchLocations } from '../../api/kakaomap';
 import { BsBookmarkStar } from "react-icons/bs";
 import { CgClose } from "react-icons/cg";
 import { sendScrap, deleteScrap } from '../../api/filter';
 import blackMarkerImageSrc from './img/marker.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+
 
 import './moreplace.css';
 
@@ -20,9 +23,19 @@ function MorePlace() {
   const [clickedLocationMarker, setClickedLocationMarker] = useState(null);
   const [clickedLocationOverlay, setClickedLocationOverlay] = useState(null);
   const [showNoRecommendationsPopup, setShowNoRecommendationsPopup] = useState(false);
-
+  const [searchResults, setSearchResults] = useState([]); // 검색 결과를 저장하는 state
+  const [showMiniRecommendations, setShowMiniRecommendations] = useState(false); // 주변 관광지 추천을 위한 상태
+  const [isDragging, setIsDragging] = useState(false);
+  const [position, setPosition] = useState({ x: 100, y: 100 }); // 초기 위치 설정
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 }); // 마우스가 눌린 위치
+  const [offsetStart, setOffsetStart] = useState({ x: 0, y: 0 }); // 드래그 시작 시 창의 위치
+  const [selectedRecommendation, setSelectedRecommendation] = useState(null);
+  const [markers, setMarkers] = useState([]);  // 모든 마커를 저장하는 상태
+  const [showSelectPlacePopup, setShowSelectPlacePopup] = useState(false); // 팝업 상태 추가
+  const [showNoPlacePopup, setshowNoPlacePopup] = useState(false); // 팝업 상태 추가
 
   useEffect(() => {
+    
     const script = document.createElement('script');
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=29f03c7b54622c8d9a8c60c20cd7e7e0&libraries=services`;
     script.async = true;
@@ -143,6 +156,7 @@ setClickedLocationOverlay(newClickedLocationOverlay);  // 새로운 overlay 저�
       const keyword = `${location.address} 관광지`;
       placesService.keywordSearch(keyword, async (result, status) => {
         if (status === window.kakao.maps.services.Status.OK) {
+          setSearchResults(result); // **검색 결과를 저장**
           const newMarkers = result.map(place => {
             const markerPosition = new window.kakao.maps.LatLng(place.y, place.x);
             const marker = new window.kakao.maps.Marker({
@@ -238,6 +252,8 @@ setClickedLocationOverlay(newClickedLocationOverlay);  // 새로운 overlay 저�
       
             return marker;
           });
+
+          setMarkers(newMarkers);  // 생성된 마커들을 상태에 저장
       
           // 마커 및 오버레이 표시 관련 처리
           setPlaceMarkers(prevMarkers => [...prevMarkers, ...newMarkers]);
@@ -249,7 +265,9 @@ setClickedLocationOverlay(newClickedLocationOverlay);  // 새로운 overlay 저�
           }
         } else {
           console.error('장소 검색 실패:', status);
-          setShowNoRecommendationsPopup(true); // 팝업 띄우기
+          setSearchResults([]); // 검색 결과 상태를 초기화
+          setShowNoRecommendationsPopup(true); // "주변 추천 장소가 없습니다" 팝업 띄우기
+          setShowMiniRecommendations(false); // 주변 관광지 추천 창 닫기
         }
       });
   
@@ -301,7 +319,65 @@ const handleDeleteLocation = async (location) => {
   }
 };
 
+const toggleRecommendations = (event) => {
+  if (selectedLocations.length === 0) {
+    setShowSelectPlacePopup(true); // 장소를 선택하라는 팝업 띄우기
+  } else if (searchResults.length === 0) {
+    setshowNoPlacePopup(true); // 추천 장소가 없을 때 다른 장소를 선택하라는 팝업 띄우기
+  } else {
+    const buttonRect = event.target.getBoundingClientRect(); // 버튼의 위치 정보 가져오기
+    setPosition({
+      x: buttonRect.left - 350, // 버튼의 왼쪽 좌표로 이동, 창 너비만큼 왼쪽으로 설정
+      y: buttonRect.top + window.scrollY - 500, // 버튼과 같은 높이로 설정, 살짝 위로 올림
+    });
+    setShowMiniRecommendations(!showMiniRecommendations); // 추천 보기 창 토글
+  }
+};
+
+
+
+
+
+// 마우스를 누를 때 드래그 시작
+const handleMouseDown = (e) => {
+  setIsDragging(true);
+  setDragStart({
+    x: e.clientX,
+    y: e.clientY,
+  });
+  setOffsetStart({
+    x: position.x,
+    y: position.y,
+  });
+};
+
+// 마우스를 움직일 때 창의 위치를 업데이트
+const handleMouseMove = (e) => {
+  if (isDragging) {
+    const newX = offsetStart.x + (e.clientX - dragStart.x);
+    const newY = offsetStart.y + (e.clientY - dragStart.y);
+    setPosition({
+      x: newX,
+      y: newY,
+    });
+  }
+};
+
+// 마우스를 놓을 때 드래그 종료
+const handleMouseUp = () => {
+  setIsDragging(false);
+};
   
+const handleRecommendationClick = (place, index) => {
+  // 마커를 클릭했을 때의 로직을 실행
+  if (markers[index]) {
+    const marker = markers[index];
+    window.kakao.maps.event.trigger(marker, 'click');  // 마커의 클릭 이벤트 강제 트리거
+  }
+
+  setSelectedRecommendation(place);  // 선택된 장소를 상태로 저장하여 스타일 업데이트
+};
+
   
   
   
@@ -309,37 +385,46 @@ const handleDeleteLocation = async (location) => {
 
   return (
     <div className="moreplace-container">
-      <div className="place-boxes">
-        <div className="place1-box">
-          <div id="map" className="map"></div>
+  <div className="place-boxes">
+    <div className="place1-box">
+      <div id="map" className="map"></div>
+    </div>
+    <div className="place2-box">
+      <div className="more-scrap-container">
+        <div className="more-scrap-title">
+          <BsBookmarkStar />&nbsp;스크랩 목록
         </div>
-        <div className="place2-box">
-          <div className="more-scrap-container">
-            <div className="more-scrap-title">
-              <BsBookmarkStar />&nbsp;스크랩 목록
-            </div>
-            <ul className="more-scrap-list">
-              {locations.map((location, index) => (
-                <li
-                  key={index}
-                  onClick={() => handleLocationClick(location)}
-                  className={selectedLocations.includes(location) ? 'selected' : ''}
-                >
-                  <strong>{location.place}</strong>
-                  <p>{location.address}</p>
-                  <CgClose
-                    className="delete-button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleDeleteLocation(location);
-                    }}
-                  />
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
+        <ul className="more-scrap-list">
+          {locations.map((location, index) => (
+            <li
+              key={index}
+              onClick={() => handleLocationClick(location)}
+              className={selectedLocations.includes(location) ? 'selected' : ''}
+            >
+              <strong>{location.place}</strong>
+              <p>{location.address}</p>
+              <CgClose
+                className="delete-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeleteLocation(location);
+                }}
+              />
+            </li>
+          ))}
+        </ul>
       </div>
+       {/* 리스트와 버튼을 분리된 div로 분리 */}
+  <div className="recommendation-button-container">
+    <button className="toggle-recommendation-button" onClick={toggleRecommendations}>
+      주변 관광지 추천 리스트
+    </button>
+  </div>
+
+    </div>
+  </div>
+
+
 
      {/* 팝업 코드 추가 */}
     {showScrapedPopup && (
@@ -369,10 +454,72 @@ const handleDeleteLocation = async (location) => {
         </div>
       </div>
     )}
+ 
+ 
+ {showMiniRecommendations && (
+  <div
+    className="mini-recommendation-window"
+    style={{
+      top: `${position.y}px`,
+      left: `${position.x}px`, // Adjusted to position to the left of the button
+      position: 'absolute',
+      zIndex: 1000,
+    }}
+    onMouseDown={handleMouseDown} // 마우스를 누르면 드래그 시작
+    onMouseMove={handleMouseMove} // 드래그 중일 때 창을 움직이게 하는 이벤트
+    onMouseUp={handleMouseUp} // 마우스를 떼면 드래그 중지
+  >
+    <div className="mini-recommendation-header">
+      <h3>주변 관광지 추천</h3>
+      <button className="close-button" onClick={toggleRecommendations}>
+        <FontAwesomeIcon icon={faTimes} size="sm" />
+      </button>
+    </div>
+    <div className="mini-recommendation-list">
+      {searchResults.length > 0 ? (
+        searchResults.map((place, index) => (
+          <div
+            key={index}
+            className={`recommendation-item ${selectedRecommendation === place ? 'selected' : ''}`}
+            onClick={() => handleRecommendationClick(place, index)}  // 인덱스를 함께 전달
+          >
+            <strong>{place.place_name}</strong>
+            <p>{place.address_name}</p>
+          </div>
+        ))
+      ) : (
+        <p>추천 관광지가 없습니다.</p>
+      )}
+    </div>
+  </div>
+)}
 
 
+
+{showSelectPlacePopup && (
+  <div className="more-selectpopup-overlay">
+    <div className="more-selectpopup">
+      <p>스크랩 목록에서 장소를 선택해주세요!</p>
+      <button onClick={() => setShowSelectPlacePopup(false)}>확인</button>
+    </div>
+  </div>
+)}
+
+
+{showNoPlacePopup && (
+  <div className="more-selectpopup-overlay">
+    <div className="more-selectpopup">
+      <p>스크랩 목록에서 다른 장소를 선택해주세요!</p>
+      <button onClick={() => setshowNoPlacePopup(false)}>확인</button>
+    </div>
+  </div>
+)}
 
     </div>
+
+    
+
+    
   );
 }
 
