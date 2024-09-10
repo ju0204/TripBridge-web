@@ -17,6 +17,9 @@ function MorePlace() {
   const [placeMarkers, setPlaceMarkers] = useState([]);
   const [showScrapedPopup, setShowScrapedPopup] = useState(false);
   const [showAlreadyScrapedPopup, setshowAlreadyScrapedPopup] = useState(false);
+  const [clickedLocationMarker, setClickedLocationMarker] = useState(null);
+  const [clickedLocationOverlay, setClickedLocationOverlay] = useState(null);
+
 
   useEffect(() => {
     const script = document.createElement('script');
@@ -81,7 +84,14 @@ function MorePlace() {
       // Clear existing place markers
       placeMarkers.forEach(marker => marker.setMap(null));
       setPlaceMarkers([]);
-  
+
+      // **1. 기존 검은색 마커 제거하는 코드 추가**
+      if (clickedLocationMarker) {
+        clickedLocationMarker.setMap(null);  // 기존 검은색 마커 제거
+      }
+      if (clickedLocationOverlay) {
+        clickedLocationOverlay.setMap(null);  // 기존 overlay 제거
+      }
       // Create a custom marker icon for the clicked location (black marker)
       const blackMarkerImage = new window.kakao.maps.MarkerImage(
         blackMarkerImageSrc, // import한 이미지 사용
@@ -90,11 +100,14 @@ function MorePlace() {
       );
   
       // Create a marker for the clicked location
-      const clickedLocationMarker = new window.kakao.maps.Marker({
+      const newClickedLocationMarker = new window.kakao.maps.Marker({
         position: new window.kakao.maps.LatLng(location.latitude, location.longitude),
         map: map,
         image: blackMarkerImage,
       });
+  
+      // **2. 새 검은색 마커를 상태에 저장하는 코드 추가**
+      setClickedLocationMarker(newClickedLocationMarker);
   
       // Create CustomOverlay for the clicked location
       // 커스텀 오버레이 생성
@@ -112,13 +125,16 @@ const overlayContentAuto = `
 </div>
 `;
 
-const customOverlay = new window.kakao.maps.CustomOverlay({
-position: new window.kakao.maps.LatLng(location.latitude, location.longitude), // 위치 설정
-content: overlayContentAuto, // 오버레이에 표시할 HTML 내용
-yAnchor: 2.2,  // 마커 위에 표시되도록 조정 (값을 높이면 더 위로 올라갑니다)
-xAnchor: 0.5,  // 중앙 맞춤
-map: map // 오버레이를 표시할 지도 객체
+const newClickedLocationOverlay = new window.kakao.maps.CustomOverlay({
+  position: new window.kakao.maps.LatLng(location.latitude, location.longitude), // 위치 설정
+  content: overlayContentAuto, // 오버레이에 표시할 HTML 내용
+  yAnchor: 2.2,  // 마커 위에 표시되도록 조정
+  xAnchor: 0.5,  // 중앙 맞춤
+  map: map // 오버레이를 표시할 지도 객체
 });
+
+setClickedLocationOverlay(newClickedLocationOverlay);  // 새로운 overlay 저장
+
 
   
       // Use location address to search for places (recommendations)
