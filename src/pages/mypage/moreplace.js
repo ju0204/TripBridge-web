@@ -19,6 +19,7 @@ function MorePlace() {
   const [showAlreadyScrapedPopup, setshowAlreadyScrapedPopup] = useState(false);
   const [clickedLocationMarker, setClickedLocationMarker] = useState(null);
   const [clickedLocationOverlay, setClickedLocationOverlay] = useState(null);
+  const [showNoRecommendationsPopup, setShowNoRecommendationsPopup] = useState(false);
 
 
   useEffect(() => {
@@ -226,6 +227,7 @@ setClickedLocationOverlay(newClickedLocationOverlay);  // 새로운 overlay 저�
                       } catch (error) {
                         console.error('스크랩 에러:', error);
                         setshowAlreadyScrapedPopup(true);
+                        
                       }
                     });
                   }
@@ -246,6 +248,7 @@ setClickedLocationOverlay(newClickedLocationOverlay);  // 새로운 overlay 저�
           }
         } else {
           console.error('장소 검색 실패:', status);
+          setShowNoRecommendationsPopup(true); // 팝업 띄우기
         }
       });
   
@@ -356,6 +359,16 @@ const handleDeleteLocation = async (location) => {
           </div>
         </div>
       )}
+
+    {showNoRecommendationsPopup && (
+      <div className="more-popup-result">
+        <div className="more-popup-inner3">
+          <p>주변 추천 장소가 없습니다!</p>
+          <button onClick={() => setShowNoRecommendationsPopup(false)}>확인</button>
+        </div>
+      </div>
+    )}
+
 
 
     </div>
