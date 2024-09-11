@@ -18,7 +18,7 @@ function Review() {
   const fetchRoutes = async () => {
     try {
       const token = getToken();
-      const response = await fetch('http://3.35.115.71:8080/myroute/list', {
+      const response = await fetch('https://api.tripbridge.co.kr/myroute/list', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -37,7 +37,7 @@ function Review() {
     if (!routeId) return;
     try {
       const token = getToken();
-      const response = await fetch(`http://3.35.115.71:8080/myroute/${routeId}`, {
+      const response = await fetch(`https://api.tripbridge.co.kr/myroute/${routeId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -70,7 +70,7 @@ function Review() {
   
     try {
       const token = getToken();
-      const response = await fetch(`http://3.35.115.71:8080/myroute/${selectedRoute.id}`, {
+      const response = await fetch(`https://api.tripbridge.co.kr/myroute/${selectedRoute.id}`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -96,7 +96,7 @@ function Review() {
     if (!routeId) return;
     try {
       const token = getToken();
-      const response = await fetch(`http://3.35.115.71:8080/myroute/${routeId}`, {
+      const response = await fetch(`https://api.tripbridge.co.kr/myroute/${routeId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
