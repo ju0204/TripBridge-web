@@ -134,7 +134,7 @@ const Main = () => {
 
       <div className="func-container">
         <div className="func func1" onClick={() => handleFuncClick(1)}>
-          여행지 추천
+          여행지 추천2222
           {activeFunc === 1 && (
             <div className="detail">나만의 완벽한 여행지!<br />원하는 조건에 맞는 여행지를 쉽게 찾을 수 있습니다.</div>
           )}
