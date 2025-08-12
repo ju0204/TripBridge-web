@@ -92,7 +92,7 @@
 
 |회원가입|로그인|
 |-------|-------|
-|![회원가입](https://github.com/user-attachments/assets/1ed7a6b1-6823-4e24-9971-60d5e9b82dba)|![로그인](https://github.com/user-attachments/assets/aeb92704-7816-4fe8-9c98-31163d46f2a3)|
+|![회원가입](images/signup.gif)|![로그인](images/login.gif)|
 
 <br>
 
@@ -101,7 +101,7 @@
 
 |메인화면|
 |---|
-|![메인화면](https://github.com/user-attachments/assets/584c70f5-73cc-4bf3-8237-74323ef30a3c)|
+|![메인화면](images/main.gif)|
 
 <br>
 
@@ -112,7 +112,7 @@
 
 |여행지추천|
 |---|
-|![여행지추천](https://github.com/user-attachments/assets/e29f023f-caab-43ed-88e5-8abf7b2b8a89)|
+|![여행지추천](images/recommend.gif)|
 
 
 <br>
@@ -127,7 +127,7 @@
 
 |결과 페이지|
 |---|
-|![결과 페이지](https://github.com/user-attachments/assets/540daeb8-bf5f-4708-8283-14483ade5103)|
+|![결과 페이지](images/result.gif)|
 
 <br>
 
@@ -141,7 +141,7 @@
 
 |동선 추천|
 |---|
-|![동선 추천](https://github.com/user-attachments/assets/18b9f78f-90e0-4fdc-8554-9fe2af8920f1)|
+|![동선 추천](images/scrap-route.gif)|
 
 
 <br>
@@ -152,7 +152,7 @@
 
 |장소 추가 검색|
 |---|
-|![장소 추가 검색](https://github.com/user-attachments/assets/a0b6b9c4-47f5-48d2-b02f-70681c27c04a)|
+|![장소 추가 검색](images/scrap-search.gif)|
 
 
 <br>
@@ -164,7 +164,7 @@
 
 |챗봇|
 |---|
-|![챗봇](https://github.com/user-attachments/assets/ada4cb9d-9bc7-4ca5-acf0-7d9688dc1241)|
+|![챗봇](images/chatbot.gif)|
 
 
 <br>
@@ -175,7 +175,7 @@
 
 |마이페이지|
 |---|
-|![마이페이지](https://github.com/user-attachments/assets/3a971101-6920-4958-9e3f-e6e9af0ffdb6)|
+|![마이페이지](images/mypage-memo.gif)|
 
 
 <br>
@@ -188,7 +188,7 @@
 
 |주변장소 추천|
 |---|
-|![주변장소 추천](https://github.com/user-attachments/assets/505b3f6b-e005-4d12-a532-9aa80ea92ca8)|
+|![주변장소 추천](images/mypage-place.gif)|
 
 
 <br>
@@ -200,7 +200,7 @@
 
 |주변장소 추천|
 |---|
-|![주변장소 추천](https://github.com/user-attachments/assets/11654fc8-a698-4e04-b017-1f9c36844726)|
+|![주변장소 추천](images/mypage-place.gif)|
 
 
 <br>
