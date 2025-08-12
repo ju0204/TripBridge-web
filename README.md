@@ -208,7 +208,7 @@
 
 ## 서비스 아키텍처
 
-<img src="https://github.com/user-attachments/assets/8ca10dc1-ed81-41ca-9f0f-d1ebbeaa0f31" width="40%"/>
+<img src="images/architecture.png" width="40%"/>
 
 
 <br><br>
