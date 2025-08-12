@@ -2,7 +2,7 @@
 <h1 align="center">사용자 맞춤형 웹서비스, Trip Bridge</h1>
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/584c70f5-73cc-4bf3-8237-74323ef30a3c" alt="Trip Bridge" />
+  <img src="images/main-c" alt="Trip Bridge" />
 </p>
 
 - 배포 URL : https://www.tripbridge.co.kr/
